@@ -130,11 +130,19 @@ header p {
     font-size: 1.5rem;
 }
 
-.welcome-message {
+.welcome-message,
+.error-message {
     text-align: center;
     padding: 50px 20px;
     color: #888;
     font-size: 1.1rem;
+}
+
+.error-message {
+    color: #dc3545;
+    background: #f8d7da;
+    border: 1px solid #f5c6cb;
+    border-radius: 10px;
 }
 
 .investment-summary,

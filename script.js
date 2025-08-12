@@ -8,6 +8,8 @@ class PropertyCalculator {
         
         this.valueChart = null;
         this.cashflowChart = null;
+        this.calculationTimeout = null;
+        this.hasMinimumData = false;
         
         this.initEventListeners();
     }
@@ -15,10 +17,32 @@ class PropertyCalculator {
     initEventListeners() {
         this.form.addEventListener('submit', (e) => {
             e.preventDefault();
-            this.calculateInvestment();
         });
 
-        // Auto-calculate loan amount when purchase price or deposit changes
+        // Get all input fields for live calculation
+        const inputFields = [
+            'purchasePrice', 'deposit', 'rentalIncome', 'purchaseYear',
+            'stampDuty', 'legalFees', 'buildingInspection', 'loanFees', 'otherUpfrontCosts',
+            'insurance', 'maintenance', 'councilRates', 'propertyManagement', 'otherExpenses',
+            'interestRate', 'loanTerm', 'propertyGrowth', 'rentalGrowth'
+        ];
+
+        // Add live calculation listeners to all input fields
+        inputFields.forEach(fieldId => {
+            const element = document.getElementById(fieldId);
+            if (element) {
+                element.addEventListener('input', () => this.debouncedCalculation());
+                element.addEventListener('change', () => this.debouncedCalculation());
+            }
+        });
+
+        // Special handling for select elements
+        document.getElementById('repaymentType').addEventListener('change', () => {
+            this.updateRepaymentCalculations();
+            this.debouncedCalculation();
+        });
+
+        // Auto-calculate specific functions (still needed for immediate UI updates)
         document.getElementById('purchasePrice').addEventListener('input', () => this.updateLoanCalculations());
         document.getElementById('deposit').addEventListener('input', () => this.updateLoanCalculations());
         
@@ -37,6 +61,45 @@ class PropertyCalculator {
         // Initialize calculations
         this.updateUpfrontCosts();
         this.updateLoanCalculations();
+    }
+
+    debouncedCalculation() {
+        // Clear existing timeout
+        if (this.calculationTimeout) {
+            clearTimeout(this.calculationTimeout);
+        }
+
+        // Check if we have minimum required data
+        if (!this.hasMinimumRequiredData()) {
+            this.showWelcomeMessage();
+            return;
+        }
+
+        // Set new timeout for calculation (300ms delay)
+        this.calculationTimeout = setTimeout(() => {
+            this.calculateInvestment();
+        }, 300);
+    }
+
+    hasMinimumRequiredData() {
+        const purchasePrice = parseFloat(document.getElementById('purchasePrice').value);
+        const deposit = parseFloat(document.getElementById('deposit').value);
+        const rentalIncome = parseFloat(document.getElementById('rentalIncome').value);
+        
+        return purchasePrice > 0 && deposit > 0 && rentalIncome > 0;
+    }
+
+    showWelcomeMessage() {
+        this.resultsContainer.innerHTML = `
+            <div class="welcome-message">
+                <p>👈 Enter your property details to see live 30-year investment projections</p>
+                <small>Results update automatically as you type</small>
+                <br><br>
+                <small><strong>Required:</strong> Purchase Price, Deposit, and Rental Income</small>
+            </div>
+        `;
+        this.chartsContainer.style.display = 'none';
+        document.getElementById('leftComparisonContainer').style.display = 'none';
     }
 
     getFormData() {
@@ -117,14 +180,23 @@ class PropertyCalculator {
     calculateInvestment() {
         const data = this.getFormData();
         
-        // Show loading state
-        this.resultsContainer.innerHTML = '<div class="loading">Calculating your investment forecast...</div>';
+        // Skip if missing required data
+        if (!data.purchasePrice || !data.deposit || !data.rentalIncome) {
+            this.showWelcomeMessage();
+            return;
+        }
         
-        // Simulate API delay for better UX
-        setTimeout(() => {
+        try {
             const projections = this.generateProjections(data);
             this.displayResults(data, projections);
-        }, 1000);
+        } catch (error) {
+            console.error('Calculation error:', error);
+            this.resultsContainer.innerHTML = `
+                <div class="error-message">
+                    <p>⚠️ Error in calculations. Please check your inputs.</p>
+                </div>
+            `;
+        }
     }
 
     generateProjections(data) {
