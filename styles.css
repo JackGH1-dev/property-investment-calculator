@@ -90,13 +90,75 @@ header p {
     border: 2px solid #e1e5e9;
     border-radius: 8px;
     font-size: 1rem;
-    transition: border-color 0.3s ease;
+    transition: all 0.3s ease;
     background-color: white;
 }
 
 .form-group input[readonly] {
     background-color: #f8f9fa;
     color: #6c757d;
+    border-color: #dee2e6;
+}
+
+/* Required field styling */
+.form-group label.required::after {
+    content: " *";
+    color: #dc3545;
+    font-weight: bold;
+}
+
+/* Field state styling - simplified to remove colored borders and backgrounds */
+.form-group input.field-empty-required,
+.form-group input.field-filled-required,
+.form-group input.field-optional {
+    /* Use default styling - no special borders or backgrounds */
+}
+
+/* Labels for different field states - removed as we're keeping it simple */
+
+/* Input Mode Selector Styling */
+.input-mode-selector {
+    display: flex;
+    margin-top: 8px;
+    background: #f8f9fa;
+    border-radius: 6px;
+    padding: 2px;
+    gap: 2px;
+}
+
+.mode-option {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    background: transparent;
+    color: #6c757d;
+    font-size: 0.85rem;
+    font-weight: 500;
+    margin: 0;
+}
+
+.mode-option:hover {
+    background: #e9ecef;
+    color: #495057;
+}
+
+.mode-option.active {
+    background: #667eea;
+    color: white;
+    box-shadow: 0 2px 4px rgba(102, 126, 234, 0.2);
+}
+
+.mode-option input[type="radio"] {
+    display: none;
+}
+
+.mode-option span {
+    white-space: nowrap;
 }
 
 .form-group input:focus,

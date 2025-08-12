@@ -13,6 +13,7 @@ class PropertyCalculator {
         this.autocomplete = null;
         
         this.initEventListeners();
+        this.initFieldStateHandling();
     }
 
     initEventListeners() {
@@ -31,6 +32,7 @@ class PropertyCalculator {
         // Add special handling for state and first home buyer changes
         const selectFields = ['state', 'isFirstHomeBuyer', 'repaymentType'];
         const checkboxFields = ['applyLMI'];
+        const radioFields = ['inputType'];
 
         // Add live calculation listeners to all input fields
         inputFields.forEach(fieldId => {
@@ -70,6 +72,18 @@ class PropertyCalculator {
             }
         });
 
+        // Add listeners to radio button fields and mode options
+        const modeOptions = document.querySelectorAll('.mode-option');
+        modeOptions.forEach(option => {
+            option.addEventListener('click', () => {
+                const radio = option.querySelector('input[type="radio"]');
+                radio.checked = true;
+                this.updateModeSelector();
+                this.toggleInputMode();
+                this.updateLoanCalculations();
+            });
+        });
+
         // Auto-calculate specific functions (still needed for immediate UI updates)
         document.getElementById('purchasePrice').addEventListener('input', () => this.updateLoanCalculations());
         document.getElementById('deposit').addEventListener('input', () => this.updateLoanCalculations());
@@ -87,7 +101,62 @@ class PropertyCalculator {
         
         // Initialize calculations
         this.updateUpfrontCosts();
+        this.updateModeSelector(); // Set initial visual state
+        this.toggleInputMode(); // Set initial UI state
         this.updateLoanCalculations();
+    }
+
+    initFieldStateHandling() {
+        // Simplified - we only need the red asterisks which are handled by CSS
+        // The "required" class is already added to labels in HTML
+    }
+
+    updateModeSelector() {
+        const selectedMode = document.querySelector('input[name="inputType"]:checked').value;
+        const modeOptions = document.querySelectorAll('.mode-option');
+        
+        modeOptions.forEach(option => {
+            const mode = option.dataset.mode;
+            if (mode === selectedMode) {
+                option.classList.add('active');
+            } else {
+                option.classList.remove('active');
+            }
+        });
+    }
+
+    toggleInputMode() {
+        const selectedMode = document.querySelector('input[name="inputType"]:checked').value;
+        const depositField = document.getElementById('deposit');
+        const depositLabel = document.getElementById('depositLabel');
+        const calculatedField = document.getElementById('calculatedAmount');
+        const calculatedLabel = calculatedField.previousElementSibling;
+
+        if (selectedMode === 'deposit') {
+            // Deposit input mode
+            depositLabel.textContent = 'Deposit ($)';
+            depositField.placeholder = 'e.g. 150000';
+            depositField.readOnly = false;
+            depositField.style.backgroundColor = '';
+            depositField.style.color = '';
+            
+            calculatedLabel.textContent = 'Loan Amount ($)';
+            calculatedField.readOnly = true;
+            calculatedField.style.backgroundColor = '#f8f9fa';
+            calculatedField.style.color = '#6c757d';
+        } else {
+            // Loan amount input mode
+            depositLabel.textContent = 'Loan Amount ($)';
+            depositField.placeholder = 'e.g. 600000';
+            depositField.readOnly = false;
+            depositField.style.backgroundColor = '';
+            depositField.style.color = '';
+            
+            calculatedLabel.textContent = 'Deposit ($)';
+            calculatedField.readOnly = true;
+            calculatedField.style.backgroundColor = '#f8f9fa';
+            calculatedField.style.color = '#6c757d';
+        }
     }
 
     debouncedCalculation() {
@@ -130,13 +199,25 @@ class PropertyCalculator {
     }
 
     getFormData() {
+        // Handle the flexible deposit/loan input
+        const purchasePrice = parseFloat(document.getElementById('purchasePrice').value) || 0;
+        const inputValue = parseFloat(document.getElementById('deposit').value) || 0;
+        const selectedMode = document.querySelector('input[name="inputType"]:checked').value;
+        
+        let deposit;
+        if (selectedMode === 'deposit') {
+            deposit = inputValue;
+        } else {
+            deposit = Math.max(0, purchasePrice - inputValue);
+        }
+        
         return {
             address: document.getElementById('address').value,
             state: document.getElementById('state').value,
             isFirstHomeBuyer: document.getElementById('isFirstHomeBuyer').value === 'true',
             applyLMI: document.getElementById('applyLMI').checked,
-            purchasePrice: parseFloat(document.getElementById('purchasePrice').value),
-            deposit: parseFloat(document.getElementById('deposit').value),
+            purchasePrice: purchasePrice,
+            deposit: deposit,
             rentalIncome: parseFloat(document.getElementById('rentalIncome').value),
             purchaseYear: parseInt(document.getElementById('purchaseYear').value),
             insurance: parseFloat(document.getElementById('insurance').value) || 1500,
@@ -174,13 +255,28 @@ class PropertyCalculator {
 
     updateLoanCalculations() {
         const purchasePrice = parseFloat(document.getElementById('purchasePrice').value) || 0;
-        const deposit = parseFloat(document.getElementById('deposit').value) || 0;
-        const loanAmount = Math.max(0, purchasePrice - deposit);
+        const inputValue = parseFloat(document.getElementById('deposit').value) || 0;
+        const selectedMode = document.querySelector('input[name="inputType"]:checked').value;
         
+        let deposit, loanAmount;
+        
+        if (selectedMode === 'deposit') {
+            // User entered deposit amount
+            deposit = inputValue;
+            loanAmount = Math.max(0, purchasePrice - deposit);
+            document.getElementById('calculatedAmount').value = loanAmount;
+        } else {
+            // User entered loan amount
+            loanAmount = inputValue;
+            deposit = Math.max(0, purchasePrice - loanAmount);
+            document.getElementById('calculatedAmount').value = deposit;
+        }
+        
+        // Update the main loan amount field used by other calculations
         document.getElementById('loanAmount').value = loanAmount;
         
-        // Calculate LMI and Stamp Duty
-        this.calculateLMI();
+        // Calculate LMI and Stamp Duty (using actual deposit for LMI calculation)
+        this.calculateLMIWithValues(purchasePrice, deposit);
         this.calculateStampDuty();
         
         this.updateRepaymentCalculations();
@@ -428,7 +524,20 @@ class PropertyCalculator {
     // Lenders Mortgage Insurance Calculator
     calculateLMI() {
         const purchasePrice = parseFloat(document.getElementById('purchasePrice').value) || 0;
-        const deposit = parseFloat(document.getElementById('deposit').value) || 0;
+        const selectedMode = document.querySelector('input[name="inputType"]:checked').value;
+        const inputValue = parseFloat(document.getElementById('deposit').value) || 0;
+        
+        let deposit;
+        if (selectedMode === 'deposit') {
+            deposit = inputValue;
+        } else {
+            deposit = Math.max(0, purchasePrice - inputValue);
+        }
+        
+        this.calculateLMIWithValues(purchasePrice, deposit);
+    }
+
+    calculateLMIWithValues(purchasePrice, deposit) {
         const applyLMI = document.getElementById('applyLMI').checked;
         const loanAmount = purchasePrice - deposit;
         

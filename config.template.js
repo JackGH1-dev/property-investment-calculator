@@ -7,7 +7,7 @@
 const CONFIG = {
     // Replace 'YOUR_API_KEY_HERE' with your actual Google Places API key
     // Get your API key from: https://console.cloud.google.com/
-    GOOGLE_PLACES_API_KEY: 'YOUR_API_KEY_HERE',
+    GOOGLE_PLACES_API_KEY: 'AIzaSyCbrPkLWd9Ur_e3o3JNg5mnCruUBJTZTcQ',
     
     // API settings
     PLACES_API: {
