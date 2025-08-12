@@ -274,12 +274,14 @@ class PropertyCalculator {
         // Create charts
         this.createCharts(projections);
         
-        // Show comparison
+        // Show comparison in both places
         this.showComparison(data, totalReturn, annualizedReturn);
+        this.showLeftComparison(data, totalReturn, annualizedReturn);
         
         // Show results sections
         this.chartsContainer.style.display = 'block';
         this.comparisonContainer.style.display = 'block';
+        document.getElementById('leftComparisonContainer').style.display = 'block';
     }
 
     createCharts(projections) {
@@ -376,6 +378,26 @@ class PropertyCalculator {
             `$${this.formatMoney(savingsReturn)} (4.5%)`;
         document.getElementById('asxReturn').textContent = 
             `$${this.formatMoney(asxReturn)} (8.0%)`;
+    }
+
+    showLeftComparison(data, propertyReturn, propertyAnnualizedReturn) {
+        const initialInvestment = data.deposit;
+        
+        // High yield savings (4.5% p.a.)
+        const savingsReturn = initialInvestment * Math.pow(1.045, 30) - initialInvestment;
+        
+        // ASX200 (8% p.a.)
+        const asxReturn = initialInvestment * Math.pow(1.08, 30) - initialInvestment;
+        
+        // Update left panel comparison
+        document.getElementById('leftPropertyReturn').textContent = 
+            `$${this.formatMoney(propertyReturn)}`;
+        document.getElementById('leftPropertyDetails').textContent = 
+            `${(propertyAnnualizedReturn * 100).toFixed(1)}% annual return`;
+        document.getElementById('leftSavingsReturn').textContent = 
+            `$${this.formatMoney(savingsReturn)}`;
+        document.getElementById('leftAsxReturn').textContent = 
+            `$${this.formatMoney(asxReturn)}`;
     }
 
     formatMoney(amount) {

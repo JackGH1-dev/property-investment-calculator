@@ -160,6 +160,72 @@ header p {
     color: #333;
 }
 
+/* Left Panel Investment Comparison */
+#leftComparisonContainer {
+    margin-top: 30px;
+    padding: 25px;
+    background: linear-gradient(135deg, #f0f8ff 0%, #e6f3ff 100%);
+    border-radius: 15px;
+    border: 2px solid #667eea;
+}
+
+#leftComparisonContainer h3 {
+    color: #667eea;
+    margin-bottom: 20px;
+    font-size: 1.3rem;
+    text-align: center;
+}
+
+.left-comparison-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.left-comparison-item {
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    text-align: center;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease, box-shadow 0.3s ease;
+}
+
+.left-comparison-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.left-comparison-item.property {
+    border-left: 4px solid #28a745;
+}
+
+.left-comparison-item.savings {
+    border-left: 4px solid #ffc107;
+}
+
+.left-comparison-item.asx {
+    border-left: 4px solid #6f42c1;
+}
+
+.left-comparison-item h4 {
+    margin: 0 0 10px 0;
+    font-size: 1rem;
+    color: #333;
+}
+
+.left-comparison-item p {
+    margin: 5px 0;
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #333;
+}
+
+.left-comparison-item small {
+    color: #666;
+    font-size: 0.85rem;
+}
+
 .summary-cards {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -279,6 +345,23 @@ header p {
     
     .input-panel, .results-panel {
         padding: 20px;
+    }
+    
+    #leftComparisonContainer {
+        margin-top: 20px;
+        padding: 20px;
+    }
+    
+    .left-comparison-item {
+        padding: 15px;
+    }
+    
+    .left-comparison-item h4 {
+        font-size: 0.9rem;
+    }
+    
+    .left-comparison-item p {
+        font-size: 1.1rem;
     }
 }
 

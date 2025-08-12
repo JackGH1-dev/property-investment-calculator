@@ -124,6 +124,28 @@
 
                     <button type="submit" class="calculate-btn">Calculate Investment</button>
                 </form>
+
+                <!-- Investment Comparison - moved to left panel for better visibility -->
+                <div id="leftComparisonContainer" style="display: none;">
+                    <h3>Investment Comparison</h3>
+                    <div class="left-comparison-grid">
+                        <div class="left-comparison-item property">
+                            <h4>🏠 Property Investment</h4>
+                            <p id="leftPropertyReturn">-</p>
+                            <small id="leftPropertyDetails">-</small>
+                        </div>
+                        <div class="left-comparison-item savings">
+                            <h4>💰 High Yield Savings</h4>
+                            <p id="leftSavingsReturn">-</p>
+                            <small>4.5% per annum</small>
+                        </div>
+                        <div class="left-comparison-item asx">
+                            <h4>📈 ASX200 Index</h4>
+                            <p id="leftAsxReturn">-</p>
+                            <small>8.0% per annum</small>
+                        </div>
+                    </div>
+                </div>
             </section>
 
             <!-- Right Panel - Results -->
