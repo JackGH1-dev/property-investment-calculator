@@ -153,8 +153,177 @@ The tool serves both professionals who can use it to educate and retain clients,
 
 ## Version History
 - **v1.0.0** (2025-01-12): Initial release with all core functionality
-- **Future v1.1.0**: Planned minor improvements
-- **Future v2.0.0**: Major features (auth, API integration, taxation)
+
+## Future Feature Roadmap
+
+### v1.1.0 - Enhanced Calculations (Next Minor Release)
+**Priority: High - Quick wins for mortgage brokers**
+- **Australian Address Autocomplete** 
+  - Google Places API integration for property address validation
+  - State detection for stamp duty calculations
+- **State-Based Stamp Duty Calculator**
+  - Automated calculation based on property location and price
+  - Support for NSW, VIC, QLD, SA, WA, TAS, NT, ACT rates
+  - First home buyer concessions where applicable
+- **LMI Calculator** (Lenders Mortgage Insurance)
+  - Calculate LMI when deposit < 20%
+  - Include in upfront costs automatically
+
+### v1.2.0 - Property Data Integration
+**Priority: High - Automation and accuracy**
+- **Property Valuation API Integration**
+  - Automated property value estimates (Domain, CoreLogic, or PriceFinder)
+  - Real-time rental yield data
+  - Market growth rate suggestions based on suburb
+  - User override capability maintained
+- **Suburb Analytics**
+  - Historical growth data display
+  - Market trends and insights
+  - Comparable property analysis
+
+### v2.0.0 - User Authentication & Data Management
+**Priority: Medium - Platform transformation**
+- **Google Authentication System**
+  - Secure user login and registration
+  - OAuth2 integration for easy signup
+  - User profile management
+- **Save & Retrieve Property Calculations**
+  - Save calculations per property address
+  - Client-specific property portfolios
+  - Edit and update saved calculations
+- **Client Management for Brokers**
+  - Create client profiles
+  - Assign properties to specific clients
+  - Client-specific calculation history
+
+### v2.1.0 - Reporting & Documentation
+**Priority: Medium - Professional client presentations**
+- **PDF Report Generation**
+  - Professional property investment reports
+  - Include all calculations, charts, and comparisons
+  - Branded reports for mortgage brokers
+  - Email delivery capability
+- **Excel Export**
+  - Detailed spreadsheet with all projections
+  - Year-by-year breakdown
+  - Customizable report templates
+
+### v3.0.0 - Portfolio Management & Advanced Analytics
+**Priority: Low - Advanced platform features**
+- **Multi-Property Portfolio Dashboard**
+  - Aggregated investment performance across properties
+  - Portfolio diversification analysis
+  - Combined cash flow projections
+  - Risk assessment across portfolio
+- **Advanced Comparison Tools**
+  - Side-by-side property comparisons
+  - Portfolio vs single property analysis
+  - Investment strategy optimization
+- **Client Dashboard**
+  - Individual client portal access
+  - Real-time portfolio updates
+  - Performance tracking over time
+
+### v3.1.0 - Advanced Financial Calculations
+**Priority: Low - Comprehensive financial modeling**
+- **Tax Calculation Engine**
+  - Negative gearing benefits calculation
+  - Capital gains tax scenarios
+  - Depreciation schedules
+  - Tax-effective investment strategies
+- **Advanced Scenarios**
+  - Interest rate change modeling
+  - Market crash scenarios
+  - Early property sale calculations
+  - Refinancing impact analysis
+
+## Technical Implementation Notes
+
+### Feature 1: Address Autocomplete + Stamp Duty
+**Implementation:**
+```javascript
+// Google Places API integration
+const autocomplete = new google.maps.places.Autocomplete(addressInput);
+// Extract state from address components
+// Lookup stamp duty rates by state and price bracket
+```
+**APIs Needed:**
+- Google Places API (address autocomplete)
+- State-specific stamp duty rate tables (static data)
+
+### Feature 2: Property Valuation APIs
+**Preferred Integration Order:**
+1. **Domain API** (free tier available)
+2. **PriceFinder API** (reasonable pricing)
+3. **CoreLogic API** (most comprehensive, expensive)
+
+**Implementation Approach:**
+- API key management and rotation
+- Fallback to manual input if API fails
+- Cache results to minimize API calls
+- Display data source transparency
+
+### Feature 3: Google Authentication
+**Technical Stack:**
+```javascript
+// Firebase Authentication (Google OAuth)
+import { initializeApp } from 'firebase/app';
+import { getAuth, GoogleAuthProvider } from 'firebase/auth';
+```
+**Data Storage:**
+- Firebase Firestore for user data
+- Encrypted property calculations
+- User privacy compliance (GDPR/Australian Privacy Act)
+
+### Feature 4: Save/Retrieve Functions
+**Database Schema:**
+```javascript
+// User document structure
+{
+  userId: string,
+  email: string,
+  properties: [
+    {
+      propertyId: string,
+      address: string,
+      calculationData: object,
+      lastModified: timestamp,
+      clientId?: string // for brokers
+    }
+  ]
+}
+```
+
+### Feature 5: PDF Generation
+**Recommended Libraries:**
+- jsPDF + html2canvas (client-side)
+- Or server-side with Node.js + Puppeteer
+**Template Requirements:**
+- Professional mortgage broker branding
+- Charts and graphs inclusion
+- Multi-page layout support
+
+### Feature 6: Portfolio Dashboard
+**Architecture:**
+- React or Vue.js for complex state management
+- Chart.js for advanced visualizations
+- Real-time data synchronization
+- Mobile-responsive dashboard design
+
+## Business Impact Analysis
+
+### Revenue Potential by Version
+- **v1.1.0**: Increased accuracy = higher broker adoption
+- **v2.0.0**: User accounts = subscription model potential
+- **v2.1.0**: Professional reports = premium feature
+- **v3.0.0**: Portfolio management = enterprise clients
+
+### Development Priorities
+1. **Quick Wins** (v1.1.0): Address autocomplete, stamp duty
+2. **Market Differentiation** (v1.2.0): Property data integration  
+3. **Monetization** (v2.0.0): User authentication, save functions
+4. **Professional Tool** (v2.1.0): PDF reports, Excel export
+5. **Enterprise Platform** (v3.0.0+): Portfolio management, advanced analytics
 
 ## Contact Information
 - **Developer**: Jack Chen
