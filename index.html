@@ -45,6 +45,40 @@
                         </div>
                     </div>
 
+                    <h3>Upfront Costs</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="stampDuty">Stamp Duty ($)</label>
+                            <input type="number" id="stampDuty" placeholder="30000">
+                        </div>
+                        <div class="form-group">
+                            <label for="legalFees">Legal/Conveyancing Fees ($)</label>
+                            <input type="number" id="legalFees" placeholder="2000">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="buildingInspection">Building & Pest Inspection ($)</label>
+                            <input type="number" id="buildingInspection" placeholder="800">
+                        </div>
+                        <div class="form-group">
+                            <label for="loanFees">Loan Application/Setup Fees ($)</label>
+                            <input type="number" id="loanFees" placeholder="1000">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="otherUpfrontCosts">Other Upfront Costs ($)</label>
+                            <input type="number" id="otherUpfrontCosts" placeholder="0">
+                        </div>
+                        <div class="form-group">
+                            <label for="totalUpfrontCosts">Total Upfront Costs ($)</label>
+                            <input type="number" id="totalUpfrontCosts" readonly>
+                        </div>
+                    </div>
+
                     <h3>Annual Expenses</h3>
                     <div class="form-row">
                         <div class="form-group">
@@ -163,24 +197,6 @@
                     <canvas id="cashflowChart" width="400" height="200"></canvas>
                 </div>
 
-                <!-- Comparison section -->
-                <div id="comparisonContainer" style="display: none;">
-                    <h3>Investment Comparison</h3>
-                    <div class="comparison-grid">
-                        <div class="comparison-item">
-                            <h4>Property Investment</h4>
-                            <p id="propertyReturn">-</p>
-                        </div>
-                        <div class="comparison-item">
-                            <h4>High Yield Savings (4.5%)</h4>
-                            <p id="savingsReturn">-</p>
-                        </div>
-                        <div class="comparison-item">
-                            <h4>ASX200 Index (8%)</h4>
-                            <p id="asxReturn">-</p>
-                        </div>
-                    </div>
-                </div>
             </section>
         </main>
     </div>

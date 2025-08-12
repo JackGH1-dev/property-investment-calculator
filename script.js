@@ -22,12 +22,20 @@ class PropertyCalculator {
         document.getElementById('purchasePrice').addEventListener('input', () => this.updateLoanCalculations());
         document.getElementById('deposit').addEventListener('input', () => this.updateLoanCalculations());
         
+        // Auto-calculate total upfront costs
+        document.getElementById('stampDuty').addEventListener('input', () => this.updateUpfrontCosts());
+        document.getElementById('legalFees').addEventListener('input', () => this.updateUpfrontCosts());
+        document.getElementById('buildingInspection').addEventListener('input', () => this.updateUpfrontCosts());
+        document.getElementById('loanFees').addEventListener('input', () => this.updateUpfrontCosts());
+        document.getElementById('otherUpfrontCosts').addEventListener('input', () => this.updateUpfrontCosts());
+        
         // Auto-calculate repayments when loan details change
         document.getElementById('interestRate').addEventListener('input', () => this.updateRepaymentCalculations());
         document.getElementById('repaymentType').addEventListener('change', () => this.updateRepaymentCalculations());
         document.getElementById('loanTerm').addEventListener('input', () => this.updateRepaymentCalculations());
         
         // Initialize calculations
+        this.updateUpfrontCosts();
         this.updateLoanCalculations();
     }
 
@@ -43,6 +51,12 @@ class PropertyCalculator {
             councilRates: parseFloat(document.getElementById('councilRates').value) || 0,
             propertyManagement: parseFloat(document.getElementById('propertyManagement').value) || 7,
             otherExpenses: parseFloat(document.getElementById('otherExpenses').value) || 0,
+            stampDuty: parseFloat(document.getElementById('stampDuty').value) || 0,
+            legalFees: parseFloat(document.getElementById('legalFees').value) || 0,
+            buildingInspection: parseFloat(document.getElementById('buildingInspection').value) || 0,
+            loanFees: parseFloat(document.getElementById('loanFees').value) || 0,
+            otherUpfrontCosts: parseFloat(document.getElementById('otherUpfrontCosts').value) || 0,
+            totalUpfrontCosts: parseFloat(document.getElementById('totalUpfrontCosts').value) || 0,
             loanAmount: parseFloat(document.getElementById('loanAmount').value) || 0,
             interestRate: parseFloat(document.getElementById('interestRate').value) || 6.5,
             repaymentType: document.getElementById('repaymentType').value,
@@ -50,6 +64,17 @@ class PropertyCalculator {
             propertyGrowth: parseFloat(document.getElementById('propertyGrowth').value) || 6,
             rentalGrowth: parseFloat(document.getElementById('rentalGrowth').value) || 3
         };
+    }
+
+    updateUpfrontCosts() {
+        const stampDuty = parseFloat(document.getElementById('stampDuty').value) || 0;
+        const legalFees = parseFloat(document.getElementById('legalFees').value) || 0;
+        const buildingInspection = parseFloat(document.getElementById('buildingInspection').value) || 0;
+        const loanFees = parseFloat(document.getElementById('loanFees').value) || 0;
+        const otherUpfrontCosts = parseFloat(document.getElementById('otherUpfrontCosts').value) || 0;
+        
+        const totalUpfrontCosts = stampDuty + legalFees + buildingInspection + loanFees + otherUpfrontCosts;
+        document.getElementById('totalUpfrontCosts').value = totalUpfrontCosts;
     }
 
     updateLoanCalculations() {
@@ -195,12 +220,23 @@ class PropertyCalculator {
         // Calculate summary statistics
         const finalYear = projections[projections.length - 1];
         const totalCashFlow = finalYear.cumulativeCashFlow;
-        const totalReturn = finalYear.equity + totalCashFlow - data.deposit;
-        const annualizedReturn = Math.pow((finalYear.equity + totalCashFlow) / data.deposit, 1/30) - 1;
+        const totalInitialInvestment = data.deposit + data.totalUpfrontCosts;
+        const totalReturn = finalYear.equity + totalCashFlow - totalInitialInvestment;
+        const annualizedReturn = Math.pow((finalYear.equity + totalCashFlow) / totalInitialInvestment, 1/30) - 1;
         
         // Generate results HTML
         const monthlyRepayment = parseFloat(document.getElementById('monthlyRepayment').value);
         const resultsHTML = `
+            <div class="investment-summary">
+                <h4>Investment Summary</h4>
+                <div class="investment-details">
+                    <p><strong>Purchase Price:</strong> $${this.formatMoney(data.purchasePrice)}</p>
+                    <p><strong>Deposit:</strong> $${this.formatMoney(data.deposit)}</p>
+                    <p><strong>Upfront Costs:</strong> $${this.formatMoney(data.totalUpfrontCosts)}</p>
+                    <p><strong>Total Initial Investment:</strong> $${this.formatMoney(data.deposit + data.totalUpfrontCosts)}</p>
+                </div>
+            </div>
+            
             <div class="mortgage-summary">
                 <h4>Mortgage Summary</h4>
                 <div class="mortgage-details">
@@ -274,13 +310,11 @@ class PropertyCalculator {
         // Create charts
         this.createCharts(projections);
         
-        // Show comparison in both places
-        this.showComparison(data, totalReturn, annualizedReturn);
+        // Show left panel comparison
         this.showLeftComparison(data, totalReturn, annualizedReturn);
         
         // Show results sections
         this.chartsContainer.style.display = 'block';
-        this.comparisonContainer.style.display = 'block';
         document.getElementById('leftComparisonContainer').style.display = 'block';
     }
 
@@ -363,25 +397,9 @@ class PropertyCalculator {
         });
     }
 
-    showComparison(data, propertyReturn, propertyAnnualizedReturn) {
-        const initialInvestment = data.deposit;
-        
-        // High yield savings (4.5% p.a.)
-        const savingsReturn = initialInvestment * Math.pow(1.045, 30) - initialInvestment;
-        
-        // ASX200 (8% p.a.)
-        const asxReturn = initialInvestment * Math.pow(1.08, 30) - initialInvestment;
-        
-        document.getElementById('propertyReturn').textContent = 
-            `$${this.formatMoney(propertyReturn)} (${(propertyAnnualizedReturn * 100).toFixed(1)}%)`;
-        document.getElementById('savingsReturn').textContent = 
-            `$${this.formatMoney(savingsReturn)} (4.5%)`;
-        document.getElementById('asxReturn').textContent = 
-            `$${this.formatMoney(asxReturn)} (8.0%)`;
-    }
 
     showLeftComparison(data, propertyReturn, propertyAnnualizedReturn) {
-        const initialInvestment = data.deposit;
+        const initialInvestment = data.deposit + data.totalUpfrontCosts;
         
         // High yield savings (4.5% p.a.)
         const savingsReturn = initialInvestment * Math.pow(1.045, 30) - initialInvestment;

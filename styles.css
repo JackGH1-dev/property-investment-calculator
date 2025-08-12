@@ -137,6 +137,7 @@ header p {
     font-size: 1.1rem;
 }
 
+.investment-summary,
 .mortgage-summary {
     background: linear-gradient(135deg, #e8f4f8 0%, #d4e7ed 100%);
     padding: 20px;
@@ -145,17 +146,29 @@ header p {
     border-left: 4px solid #667eea;
 }
 
+.investment-summary {
+    border-left: 4px solid #28a745;
+    background: linear-gradient(135deg, #e8f5e8 0%, #d4edd4 100%);
+}
+
+.investment-summary h4,
 .mortgage-summary h4 {
     color: #667eea;
     margin-bottom: 15px;
     font-size: 1.1rem;
 }
 
+.investment-summary h4 {
+    color: #28a745;
+}
+
+.investment-details p,
 .mortgage-details p {
     margin: 8px 0;
     color: #555;
 }
 
+.investment-details strong,
 .mortgage-details strong {
     color: #333;
 }
