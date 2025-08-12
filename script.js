@@ -17,6 +17,18 @@ class PropertyCalculator {
             e.preventDefault();
             this.calculateInvestment();
         });
+
+        // Auto-calculate loan amount when purchase price or deposit changes
+        document.getElementById('purchasePrice').addEventListener('input', () => this.updateLoanCalculations());
+        document.getElementById('deposit').addEventListener('input', () => this.updateLoanCalculations());
+        
+        // Auto-calculate repayments when loan details change
+        document.getElementById('interestRate').addEventListener('input', () => this.updateRepaymentCalculations());
+        document.getElementById('repaymentType').addEventListener('change', () => this.updateRepaymentCalculations());
+        document.getElementById('loanTerm').addEventListener('input', () => this.updateRepaymentCalculations());
+        
+        // Initialize calculations
+        this.updateLoanCalculations();
     }
 
     getFormData() {
@@ -31,9 +43,50 @@ class PropertyCalculator {
             councilRates: parseFloat(document.getElementById('councilRates').value) || 0,
             propertyManagement: parseFloat(document.getElementById('propertyManagement').value) || 7,
             otherExpenses: parseFloat(document.getElementById('otherExpenses').value) || 0,
+            loanAmount: parseFloat(document.getElementById('loanAmount').value) || 0,
+            interestRate: parseFloat(document.getElementById('interestRate').value) || 6.5,
+            repaymentType: document.getElementById('repaymentType').value,
+            loanTerm: parseInt(document.getElementById('loanTerm').value) || 30,
             propertyGrowth: parseFloat(document.getElementById('propertyGrowth').value) || 6,
             rentalGrowth: parseFloat(document.getElementById('rentalGrowth').value) || 3
         };
+    }
+
+    updateLoanCalculations() {
+        const purchasePrice = parseFloat(document.getElementById('purchasePrice').value) || 0;
+        const deposit = parseFloat(document.getElementById('deposit').value) || 0;
+        const loanAmount = Math.max(0, purchasePrice - deposit);
+        
+        document.getElementById('loanAmount').value = loanAmount;
+        this.updateRepaymentCalculations();
+    }
+
+    updateRepaymentCalculations() {
+        const loanAmount = parseFloat(document.getElementById('loanAmount').value) || 0;
+        const interestRate = parseFloat(document.getElementById('interestRate').value) || 6.5;
+        const repaymentType = document.getElementById('repaymentType').value;
+        const loanTerm = parseInt(document.getElementById('loanTerm').value) || 30;
+
+        if (loanAmount <= 0) {
+            document.getElementById('monthlyRepayment').value = 0;
+            document.getElementById('weeklyRepayment').value = 0;
+            return;
+        }
+
+        let monthlyRepayment;
+        
+        if (repaymentType === 'interest-only') {
+            // Interest only calculation
+            monthlyRepayment = (loanAmount * (interestRate / 100)) / 12;
+        } else {
+            // Principal & Interest calculation
+            monthlyRepayment = this.calculateMonthlyPayment(loanAmount, interestRate / 100, loanTerm);
+        }
+
+        const weeklyRepayment = (monthlyRepayment * 12) / 52;
+
+        document.getElementById('monthlyRepayment').value = Math.round(monthlyRepayment);
+        document.getElementById('weeklyRepayment').value = Math.round(weeklyRepayment);
     }
 
     calculateInvestment() {
@@ -57,9 +110,15 @@ class PropertyCalculator {
         let currentRentalIncome = data.rentalIncome * 52; // Convert weekly to annual
         
         // Calculate loan details
-        const loanAmount = data.purchasePrice - data.deposit;
-        const interestRate = 0.06; // Assume 6% interest rate
-        const monthlyPayment = this.calculateMonthlyPayment(loanAmount, interestRate, 30);
+        const loanAmount = data.loanAmount;
+        const interestRate = data.interestRate / 100;
+        
+        let monthlyPayment;
+        if (data.repaymentType === 'interest-only') {
+            monthlyPayment = (loanAmount * interestRate) / 12;
+        } else {
+            monthlyPayment = this.calculateMonthlyPayment(loanAmount, interestRate, data.loanTerm);
+        }
         const annualLoanPayment = monthlyPayment * 12;
         
         for (let year = 0; year < years; year++) {
@@ -72,7 +131,12 @@ class PropertyCalculator {
             const netCashFlow = currentRentalIncome - totalExpenses;
             
             // Calculate remaining loan balance
-            const remainingBalance = this.calculateRemainingBalance(loanAmount, interestRate, year + 1, 30);
+            let remainingBalance;
+            if (data.repaymentType === 'interest-only') {
+                remainingBalance = loanAmount; // Balance remains constant for interest-only
+            } else {
+                remainingBalance = this.calculateRemainingBalance(loanAmount, interestRate, year + 1, data.loanTerm);
+            }
             
             // Calculate equity
             const equity = currentPropertyValue - remainingBalance;
@@ -135,7 +199,19 @@ class PropertyCalculator {
         const annualizedReturn = Math.pow((finalYear.equity + totalCashFlow) / data.deposit, 1/30) - 1;
         
         // Generate results HTML
+        const monthlyRepayment = parseFloat(document.getElementById('monthlyRepayment').value);
         const resultsHTML = `
+            <div class="mortgage-summary">
+                <h4>Mortgage Summary</h4>
+                <div class="mortgage-details">
+                    <p><strong>Loan Amount:</strong> $${this.formatMoney(data.loanAmount)}</p>
+                    <p><strong>Interest Rate:</strong> ${data.interestRate}% p.a.</p>
+                    <p><strong>Loan Term:</strong> ${data.loanTerm} years</p>
+                    <p><strong>Repayment Type:</strong> ${data.repaymentType === 'interest-only' ? 'Interest Only' : 'Principal & Interest'}</p>
+                    <p><strong>Monthly Repayment:</strong> $${this.formatMoney(monthlyRepayment)}</p>
+                </div>
+            </div>
+            
             <div class="summary-cards">
                 <div class="summary-card ${totalReturn > 0 ? 'positive' : 'negative'}">
                     <h3>Total Return</h3>
