@@ -30,6 +30,7 @@ class PropertyCalculator {
 
         // Add special handling for state and first home buyer changes
         const selectFields = ['state', 'isFirstHomeBuyer', 'repaymentType'];
+        const checkboxFields = ['applyLMI'];
 
         // Add live calculation listeners to all input fields
         inputFields.forEach(fieldId => {
@@ -50,6 +51,19 @@ class PropertyCalculator {
                     }
                     if (fieldId === 'repaymentType') {
                         this.updateRepaymentCalculations();
+                    }
+                    this.debouncedCalculation();
+                });
+            }
+        });
+
+        // Add listeners to checkbox fields
+        checkboxFields.forEach(fieldId => {
+            const element = document.getElementById(fieldId);
+            if (element) {
+                element.addEventListener('change', () => {
+                    if (fieldId === 'applyLMI') {
+                        this.calculateLMI();
                     }
                     this.debouncedCalculation();
                 });
@@ -120,6 +134,7 @@ class PropertyCalculator {
             address: document.getElementById('address').value,
             state: document.getElementById('state').value,
             isFirstHomeBuyer: document.getElementById('isFirstHomeBuyer').value === 'true',
+            applyLMI: document.getElementById('applyLMI').checked,
             purchasePrice: parseFloat(document.getElementById('purchasePrice').value),
             deposit: parseFloat(document.getElementById('deposit').value),
             rentalIncome: parseFloat(document.getElementById('rentalIncome').value),
@@ -414,7 +429,15 @@ class PropertyCalculator {
     calculateLMI() {
         const purchasePrice = parseFloat(document.getElementById('purchasePrice').value) || 0;
         const deposit = parseFloat(document.getElementById('deposit').value) || 0;
+        const applyLMI = document.getElementById('applyLMI').checked;
         const loanAmount = purchasePrice - deposit;
+        
+        // If LMI checkbox is unchecked, set LMI to 0
+        if (!applyLMI) {
+            document.getElementById('lmi').value = 0;
+            this.updateUpfrontCosts();
+            return;
+        }
         
         if (!purchasePrice || !deposit || loanAmount <= 0) {
             document.getElementById('lmi').value = 0;
