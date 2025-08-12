@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Australia Investment Property Calculator</title>
+    <title>Australian Investment Property Calculator</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div class="container">
         <header>
-            <h1>🏠 Australia Investment Property Calculator</h1>
+            <h1>🏠 Australian Investment Property Calculator</h1>
             <p>Forecast your investment property performance over 30 years</p>
         </header>
 
@@ -20,7 +20,32 @@
                 <form id="propertyForm">
                     <div class="form-group">
                         <label for="address">Property Address</label>
-                        <input type="text" id="address" placeholder="e.g., 123 Collins Street, Melbourne VIC 3000" required>
+                        <input type="text" id="address" placeholder="Start typing an Australian address..." required>
+                        <small id="addressHelp" style="color: #666; font-size: 0.85rem;">Address autocomplete will detect your state for stamp duty calculation</small>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="state">State/Territory</label>
+                            <select id="state">
+                                <option value="">Select or auto-detected</option>
+                                <option value="NSW">NSW</option>
+                                <option value="VIC">VIC</option>
+                                <option value="QLD">QLD</option>
+                                <option value="SA">SA</option>
+                                <option value="WA">WA</option>
+                                <option value="TAS">TAS</option>
+                                <option value="NT">NT</option>
+                                <option value="ACT">ACT</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="isFirstHomeBuyer">First Home Buyer</label>
+                            <select id="isFirstHomeBuyer">
+                                <option value="false">No</option>
+                                <option value="true">Yes</option>
+                            </select>
+                        </div>
                     </div>
 
                     <div class="form-row">
@@ -49,11 +74,24 @@
                     <div class="form-row">
                         <div class="form-group">
                             <label for="stampDuty">Stamp Duty ($)</label>
-                            <input type="number" id="stampDuty" placeholder="30000">
+                            <input type="number" id="stampDuty" placeholder="Auto-calculated" readonly>
+                            <small style="color: #667eea; font-size: 0.8rem;">Calculated based on property price and state</small>
                         </div>
+                        <div class="form-group">
+                            <label for="lmi">Lenders Mortgage Insurance ($)</label>
+                            <input type="number" id="lmi" placeholder="Auto-calculated" readonly>
+                            <small style="color: #667eea; font-size: 0.8rem;">Applied when deposit < 20%</small>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
                         <div class="form-group">
                             <label for="legalFees">Legal/Conveyancing Fees ($)</label>
                             <input type="number" id="legalFees" placeholder="2000">
+                        </div>
+                        <div class="form-group">
+                            <label for="buildingInspection">Building & Pest Inspection ($)</label>
+                            <input type="number" id="buildingInspection" placeholder="800">
                         </div>
                     </div>
 
@@ -201,7 +239,32 @@
         </main>
     </div>
 
+    <script src="config.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Load Google Places API dynamically with API key
+        function loadGooglePlacesAPI() {
+            if (window.CONFIG && window.CONFIG.GOOGLE_PLACES_API_KEY !== 'YOUR_API_KEY_HERE') {
+                const script = document.createElement('script');
+                script.src = `https://maps.googleapis.com/maps/api/js?key=${window.CONFIG.GOOGLE_PLACES_API_KEY}&libraries=places&callback=initGooglePlaces`;
+                script.async = true;
+                script.defer = true;
+                document.head.appendChild(script);
+            } else {
+                console.warn('Please add your Google Places API key to config.js');
+            }
+        }
+        
+        // Initialize Google Places when API loads
+        function initGooglePlaces() {
+            if (window.propertyCalculator) {
+                window.propertyCalculator.initGooglePlaces();
+            }
+        }
+        
+        // Load API after DOM is ready
+        document.addEventListener('DOMContentLoaded', loadGooglePlacesAPI);
+    </script>
     <script src="script.js"></script>
 </body>
 </html>
