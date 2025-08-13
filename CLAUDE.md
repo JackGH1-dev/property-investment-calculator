@@ -1,4 +1,4 @@
-# CLAUDE.md - Australian Property Investment Calculator
+# CLAUDE.md - InvestQuest: Australian Property Investment Calculator
 
 ## Project Overview
 
