@@ -319,34 +319,7 @@ class PropertyCalculator {
 
         const addressInput = document.getElementById('address');
         
-        // Use the new PlaceAutocompleteElement (future-proof)
-        if (window.google.maps.places.PlaceAutocompleteElement) {
-            this.setupNewAutocomplete(addressInput);
-        } else {
-            // Fallback to old Autocomplete for compatibility
-            this.setupLegacyAutocomplete(addressInput);
-        }
-    }
-
-    setupNewAutocomplete(addressInput) {
-        // New Google Places API approach
-        const autocomplete = new google.maps.places.PlaceAutocompleteElement({
-            componentRestrictions: { country: 'au' },
-            types: ['address']
-        });
-        
-        autocomplete.addEventListener('gmp-placeselect', (event) => {
-            const place = event.detail.place;
-            this.extractStateFromPlace(place);
-        });
-        
-        // Replace the input with the new element
-        addressInput.parentNode.replaceChild(autocomplete, addressInput);
-        this.autocomplete = autocomplete;
-    }
-
-    setupLegacyAutocomplete(addressInput) {
-        // Legacy approach (current working method)
+        // Use legacy Autocomplete for consistent styling
         this.autocomplete = new google.maps.places.Autocomplete(addressInput, {
             componentRestrictions: { country: 'au' },
             types: ['address']
