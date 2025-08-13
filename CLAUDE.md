@@ -237,6 +237,25 @@ The tool serves both professionals who can use it to educate and retain clients,
   - Early property sale calculations
   - Refinancing impact analysis
 
+### v4.0.0 - Themes & Internationalization (Concept Ideas)
+**Priority: Future Concept - UX Enhancement & Global Reach**
+- **Theme System**
+  - Light/Dark mode toggle
+  - **Retro Gaming Theme**: Chrono Cross inspired design with blocky character aesthetics
+    - Pixel-art style UI components
+    - Retro color palettes and fonts
+    - Game-like animations and transitions
+    - Character avatars for different user types (broker, investor, etc.)
+  - Custom theme builder for brokers (brand colors, logos)
+  - Theme persistence and user preferences
+- **Multi-Language Support**
+  - Complete website translation system
+  - Currency conversion and localization
+  - Market-specific assumptions per country/region
+  - Right-to-left language support
+  - Dynamic language switching without page reload
+  - Professional translation for mortgage/finance terminology
+
 ## Technical Implementation Notes
 
 ### Feature 1: Address Autocomplete + Stamp Duty
@@ -309,6 +328,84 @@ import { getAuth, GoogleAuthProvider } from 'firebase/auth';
 - Chart.js for advanced visualizations
 - Real-time data synchronization
 - Mobile-responsive dashboard design
+
+### Feature 7: Theme System (v4.0.0 Concepts)
+**Technical Implementation:**
+```javascript
+// CSS Custom Properties for dynamic theming
+:root {
+  --primary-color: #667eea;
+  --bg-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  --text-color: #333;
+}
+
+[data-theme="dark"] {
+  --primary-color: #4f46e5;
+  --bg-gradient: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+  --text-color: #e5e7eb;
+}
+
+[data-theme="retro"] {
+  --primary-color: #ff6b35;
+  --bg-gradient: linear-gradient(135deg, #2d1b69 0%, #11213e 100%);
+  --font-family: 'Press Start 2P', monospace;
+}
+```
+
+**Retro Gaming Theme Features:**
+- Pixel-perfect 8-bit/16-bit UI components
+- CSS animations mimicking classic RPG interfaces
+- Sprite-based character avatars
+- Chiptune-inspired hover sounds (optional)
+- Scanline effects and CRT monitor simulation
+- Progress bars styled like health/mana bars
+
+### Feature 8: Internationalization (v4.0.0 Concepts)  
+**Technical Stack:**
+```javascript
+// i18next for translation management
+import i18n from 'i18next';
+import Backend from 'i18next-http-backend';
+
+// Currency and number formatting
+const formatCurrency = (amount, locale, currency) => {
+  return new Intl.NumberFormat(locale, {
+    style: 'currency',
+    currency: currency
+  }).format(amount);
+};
+
+// Market-specific calculations
+const getMarketDefaults = (country) => {
+  const markets = {
+    'AU': { propertyGrowth: 6, rentalGrowth: 3, currency: 'AUD' },
+    'US': { propertyGrowth: 4, rentalGrowth: 2.5, currency: 'USD' },
+    'UK': { propertyGrowth: 5, rentalGrowth: 2.8, currency: 'GBP' }
+  };
+  return markets[country] || markets['AU'];
+};
+```
+
+**Translation Structure:**
+```json
+{
+  "common": {
+    "calculate": "Calculate",
+    "currency": "AUD",
+    "deposit": "Deposit"
+  },
+  "calculator": {
+    "title": "Australian Investment Property Calculator",
+    "propertyDetails": "Property Details",
+    "mortgageDetails": "Mortgage Details"
+  },
+  "financial": {
+    "stampDuty": "Stamp Duty",
+    "lmi": "Lenders Mortgage Insurance",
+    "cashFlow": "Cash Flow"
+  }
+}
+```
 
 ## Business Impact Analysis
 

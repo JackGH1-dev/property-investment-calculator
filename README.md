@@ -1,6 +1,6 @@
-# 🏠 Australian Property Investment Calculator
+# 🎯 WealthQuest - Australian Property Investment Calculator
 
-A professional web-based calculator that forecasts property investment performance over 30 years, designed for mortgage brokers and investors in the Australian market.
+Your journey to financial freedom starts here. WealthQuest is a professional web-based platform that forecasts property investment performance over 30 years, designed for mortgage brokers and investors in the Australian market.
 
 ## Features
 
@@ -35,7 +35,7 @@ Built with vanilla HTML, CSS, and JavaScript using Chart.js for visualizations. 
 
 ## Live Demo
 
-[View Live Calculator](https://your-username.github.io/property-investment-calculator)
+[Launch WealthQuest.app](https://wealthquest.app) (Coming Soon)
 
 ## Getting Started
 
