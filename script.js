@@ -199,17 +199,22 @@ class PropertyCalculator {
     }
 
     getFormData() {
-        // Handle the flexible deposit/loan input
+        // Handle the flexible deposit/loan input including 100%+ financing
         const purchasePrice = parseFloat(document.getElementById('purchasePrice').value) || 0;
         const inputValue = parseFloat(document.getElementById('deposit').value) || 0;
         const selectedMode = document.querySelector('input[name="inputType"]:checked').value;
         
-        let deposit;
+        let deposit, actualLoanAmount;
         if (selectedMode === 'deposit') {
             deposit = inputValue;
+            actualLoanAmount = purchasePrice - deposit;
         } else {
-            deposit = Math.max(0, purchasePrice - inputValue);
+            actualLoanAmount = inputValue;
+            deposit = purchasePrice - actualLoanAmount;
         }
+        
+        // For calculations, use effective deposit (minimum 0) but allow actual loan amount
+        const effectiveDeposit = Math.max(0, deposit);
         
         return {
             address: document.getElementById('address').value,
@@ -217,7 +222,8 @@ class PropertyCalculator {
             isFirstHomeBuyer: document.getElementById('isFirstHomeBuyer').value === 'true',
             applyLMI: document.getElementById('applyLMI').checked,
             purchasePrice: purchasePrice,
-            deposit: deposit,
+            deposit: effectiveDeposit,
+            actualLoanAmount: Math.max(0, actualLoanAmount),
             rentalIncome: parseFloat(document.getElementById('rentalIncome').value),
             purchaseYear: parseInt(document.getElementById('purchaseYear').value),
             insurance: parseFloat(document.getElementById('insurance').value) || 1500,
@@ -261,22 +267,24 @@ class PropertyCalculator {
         let deposit, loanAmount;
         
         if (selectedMode === 'deposit') {
-            // User entered deposit amount
+            // User entered deposit amount (can be negative for 100%+ financing)
             deposit = inputValue;
-            loanAmount = Math.max(0, purchasePrice - deposit);
-            document.getElementById('calculatedAmount').value = loanAmount;
+            loanAmount = purchasePrice - deposit;
+            document.getElementById('calculatedAmount').value = Math.max(0, loanAmount);
         } else {
-            // User entered loan amount
+            // User entered loan amount (can exceed purchase price)
             loanAmount = inputValue;
-            deposit = Math.max(0, purchasePrice - loanAmount);
-            document.getElementById('calculatedAmount').value = deposit;
+            deposit = purchasePrice - loanAmount;
+            // Show negative deposit as $0 in display, but keep actual value for calculations
+            document.getElementById('calculatedAmount').value = Math.max(0, deposit);
         }
         
         // Update the main loan amount field used by other calculations
-        document.getElementById('loanAmount').value = loanAmount;
+        document.getElementById('loanAmount').value = Math.max(0, loanAmount);
         
-        // Calculate LMI and Stamp Duty (using actual deposit for LMI calculation)
-        this.calculateLMIWithValues(purchasePrice, deposit);
+        // Calculate LMI and Stamp Duty (using effective deposit for LMI calculation)
+        const effectiveDeposit = Math.max(0, deposit);
+        this.calculateLMIWithValues(purchasePrice, effectiveDeposit);
         this.calculateStampDuty();
         
         this.updateRepaymentCalculations();
@@ -580,8 +588,8 @@ class PropertyCalculator {
     calculateInvestment() {
         const data = this.getFormData();
         
-        // Skip if missing required data
-        if (!data.purchasePrice || !data.deposit || !data.rentalIncome) {
+        // Skip if missing required data (deposit can be 0 for 100%+ financing)
+        if (!data.purchasePrice || !data.rentalIncome || (!data.actualLoanAmount && !data.loanAmount)) {
             this.showWelcomeMessage();
             return;
         }
@@ -606,8 +614,8 @@ class PropertyCalculator {
         let currentPropertyValue = data.purchasePrice;
         let currentRentalIncome = data.rentalIncome * 52; // Convert weekly to annual
         
-        // Calculate loan details
-        const loanAmount = data.loanAmount;
+        // Calculate loan details - use actual loan amount for 100%+ financing
+        const loanAmount = data.actualLoanAmount || data.loanAmount;
         const interestRate = data.interestRate / 100;
         
         let monthlyPayment;
