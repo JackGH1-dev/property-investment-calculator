@@ -116,8 +116,9 @@ header p {
     font-size: 1.25rem;
     font-weight: 400;
     opacity: 0.95;
-    max-width: 600px;
+    max-width: 800px;
     margin: 0 auto;
+    white-space: nowrap;
 }
 
 /* Tool Explanation Section */
@@ -892,7 +893,8 @@ header p {
     }
     
     header p {
-        font-size: 1.125rem;
+        font-size: 1rem;
+        white-space: normal;
     }
     
     .input-panel, .results-panel {
@@ -951,7 +953,8 @@ header p {
     }
     
     header p {
-        font-size: 1rem;
+        font-size: 0.9rem;
+        white-space: normal;
     }
     
     .input-panel, .results-panel {
