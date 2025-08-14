@@ -5,6 +5,7 @@
       "Bash(git push:*)"
     ],
     "deny": [],
-    "ask": []
+    "ask": [],
+    "defaultMode": "acceptEdits"
   }
 }
