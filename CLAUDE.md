@@ -152,22 +152,22 @@ The tool serves both professionals who can use it to educate and retain clients,
 **Recommendation**: Start with Domain API's free tier, upgrade later as needed.
 
 ## Version History
+- **v1.1.0** (2025-01-14): Major UX enhancement and professional design release
 - **v1.0.0** (2025-01-12): Initial release with all core functionality
 
 ## Future Feature Roadmap
 
-### v1.1.0 - Enhanced Calculations (Next Minor Release)
+### v1.2.0 - Enhanced Calculations (Next Minor Release)
 **Priority: High - Quick wins for mortgage brokers**
-- **Australian Address Autocomplete** 
-  - Google Places API integration for property address validation
-  - State detection for stamp duty calculations
-- **State-Based Stamp Duty Calculator**
-  - Automated calculation based on property location and price
-  - Support for NSW, VIC, QLD, SA, WA, TAS, NT, ACT rates
-  - First home buyer concessions where applicable
-- **LMI Calculator** (Lenders Mortgage Insurance)
-  - Calculate LMI when deposit < 20%
-  - Include in upfront costs automatically
+- **Enhanced Property Data Integration**
+  - Advanced suburb analytics and market trends
+  - Historical growth data display
+  - Comparable property analysis
+- **Advanced Tax Calculations**
+  - Negative gearing benefits calculation
+  - Capital gains tax scenarios
+  - Depreciation schedules
+  - Tax-effective investment strategies
 
 ### v1.2.0 - Property Data Integration
 **Priority: High - Automation and accuracy**
