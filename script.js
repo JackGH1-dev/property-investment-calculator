@@ -793,9 +793,13 @@ class PropertyCalculator {
         // Show left panel comparison
         this.showLeftComparison(data, totalReturn, annualizedReturn);
         
+        // Generate and show insights
+        this.showInvestmentInsights(data, projections, totalReturn, annualizedReturn);
+        
         // Show results sections
         this.chartsContainer.style.display = 'block';
         document.getElementById('leftComparisonContainer').style.display = 'block';
+        document.getElementById('insightsContainer').style.display = 'block';
     }
 
     createCharts(projections) {
@@ -903,6 +907,168 @@ class PropertyCalculator {
             minimumFractionDigits: 0,
             maximumFractionDigits: 0
         }).format(amount);
+    }
+
+    showInvestmentInsights(data, projections, totalReturn, annualizedReturn) {
+        const insights = this.generateInvestmentInsights(data, projections, totalReturn, annualizedReturn);
+        
+        const insightsHTML = insights.map(insight => `
+            <div class="insight-item ${insight.type}">
+                <span class="insight-icon">${insight.icon}</span>
+                <span class="insight-text">${insight.message}</span>
+            </div>
+        `).join('');
+        
+        document.getElementById('insightsContent').innerHTML = insightsHTML;
+    }
+
+    generateInvestmentInsights(data, projections, totalReturn, annualizedReturn) {
+        const insights = [];
+        const finalYear = projections[projections.length - 1];
+        const initialInvestment = data.deposit + data.totalUpfrontCosts;
+        const loanToValueRatio = (data.actualLoanAmount / data.purchasePrice) * 100;
+        const rentalYield = (data.rentalIncome * 52 / data.purchasePrice) * 100;
+        const firstYearCashFlow = projections[0].netCashFlow;
+        const breakEvenYear = projections.findIndex(p => p.cumulativeCashFlow > 0);
+        
+        // High yield savings comparison
+        const savingsReturn = initialInvestment * Math.pow(1.045, 30) - initialInvestment;
+        const asxReturn = initialInvestment * Math.pow(1.08, 30) - initialInvestment;
+        
+        // 1. Investment Performance vs Alternatives
+        if (totalReturn > asxReturn) {
+            insights.push({
+                type: 'positive',
+                icon: '🏆',
+                message: `<strong>Excellent Performance!</strong> This property investment outperforms the ASX200 by $${this.formatMoney(totalReturn - asxReturn)} over 30 years. Property investing can provide superior returns when done right.`
+            });
+        } else if (totalReturn > savingsReturn) {
+            insights.push({
+                type: 'info',
+                icon: '📈',
+                message: `<strong>Good Investment:</strong> This property beats high-yield savings by $${this.formatMoney(totalReturn - savingsReturn)} but underperforms ASX200 by $${this.formatMoney(asxReturn - totalReturn)}. Consider if you prefer property's stability over share market volatility.`
+            });
+        } else {
+            insights.push({
+                type: 'warning',
+                icon: '⚠️',
+                message: `<strong>Consider Alternatives:</strong> This investment underperforms both ASX200 ($${this.formatMoney(asxReturn - totalReturn)} difference) and high-yield savings ($${this.formatMoney(savingsReturn - totalReturn)} difference). Look for better properties or reconsider your assumptions.`
+            });
+        }
+
+        // 2. Cash Flow Analysis
+        if (firstYearCashFlow >= 0) {
+            insights.push({
+                type: 'positive',
+                icon: '💰',
+                message: `<strong>Positive Cash Flow:</strong> This property generates $${this.formatMoney(firstYearCashFlow)} positive cash flow in year one. You'll receive money each year instead of paying out of pocket.`
+            });
+        } else {
+            const weeklyOutOfPocket = Math.abs(firstYearCashFlow) / 52;
+            if (weeklyOutOfPocket > 200) {
+                insights.push({
+                    type: 'negative',
+                    icon: '💸',
+                    message: `<strong>High Negative Cash Flow:</strong> You'll pay $${Math.round(weeklyOutOfPocket)} per week ($${this.formatMoney(Math.abs(firstYearCashFlow))} annually) out of pocket. Ensure this fits your budget comfortably.`
+                });
+            } else {
+                insights.push({
+                    type: 'warning',
+                    icon: '💳',
+                    message: `<strong>Manageable Negative Cash Flow:</strong> You'll contribute $${Math.round(weeklyOutOfPocket)} per week out of pocket. This is reasonable for building long-term wealth.`
+                });
+            }
+        }
+
+        // 3. Break-even Analysis
+        if (breakEvenYear > 0 && breakEvenYear < 30) {
+            insights.push({
+                type: 'info',
+                icon: '⚖️',
+                message: `<strong>Cash Flow Break-Even:</strong> Your cumulative cash flow turns positive in year ${breakEvenYear + 1}. After this point, all previous negative cash flow is recovered and you start seeing net positive returns.`
+            });
+        }
+
+        // 4. LVR and Risk Assessment
+        if (loanToValueRatio > 95) {
+            insights.push({
+                type: 'warning',
+                icon: '⚠️',
+                message: `<strong>Very High Leverage (${loanToValueRatio.toFixed(1)}% LVR):</strong> You're borrowing ${loanToValueRatio > 100 ? 'more than the property value' : 'with minimal deposit'}. This maximizes returns but significantly increases risk if property values fall.`
+            });
+        } else if (loanToValueRatio > 80) {
+            insights.push({
+                type: 'info',
+                icon: '📊',
+                message: `<strong>High Leverage (${loanToValueRatio.toFixed(1)}% LVR):</strong> Good balance of leverage for growth while maintaining manageable risk. Consider the LMI cost in your decision.`
+            });
+        } else {
+            insights.push({
+                type: 'positive',
+                icon: '🛡️',
+                message: `<strong>Conservative Leverage (${loanToValueRatio.toFixed(1)}% LVR):</strong> Lower risk approach with substantial equity buffer. You avoid LMI and have protection against market downturns.`
+            });
+        }
+
+        // 5. Rental Yield Analysis
+        if (rentalYield > 6) {
+            insights.push({
+                type: 'positive',
+                icon: '🎯',
+                message: `<strong>Excellent Rental Yield (${rentalYield.toFixed(1)}%):</strong> High rental return relative to purchase price. This property generates strong income and improves cash flow.`
+            });
+        } else if (rentalYield > 4) {
+            insights.push({
+                type: 'info',
+                icon: '🏠',
+                message: `<strong>Moderate Rental Yield (${rentalYield.toFixed(1)}%):</strong> Reasonable rental return. Focus on capital growth potential and location quality for long-term success.`
+            });
+        } else {
+            insights.push({
+                type: 'warning',
+                icon: '📉',
+                message: `<strong>Low Rental Yield (${rentalYield.toFixed(1)}%):</strong> Rental income is low relative to property price. Ensure strong capital growth prospects justify the investment.`
+            });
+        }
+
+        // 6. Growth Rate Reality Check
+        if (data.propertyGrowth > 8) {
+            insights.push({
+                type: 'warning',
+                icon: '🔍',
+                message: `<strong>Aggressive Growth Assumptions:</strong> ${data.propertyGrowth}% annual property growth is higher than historical Australian averages (6-7%). Consider more conservative estimates for realistic planning.`
+            });
+        }
+
+        // 7. Final Equity and Wealth Creation
+        const finalEquityPercentage = ((finalYear.equity / initialInvestment) - 1) * 100;
+        if (finalEquityPercentage > 1000) {
+            insights.push({
+                type: 'positive',
+                icon: '🚀',
+                message: `<strong>Exceptional Wealth Creation:</strong> Your initial investment of $${this.formatMoney(initialInvestment)} grows to $${this.formatMoney(finalYear.equity)} in equity alone - a ${finalEquityPercentage.toFixed(0)}% increase over 30 years.`
+            });
+        }
+
+        // 8. Interest Rate Sensitivity Warning
+        if (data.repaymentType === 'interest-only') {
+            insights.push({
+                type: 'info',
+                icon: '💡',
+                message: `<strong>Interest-Only Strategy:</strong> You're maximizing cash flow with interest-only repayments. Remember you'll still owe the full loan amount after ${data.loanTerm} years unless you refinance or sell.`
+            });
+        }
+
+        // 9. Tax Considerations
+        if (firstYearCashFlow < 0) {
+            insights.push({
+                type: 'info',
+                icon: '📋',
+                message: `<strong>Tax Benefits Available:</strong> Negative gearing may provide tax deductions on your losses. Consult a tax professional to understand your specific benefits and obligations.`
+            });
+        }
+
+        return insights;
     }
 }
 

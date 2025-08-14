@@ -17,6 +17,54 @@
         <header>
             <h1>🎯 InvestQuest</h1>
             <p>Your journey to investment success starts here - forecast property performance over 30 years</p>
+            
+            <!-- Tool Explanation Section -->
+            <div class="tool-explanation">
+                <details class="how-it-works">
+                    <summary>🤔 How does this calculator help you make better investment decisions?</summary>
+                    <div class="explanation-content">
+                        <div class="explanation-grid">
+                            <div class="explanation-card">
+                                <h4>📊 30-Year Projections</h4>
+                                <p>See exactly how your property investment will perform over 3 decades, including cash flow, equity growth, and total returns.</p>
+                            </div>
+                            <div class="explanation-card">
+                                <h4>💰 Australian-Specific Calculations</h4>
+                                <p>Accurate stamp duty for all states, LMI calculations, and realistic Australian market growth assumptions.</p>
+                            </div>
+                            <div class="explanation-card">
+                                <h4>⚖️ Investment Comparison</h4>
+                                <p>Compare your property investment against high-yield savings accounts and ASX200 index funds to see which performs better.</p>
+                            </div>
+                            <div class="explanation-card">
+                                <h4>🏦 Flexible Financing Options</h4>
+                                <p>Supports all financing scenarios from traditional 20% deposits to 100%+ financing for sophisticated investors.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="explanation-steps">
+                            <h4>📋 How to Use This Tool:</h4>
+                            <ol>
+                                <li><strong>Enter Property Details:</strong> Start with address, purchase price, and rental income</li>
+                                <li><strong>Choose Your Financing:</strong> Enter either your deposit amount or desired loan amount</li>
+                                <li><strong>Review Auto-Calculations:</strong> Stamp duty and LMI are calculated automatically based on your state</li>
+                                <li><strong>Adjust Assumptions:</strong> Modify growth rates, expenses, and mortgage terms to match your situation</li>
+                                <li><strong>Analyze Results:</strong> Review 30-year projections, cash flow charts, and investment comparisons</li>
+                            </ol>
+                        </div>
+                        
+                        <div class="explanation-perfect-for">
+                            <h4>👥 Perfect For:</h4>
+                            <div class="perfect-for-grid">
+                                <div><strong>🏦 Mortgage Brokers:</strong> Professional tool for client presentations and investment advice</div>
+                                <div><strong>🏠 Property Investors:</strong> Detailed analysis to make informed investment decisions</div>
+                                <div><strong>💼 Financial Planners:</strong> Compare property investment against other asset classes</div>
+                                <div><strong>📚 First-Time Investors:</strong> Educational tool to understand property investment fundamentals</div>
+                            </div>
+                        </div>
+                    </div>
+                </details>
+            </div>
         </header>
 
         <main class="calculator-grid">
@@ -57,6 +105,7 @@
                     <div class="form-group">
                         <label for="purchasePrice" class="required">Purchase Price ($)</label>
                         <input type="number" id="purchasePrice" placeholder="e.g. 750000" required>
+                        <small class="field-help">💡 Use the property's market value or agreed purchase price</small>
                     </div>
 
                     <div class="form-row">
@@ -73,6 +122,7 @@
                                     <span>Enter loan amount</span>
                                 </label>
                             </div>
+                            <small class="field-help">💡 Switch mode above to enter either deposit amount or loan amount. Supports 100%+ financing for sophisticated investors.</small>
                         </div>
                         <div class="form-group">
                             <label for="calculatedAmount">Loan Amount ($)</label>
@@ -84,10 +134,12 @@
                         <div class="form-group">
                             <label for="rentalIncome" class="required">Weekly Rental Income ($)</label>
                             <input type="number" id="rentalIncome" placeholder="e.g. 650" required>
+                            <small class="field-help">💡 Check comparable rentals on domain.com.au or realestate.com.au</small>
                         </div>
                         <div class="form-group">
                             <label for="purchaseYear" class="required">Year of Purchase</label>
                             <input type="number" id="purchaseYear" placeholder="e.g. 2025" required>
+                            <small class="field-help">💡 Year when you plan to buy (affects 30-year projection timeline)</small>
                         </div>
                     </div>
 
@@ -158,10 +210,12 @@
                         <div class="form-group">
                             <label for="councilRates">Council Rates ($)</label>
                             <input type="number" id="councilRates" placeholder="e.g. 2500">
+                            <small class="field-help">💡 Annual council rates (check local council website)</small>
                         </div>
                         <div class="form-group">
                             <label for="propertyManagement">Property Management (%)</label>
                             <input type="number" id="propertyManagement" value="7" step="0.1">
+                            <small class="field-help">💡 Typically 6-8% of rental income (7% is industry average)</small>
                         </div>
                     </div>
 
@@ -212,10 +266,12 @@
                         <div class="form-group">
                             <label for="propertyGrowth">Property Growth (% p.a.)</label>
                             <input type="number" id="propertyGrowth" value="6" step="0.1">
+                            <small class="field-help">💡 Australian historical average: 6-7% per year</small>
                         </div>
                         <div class="form-group">
                             <label for="rentalGrowth">Rental Growth (% p.a.)</label>
                             <input type="number" id="rentalGrowth" value="3" step="0.1">
+                            <small class="field-help">💡 Typically 2-4% per year (linked to inflation)</small>
                         </div>
                     </div>
 
@@ -247,10 +303,23 @@
             <!-- Right Panel - Results -->
             <section class="results-panel">
                 <h2>30-Year Investment Forecast</h2>
+                
+                <!-- Investment Insights Panel -->
+                <div id="insightsContainer" style="display: none;">
+                    <div class="insights-panel">
+                        <h3>🔍 Investment Insights & Recommendations</h3>
+                        <div id="insightsContent">
+                            <!-- Insights will be populated by JavaScript -->
+                        </div>
+                    </div>
+                </div>
+                
                 <div id="resultsContainer">
                     <div class="welcome-message">
                         <p>👈 Enter your property details to see live 30-year investment projections</p>
                         <small>Results update automatically as you type</small>
+                        <br><br>
+                        <small><strong>Required:</strong> Purchase Price, Deposit, and Rental Income</small>
                     </div>
                 </div>
 
@@ -262,6 +331,129 @@
 
             </section>
         </main>
+        
+        <!-- Educational Content Section -->
+        <section class="education-section">
+            <div class="education-container">
+                <h2>📚 Property Investment Fundamentals</h2>
+                <p class="education-intro">New to property investing? Here's what you need to know to make informed decisions.</p>
+                
+                <div class="education-grid">
+                    <div class="education-card">
+                        <h3>🏠 Key Investment Metrics</h3>
+                        <div class="education-content">
+                            <div class="metric-item">
+                                <strong>Rental Yield:</strong> Annual rental income ÷ property price × 100. Good yields in Australia are 4-6%+
+                            </div>
+                            <div class="metric-item">
+                                <strong>LVR (Loan-to-Value Ratio):</strong> Loan amount ÷ property value × 100. Under 80% avoids LMI
+                            </div>
+                            <div class="metric-item">
+                                <strong>Cash Flow:</strong> Rental income minus all expenses. Positive = property pays for itself
+                            </div>
+                            <div class="metric-item">
+                                <strong>Capital Growth:</strong> Property value increases over time. Australian average: 6-7% per year
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="education-card">
+                        <h3>💰 Understanding Investment Returns</h3>
+                        <div class="education-content">
+                            <div class="return-item">
+                                <strong>Total Return = Capital Growth + Cash Flow</strong>
+                                <p>Property investing generates wealth through both property value increases and rental income over time.</p>
+                            </div>
+                            <div class="return-item">
+                                <strong>Leverage Amplifies Returns</strong>
+                                <p>Using borrowed money (mortgage) means a 6% property growth on a $750k property with $150k deposit gives you 30% return on your cash invested.</p>
+                            </div>
+                            <div class="return-item">
+                                <strong>Tax Benefits (Negative Gearing)</strong>
+                                <p>If property expenses exceed rental income, you may claim tax deductions on the loss.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="education-card">
+                        <h3>⚠️ Key Risks to Consider</h3>
+                        <div class="education-content">
+                            <div class="risk-item">
+                                <strong>Market Risk:</strong> Property values can fall, especially in economic downturns
+                            </div>
+                            <div class="risk-item">
+                                <strong>Interest Rate Risk:</strong> Rising rates increase mortgage costs and reduce cash flow
+                            </div>
+                            <div class="risk-item">
+                                <strong>Vacancy Risk:</strong> Periods without tenants mean no rental income but ongoing expenses
+                            </div>
+                            <div class="risk-item">
+                                <strong>Liquidity Risk:</strong> Property can't be sold as quickly as shares or other assets
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="education-card">
+                        <h3>🎯 Investment Strategy Tips</h3>
+                        <div class="education-content">
+                            <div class="tip-item">
+                                <strong>Location, Location, Location:</strong> Buy in areas with strong fundamentals - population growth, infrastructure, employment
+                            </div>
+                            <div class="tip-item">
+                                <strong>Start Conservative:</strong> Begin with 20%+ deposit to avoid LMI and reduce risk
+                            </div>
+                            <div class="tip-item">
+                                <strong>Budget for Vacancies:</strong> Assume 2-4 weeks vacancy per year when calculating cash flow
+                            </div>
+                            <div class="tip-item">
+                                <strong>Professional Advice:</strong> Consult mortgage brokers, buyers agents, and tax accountants
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="education-card">
+                        <h3>📊 Australian Market Context</h3>
+                        <div class="education-content">
+                            <div class="context-item">
+                                <strong>Historical Performance:</strong> Australian property has averaged 6-7% annual growth over decades
+                            </div>
+                            <div class="context-item">
+                                <strong>Stamp Duty Varies:</strong> Each state has different rates - NSW and VIC are highest
+                            </div>
+                            <div class="context-item">
+                                <strong>First Home Buyer Benefits:</strong> Many states offer stamp duty concessions
+                            </div>
+                            <div class="context-item">
+                                <strong>LMI Threshold:</strong> Most lenders require LMI when borrowing more than 80% of property value
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="education-card">
+                        <h3>🏦 Financing Options Explained</h3>
+                        <div class="education-content">
+                            <div class="financing-item">
+                                <strong>Principal & Interest (P&I):</strong> Pay down loan principal and interest. Builds equity faster.
+                            </div>
+                            <div class="financing-item">
+                                <strong>Interest Only (IO):</strong> Pay only interest for 1-10 years. Maximizes cash flow and tax deductions.
+                            </div>
+                            <div class="financing-item">
+                                <strong>100%+ Financing:</strong> Borrow full purchase price plus costs. Higher risk but maximum leverage.
+                            </div>
+                            <div class="financing-item">
+                                <strong>Fixed vs Variable:</strong> Fixed rates provide certainty, variable rates may be lower initially.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="education-disclaimer">
+                    <h4>⚖️ Important Disclaimer</h4>
+                    <p>This calculator provides estimates based on assumptions and should not be considered financial advice. Property investment carries risks including potential losses. Past performance does not guarantee future results. Always consult qualified professionals including mortgage brokers, financial advisers, tax accountants, and solicitors before making investment decisions. Consider your personal financial situation, investment objectives, and risk tolerance.</p>
+                </div>
+            </div>
+        </section>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
