@@ -87,6 +87,8 @@ class PropertyCalculator {
         // Auto-calculate specific functions (still needed for immediate UI updates)
         document.getElementById('purchasePrice').addEventListener('input', () => this.updateLoanCalculations());
         document.getElementById('deposit').addEventListener('input', () => this.updateLoanCalculations());
+        document.getElementById('loanAmount').addEventListener('input', () => this.updateFromLoanAmount());
+        document.getElementById('loan100PlusCosts').addEventListener('change', () => this.handleLoan100PlusCosts());
         
         // Auto-calculate total upfront costs (only for manual fields)
         document.getElementById('legalFees').addEventListener('input', () => this.updateUpfrontCosts());
@@ -131,6 +133,7 @@ class PropertyCalculator {
         const depositLabel = document.getElementById('depositLabel');
         const calculatedField = document.getElementById('calculatedAmount');
         const calculatedLabel = calculatedField.previousElementSibling;
+        const loan100PlusCostsDiv = document.querySelector('.loan-100-plus-costs');
 
         if (selectedMode === 'deposit') {
             // Deposit input mode
@@ -144,6 +147,12 @@ class PropertyCalculator {
             calculatedField.readOnly = true;
             calculatedField.style.backgroundColor = '#f8f9fa';
             calculatedField.style.color = '#6c757d';
+            
+            // Hide the "Loan 100% + costs" option in deposit mode
+            if (loan100PlusCostsDiv) {
+                loan100PlusCostsDiv.style.display = 'none';
+            }
+            document.getElementById('loan100PlusCosts').checked = false;
         } else {
             // Loan amount input mode
             depositLabel.textContent = 'Loan Amount ($)';
@@ -156,6 +165,11 @@ class PropertyCalculator {
             calculatedField.readOnly = true;
             calculatedField.style.backgroundColor = '#f8f9fa';
             calculatedField.style.color = '#6c757d';
+            
+            // Show the "Loan 100% + costs" option in loan mode
+            if (loan100PlusCostsDiv) {
+                loan100PlusCostsDiv.style.display = 'block';
+            }
         }
     }
 
@@ -288,6 +302,80 @@ class PropertyCalculator {
         this.calculateStampDuty();
         
         this.updateRepaymentCalculations();
+    }
+
+    updateFromLoanAmount() {
+        const purchasePrice = parseFloat(document.getElementById('purchasePrice').value) || 0;
+        const loanAmount = parseFloat(document.getElementById('loanAmount').value) || 0;
+        
+        // Calculate deposit from loan amount
+        const deposit = purchasePrice - loanAmount;
+        
+        // Update the deposit field and calculated amount field
+        document.getElementById('deposit').value = deposit;
+        
+        // Determine which mode we should be in and update accordingly
+        const selectedMode = document.querySelector('input[name="inputType"]:checked').value;
+        
+        if (selectedMode === 'deposit') {
+            // If in deposit mode, update the calculated amount to show loan amount
+            document.getElementById('calculatedAmount').value = Math.max(0, loanAmount);
+        } else {
+            // If in loan mode, update the calculated amount to show deposit
+            document.getElementById('calculatedAmount').value = Math.max(0, deposit);
+        }
+        
+        // Calculate LMI and Stamp Duty
+        const effectiveDeposit = Math.max(0, deposit);
+        this.calculateLMIWithValues(purchasePrice, effectiveDeposit);
+        this.calculateStampDuty();
+        
+        this.updateRepaymentCalculations();
+        this.debouncedCalculation();
+    }
+
+    handleLoan100PlusCosts() {
+        const isChecked = document.getElementById('loan100PlusCosts').checked;
+        
+        if (isChecked) {
+            // First ensure all upfront costs are calculated
+            this.calculateStampDuty();
+            this.calculateLMIWithValues(parseFloat(document.getElementById('purchasePrice').value) || 0, 0); // Calculate LMI for 0% deposit
+            this.updateUpfrontCosts();
+            
+            // Calculate purchase price + ALL upfront costs
+            const purchasePrice = parseFloat(document.getElementById('purchasePrice').value) || 0;
+            const stampDuty = parseFloat(document.getElementById('stampDuty').value) || 0;
+            const lmi = parseFloat(document.getElementById('lmi').value) || 0;
+            const legalFees = parseFloat(document.getElementById('legalFees').value) || 0;
+            const buildingInspection = parseFloat(document.getElementById('buildingInspection').value) || 0;
+            const loanFees = parseFloat(document.getElementById('loanFees').value) || 0;
+            const otherUpfrontCosts = parseFloat(document.getElementById('otherUpfrontCosts').value) || 0;
+            
+            // Total all upfront costs
+            const totalUpfrontCosts = stampDuty + lmi + legalFees + buildingInspection + loanFees + otherUpfrontCosts;
+            
+            // Total loan amount = purchase price + all upfront costs
+            const totalLoanAmount = purchasePrice + totalUpfrontCosts;
+            
+            // Set the loan amount field
+            document.getElementById('deposit').value = totalLoanAmount;
+            
+            // This will result in a negative deposit (100%+ financing)
+            const deposit = purchasePrice - totalLoanAmount; // This will be negative
+            document.getElementById('calculatedAmount').value = deposit;
+            
+            // Update the main loan amount field
+            document.getElementById('loanAmount').value = totalLoanAmount;
+            
+            // Update the total upfront costs display
+            document.getElementById('totalUpfrontCosts').value = totalUpfrontCosts;
+            
+            // Recalculate repayments with the new loan amount
+            this.updateRepaymentCalculations();
+            this.debouncedCalculation();
+        }
+        // If unchecked, user can manually adjust the loan amount
     }
 
     updateRepaymentCalculations() {
@@ -940,7 +1028,7 @@ class PropertyCalculator {
             insights.push({
                 type: 'positive',
                 icon: '🏆',
-                message: `<strong>Excellent Performance!</strong> This property investment outperforms the ASX200 by $${this.formatMoney(totalReturn - asxReturn)} over 30 years. Property investing can provide superior returns when done right.`
+                message: `<strong>Higher Projected Returns:</strong> Based on these assumptions, this property investment shows $${this.formatMoney(totalReturn - asxReturn)} higher projected returns than ASX200 over 30 years.`
             });
         } else if (totalReturn > savingsReturn) {
             insights.push({
