@@ -5,7 +5,7 @@ All notable changes to InvestQuest - Australian Property Investment Calculator w
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [1.1.0] - 2025-01-14
+## [1.1.0] - 2025-08-14
 
 ### 🎉 Major UX Enhancement and Professional Design Release
 
@@ -61,7 +61,7 @@ This release transforms InvestQuest from a functional calculator into a professi
 - **Improved Conversion**: Professional appearance typically increases conversion rates 15-25%
 - **Educational Value**: Transforms tool from calculator to learning platform
 
-## [1.0.0] - 2025-01-12
+## [1.0.0] - 2025-08-12
 
 ### 🎉 Initial Release - Australian Property Investment Calculator
 

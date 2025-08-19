@@ -1,16 +1,29 @@
-# CLAUDE.md - InvestQuest: Australian Property Investment Calculator
+# CLAUDE.md - InvestQuest: Comprehensive Australian Financial Planning Platform
 
 ## Project Overview
 
-This is a web-based micro-SaaS application that forecasts investment property performance over time for the Australian market. It combines user inputs with market predictors for income, expenses, and growth to project financial outcomes for the next 30 years.
+InvestQuest is an evolving web-based financial planning platform that empowers both individual consumers and financial professionals (mortgage brokers, financial planners, buyers agents) to create comprehensive investment strategies and future financial projections.
+
+**Current State**: Property investment calculator with 30-year forecasting for the Australian market.
+
+**Evolution Goal**: Comprehensive financial planning platform that integrates property investments with complete financial profiles, enabling bespoke strategy creation and holistic cash flow analysis.
 
 ## Target Users
 
-- **Primary**: Mortgage brokers (like Jack Chen from Brilliant Finance Group)
-- **Secondary**: Individual property investors
-- **Tertiary**: Financial planners and advisors
+### **Individual Consumers**
+- **Primary**: Property investors seeking comprehensive investment analysis
+- **Secondary**: First-time investors learning about property markets
+- **Tertiary**: High-net-worth individuals planning multiple investment strategies
 
-The tool serves both professionals who can use it to educate and retain clients, and individual investors making property decisions.
+### **Financial Professionals**
+- **Primary**: Mortgage brokers (like Jack Chen from Brilliant Finance Group)
+- **Secondary**: Financial planners and advisors
+- **Tertiary**: Buyers agents and investment consultants
+
+### **Platform Value Proposition**
+- **For Consumers**: Autonomous financial planning with professional-grade tools and projections
+- **For Professionals**: Client presentation tools, portfolio management, and bespoke strategy creation
+- **For Both**: Comprehensive awareness of potential pitfalls (cash flow gaps, market risks, timing issues)
 
 ## Core Requirements (From Initial Brief)
 
@@ -20,7 +33,7 @@ The tool serves both professionals who can use it to educate and retain clients,
 - **Market**: Australian property market (not global)
 - **Experience Level**: Treat user as someone who has never coded before and never developed an app
 
-### Key Functionality
+### Core Functionality (Current v1.1.0)
 
 1. **30-Year Property Investment Forecasting**
    - Property value appreciation over time
@@ -29,15 +42,56 @@ The tool serves both professionals who can use it to educate and retain clients,
    - Complete financial outcome projections
 
 2. **Investment Comparisons**
-   - Property investment performance
-   - High interest savings accounts
-   - S&P 500 Index funds (using ASX200 for Australian context)
+   - Property investment performance vs high interest savings accounts
+   - Property investment vs ASX200 index funds
+   - Comprehensive return analysis and recommendations
 
-3. **Future Versions Should Include**
-   - Taxation computations (negative gearing benefits)
-   - Capital gains tax calculations when asset is sold
-   - Google authentication for account creation
-   - Australian property market API integration
+3. **Australian Market Integration**
+   - State-specific stamp duty calculations
+   - Lenders Mortgage Insurance (LMI) calculations
+   - Realistic growth assumptions for Australian property markets
+
+### Planned Comprehensive Platform Features
+
+4. **User Profile & Authentication System**
+   - Secure login for both consumers and professionals
+   - Individual financial profile creation and management
+   - Professional client portfolio management
+
+5. **Holistic Financial Planning**
+   - **Income & Expenses Analysis**
+     - Current income streams (salary, business, investment income)
+     - Regular expenses tracking and categorization
+     - Future income projections and career planning
+   
+   - **Assets & Liabilities Portfolio**
+     - Complete asset register (properties, shares, savings, super)
+     - Liability tracking (mortgages, personal loans, credit cards)
+     - Net worth calculations and trend analysis
+   
+   - **Goal-Based Strategy Creation**
+     - Short-term financial goals (1-5 years)
+     - Long-term wealth building objectives (10-30+ years)
+     - Retirement planning integration
+     - Education funding and family planning
+
+6. **Advanced Risk Analysis & Awareness**
+   - **Cash Flow Risk Detection**
+     - Monthly/quarterly cash flow projections
+     - Identification of potential cash flow gaps
+     - Interest rate sensitivity analysis
+     - Market downturn scenario planning
+   
+   - **Investment Timing Analysis**
+     - Optimal property purchase timing
+     - Market cycle awareness and warnings
+     - Personal readiness assessment (deposit, income stability)
+
+7. **Bespoke Strategy Engine**
+   - Personalized investment recommendations based on complete financial profile
+   - Multi-property portfolio optimization
+   - Tax-effective structuring suggestions
+   - Professional advice integration and referral system
 
 ### Input Requirements
 
@@ -152,109 +206,86 @@ The tool serves both professionals who can use it to educate and retain clients,
 **Recommendation**: Start with Domain API's free tier, upgrade later as needed.
 
 ## Version History
-- **v1.1.0** (2025-01-14): Major UX enhancement and professional design release
-- **v1.0.0** (2025-01-12): Initial release with all core functionality
+- **v1.1.0** (2025-08-14): Major UX enhancement and professional design release
+- **v1.0.0** (2025-08-12): Initial release with all core functionality
 
-## Future Feature Roadmap
+## Comprehensive Platform Development Roadmap
 
-### v1.2.0 - Enhanced Calculations (Next Minor Release)
-**Priority: High - Quick wins for mortgage brokers**
-- **Enhanced Property Data Integration**
+### v1.2.0 - Multi-Page Architecture & Enhanced Property Features
+**Priority: High - Foundation for platform expansion**
+- **Multi-Page Application Structure**
+  - Landing page with marketing and feature overview
+  - Dedicated calculator page with enhanced UX
+  - Professional navigation and responsive design
+  - Consistent branding and visual identity
+- **Enhanced Property Analysis**
   - Advanced suburb analytics and market trends
-  - Historical growth data display
-  - Comparable property analysis
-- **Advanced Tax Calculations**
-  - Negative gearing benefits calculation
-  - Capital gains tax scenarios
-  - Depreciation schedules
-  - Tax-effective investment strategies
+  - Property valuation API integration (Domain/CoreLogic)
+  - Historical growth data display and comparable analysis
+  - Tax calculations (negative gearing, capital gains, depreciation)
 
-### v1.2.0 - Property Data Integration
-**Priority: High - Automation and accuracy**
-- **Property Valuation API Integration**
-  - Automated property value estimates (Domain, CoreLogic, or PriceFinder)
-  - Real-time rental yield data
-  - Market growth rate suggestions based on suburb
-  - User override capability maintained
-- **Suburb Analytics**
-  - Historical growth data display
-  - Market trends and insights
-  - Comparable property analysis
+### v2.0.0 - User Authentication & Financial Profile Foundation
+**Priority: High - Platform transformation begins**
+- **Authentication System**
+  - Secure user registration and login (Google OAuth + traditional)
+  - User role management (Consumer vs Professional)
+  - Profile creation and management dashboard
+- **Basic Financial Profile Creation**
+  - Income & expense input forms
+  - Asset & liability tracking (basic)
+  - Goal setting interface (short & long-term)
+  - Save and retrieve personal financial data
 
-### v2.0.0 - User Authentication & Data Management
-**Priority: Medium - Platform transformation**
-- **Google Authentication System**
-  - Secure user login and registration
-  - OAuth2 integration for easy signup
-  - User profile management
-- **Save & Retrieve Property Calculations**
-  - Save calculations per property address
-  - Client-specific property portfolios
-  - Edit and update saved calculations
-- **Client Management for Brokers**
-  - Create client profiles
-  - Assign properties to specific clients
-  - Client-specific calculation history
+### v2.1.0 - Comprehensive Financial Dashboard
+**Priority: High - Core platform value delivery**
+- **Complete Financial Overview**
+  - Net worth calculations and visualizations
+  - Cash flow projections (monthly/quarterly/annual)
+  - Asset allocation analysis and recommendations
+  - Liability management and optimization suggestions
+- **Risk Analysis Engine**
+  - Cash flow gap identification and warnings
+  - Interest rate sensitivity analysis
+  - Market downturn scenario planning
+  - Personal financial stress testing
 
-### v2.1.0 - Reporting & Documentation
-**Priority: Medium - Professional client presentations**
-- **PDF Report Generation**
-  - Professional property investment reports
-  - Include all calculations, charts, and comparisons
-  - Branded reports for mortgage brokers
-  - Email delivery capability
-- **Excel Export**
-  - Detailed spreadsheet with all projections
-  - Year-by-year breakdown
-  - Customizable report templates
+### v3.0.0 - Bespoke Strategy Engine & Professional Tools
+**Priority: Medium - Advanced intelligence and professional features**
+- **AI-Powered Strategy Recommendations**
+  - Personalized investment strategies based on complete financial profile
+  - Optimal timing analysis for property purchases
+  - Multi-asset portfolio optimization
+  - Tax-effective structuring suggestions
+- **Professional Client Management**
+  - Broker/planner client portfolio management
+  - Shared calculation and strategy workspaces
+  - Client presentation tools and reporting
+  - Professional referral network integration
 
-### v3.0.0 - Portfolio Management & Advanced Analytics
-**Priority: Low - Advanced platform features**
-- **Multi-Property Portfolio Dashboard**
-  - Aggregated investment performance across properties
-  - Portfolio diversification analysis
-  - Combined cash flow projections
-  - Risk assessment across portfolio
-- **Advanced Comparison Tools**
-  - Side-by-side property comparisons
-  - Portfolio vs single property analysis
-  - Investment strategy optimization
-- **Client Dashboard**
-  - Individual client portal access
-  - Real-time portfolio updates
-  - Performance tracking over time
+### v3.1.0 - Advanced Analytics & Reporting
+**Priority: Medium - Professional presentation and insights**
+- **Comprehensive Reporting Suite**
+  - Professional PDF strategy reports
+  - Interactive financial dashboards
+  - Scenario comparison tools
+  - Investment performance tracking over time
+- **Advanced Market Integration**
+  - Real-time market data integration
+  - Economic indicator tracking and alerts
+  - Market cycle timing analysis
+  - Property market sentiment indicators
 
-### v3.1.0 - Advanced Financial Calculations
-**Priority: Low - Comprehensive financial modeling**
-- **Tax Calculation Engine**
-  - Negative gearing benefits calculation
-  - Capital gains tax scenarios
-  - Depreciation schedules
-  - Tax-effective investment strategies
-- **Advanced Scenarios**
-  - Interest rate change modeling
-  - Market crash scenarios
-  - Early property sale calculations
-  - Refinancing impact analysis
-
-### v4.0.0 - Themes & Internationalization (Concept Ideas)
-**Priority: Future Concept - UX Enhancement & Global Reach**
-- **Theme System**
-  - Light/Dark mode toggle
-  - **Retro Gaming Theme**: Chrono Cross inspired design with blocky character aesthetics
-    - Pixel-art style UI components
-    - Retro color palettes and fonts
-    - Game-like animations and transitions
-    - Character avatars for different user types (broker, investor, etc.)
-  - Custom theme builder for brokers (brand colors, logos)
-  - Theme persistence and user preferences
-- **Multi-Language Support**
-  - Complete website translation system
+### v4.0.0 - Platform Maturation & Global Expansion
+**Priority: Future Concept - Market expansion and advanced UX**
+- **Multi-Market Support**
+  - Expand beyond Australian market (UK, US, Canada)
   - Currency conversion and localization
-  - Market-specific assumptions per country/region
-  - Right-to-left language support
-  - Dynamic language switching without page reload
-  - Professional translation for mortgage/finance terminology
+  - Market-specific assumptions and regulations
+- **Advanced UX Enhancements**
+  - Dark/Light mode toggle
+  - Custom theme builder for professionals (brand colors, logos)
+  - Advanced data visualization and interactive charts
+  - Mobile app development (iOS/Android)
 
 ## Technical Implementation Notes
 

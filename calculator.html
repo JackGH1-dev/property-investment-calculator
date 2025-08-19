@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="InvestQuest Property Calculator - Forecast 30-year investment performance, calculate stamp duty & LMI, compare investments. Professional Australian property analysis tool.">
+    <meta name="keywords" content="property calculator, investment analysis, stamp duty calculator, LMI calculator, Australian property, mortgage broker tool">
+    <meta property="og:title" content="Property Investment Calculator - InvestQuest">
+    <meta property="og:description" content="Professional 30-year property investment analysis tool. Calculate stamp duty, LMI, and compare investments with real-time projections.">
+    <meta property="og:type" content="website">
+    <title>Property Calculator - InvestQuest</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎯</text></svg>">
+</head>
+<body>
+    <!-- Global Navigation -->
+    <nav class="global-nav">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <h1>🎯 InvestQuest</h1>
+            </div>
+            <div class="nav-links">
+                <a href="index.html" class="nav-link">Home</a>
+                <a href="calculator.html" class="nav-link active">Calculator</a>
+                <a href="education.html" class="nav-link">Education</a>
+                <a href="index.html" class="nav-cta">Back to Home</a>
+            </div>
+            <button class="nav-toggle" aria-label="Toggle navigation">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Calculator Header -->
+    <div class="calculator-header">
+        <div class="container">
+            <h1>🎯 Property Investment Calculator</h1>
+            <p>Your journey to investment success starts here — forecast property performance over 30 years</p>
+            
+            <!-- Tool Explanation Section -->
+            <div class="tool-explanation">
+                <details class="how-it-works">
+                    <summary>🤔 How does this calculator help you make better investment decisions?</summary>
+                    <div class="explanation-content">
+                        <div class="explanation-grid">
+                            <div class="explanation-card">
+                                <h4>📊 30-Year Projections</h4>
+                                <p>See exactly how your property investment will perform over 3 decades, including cash flow, equity growth, and total returns.</p>
+                            </div>
+                            <div class="explanation-card">
+                                <h4>💰 Australian-Specific Calculations</h4>
+                                <p>Accurate stamp duty for all states, LMI calculations, and realistic Australian market growth assumptions.</p>
+                            </div>
+                            <div class="explanation-card">
+                                <h4>⚖️ Investment Comparison</h4>
+                                <p>Compare your property investment against high-yield savings accounts and ASX200 index funds to see which performs better.</p>
+                            </div>
+                            <div class="explanation-card">
+                                <h4>🏦 Flexible Financing Options</h4>
+                                <p>Supports all financing scenarios from traditional 20% deposits to 100%+ financing for sophisticated investors.</p>
+                            </div>
+                            <div class="explanation-card">
+                                <h4>🔍 Real-Time Investment Analysis</h4>
+                                <p>Intelligent analysis that provides personalized recommendations and warnings based on your specific investment scenario.</p>
+                            </div>
+                            <div class="explanation-card">
+                                <h4>📚 Educational Investment Guide</h4>
+                                <p>Learn property investment fundamentals while you calculate, with comprehensive guides on metrics, risks, and strategies.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="explanation-steps">
+                            <h4>📋 How to Use This Tool:</h4>
+                            <ol>
+                                <li><strong>Enter Property Details:</strong> Start with address, purchase price, and rental income</li>
+                                <li><strong>Choose Your Financing:</strong> Enter either your deposit amount or desired loan amount</li>
+                                <li><strong>Review Auto-Calculations:</strong> Stamp duty and LMI are calculated automatically based on your state</li>
+                                <li><strong>Adjust Assumptions:</strong> Modify growth rates, expenses, and mortgage terms to match your situation</li>
+                                <li><strong>Analyze Results:</strong> Review 30-year projections, cash flow charts, and investment comparisons</li>
+                            </ol>
+                        </div>
+                        
+                        <div class="explanation-perfect-for">
+                            <h4>👥 Perfect For:</h4>
+                            <div class="perfect-for-grid">
+                                <div><strong>🏦 Mortgage Brokers:</strong> Professional tool for client presentations and investment advice</div>
+                                <div><strong>🏠 Property Investors:</strong> Detailed analysis to make informed investment decisions</div>
+                                <div><strong>💼 Financial Planners:</strong> Compare property investment against other asset classes</div>
+                                <div><strong>📚 First-Time Investors:</strong> Educational tool to understand property investment fundamentals</div>
+                            </div>
+                        </div>
+                    </div>
+                </details>
+            </div>
+        </div>
+    </div>
+
+    <!-- Calculator Layout -->
+    <main class="calculator-layout">
+        <div class="container">
+            <div class="calculator-grid">
+                <!-- Left Panel - Input Form -->
+                <section class="input-panel">
+                    <h2>Property Details</h2>
+                    <form id="propertyForm">
+                        <div class="form-group">
+                            <label for="address" class="required">Property Address</label>
+                            <input type="text" id="address" placeholder="Start typing an Australian address..." required>
+                            <small id="addressHelp" style="color: #666; font-size: 0.85rem;">Address autocomplete will detect your state for stamp duty calculation</small>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="state">State/Territory</label>
+                                <select id="state">
+                                    <option value="">Select or auto-detected</option>
+                                    <option value="NSW">NSW</option>
+                                    <option value="VIC">VIC</option>
+                                    <option value="QLD">QLD</option>
+                                    <option value="SA">SA</option>
+                                    <option value="WA">WA</option>
+                                    <option value="TAS">TAS</option>
+                                    <option value="NT">NT</option>
+                                    <option value="ACT">ACT</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="isFirstHomeBuyer">First Home Buyer</label>
+                                <select id="isFirstHomeBuyer">
+                                    <option value="false">No</option>
+                                    <option value="true">Yes</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="purchasePrice" class="required">Purchase Price ($)</label>
+                            <input type="number" id="purchasePrice" placeholder="e.g. 750000" required>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="deposit" class="required" id="depositLabel">Loan Amount ($)</label>
+                                <input type="number" id="deposit" placeholder="e.g. 600000" required>
+                                <div style="display: flex; align-items: center; gap: 12px;">
+                                    <div class="input-mode-selector">
+                                        <label class="mode-option" data-mode="deposit">
+                                            <input type="radio" name="inputType" value="deposit">
+                                            <span>Enter deposit</span>
+                                        </label>
+                                        <label class="mode-option active" data-mode="loan">
+                                            <input type="radio" name="inputType" value="loan" checked>
+                                            <span>Enter loan amount</span>
+                                        </label>
+                                    </div>
+                                    <div class="loan-100-plus-costs">
+                                        <label style="font-size: 0.9rem; font-weight: normal; display: flex; align-items: center; color: var(--text-secondary); white-space: nowrap;">
+                                            <input type="checkbox" id="loan100PlusCosts" style="margin-right: 8px;">
+                                            <span>💰 Loan 100% + costs</span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="calculatedAmount">Deposit ($)</label>
+                                <input type="number" id="calculatedAmount" placeholder="Auto-calculated" readonly>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="rentalIncome" class="required">Weekly Rental Income ($)</label>
+                                <input type="number" id="rentalIncome" placeholder="e.g. 650" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="purchaseYear" class="required">Year of Purchase</label>
+                                <input type="number" id="purchaseYear" placeholder="e.g. 2025" required>
+                            </div>
+                        </div>
+
+                        <h3>Upfront Costs</h3>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="stampDuty">Stamp Duty ($)</label>
+                                <input type="number" id="stampDuty" placeholder="Auto-calculated" readonly>
+                                <small style="color: #667eea; font-size: 0.8rem;">Calculated based on property price and state</small>
+                            </div>
+                            <div class="form-group">
+                                <label for="lmi">Lenders Mortgage Insurance ($)</label>
+                                <input type="number" id="lmi" placeholder="Auto-calculated" readonly>
+                                <div style="margin-top: 8px;">
+                                    <label style="font-size: 0.9rem; font-weight: normal; display: flex; align-items: center;">
+                                        <input type="checkbox" id="applyLMI" checked style="margin-right: 8px;">
+                                        Apply LMI when deposit < 20%
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="legalFees">Legal/Conveyancing Fees ($)</label>
+                                <input type="number" id="legalFees" placeholder="e.g. 2000">
+                            </div>
+                            <div class="form-group">
+                                <label for="buildingInspection">Building & Pest Inspection ($)</label>
+                                <input type="number" id="buildingInspection" placeholder="e.g. 800">
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="loanFees">Loan Application/Setup Fees ($)</label>
+                                <input type="number" id="loanFees" placeholder="e.g. 1000">
+                            </div>
+                            <div class="form-group">
+                                <!-- Placeholder for future field -->
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="otherUpfrontCosts">Other Upfront Costs ($)</label>
+                                <input type="number" id="otherUpfrontCosts" placeholder="e.g. 0">
+                            </div>
+                            <div class="form-group">
+                                <label for="totalUpfrontCosts">Total Upfront Costs ($)</label>
+                                <input type="number" id="totalUpfrontCosts" readonly>
+                            </div>
+                        </div>
+
+                        <h3>Annual Expenses</h3>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="insurance">Insurance ($)</label>
+                                <input type="number" id="insurance" value="1500">
+                            </div>
+                            <div class="form-group">
+                                <label for="maintenance">Maintenance ($)</label>
+                                <input type="number" id="maintenance" value="2000">
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="councilRates">Council Rates ($)</label>
+                                <input type="number" id="councilRates" placeholder="e.g. 2500">
+                            </div>
+                            <div class="form-group">
+                                <label for="propertyManagement">Property Management (%)</label>
+                                <input type="number" id="propertyManagement" value="7" step="0.1">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="otherExpenses">Other Annual Expenses ($)</label>
+                            <input type="number" id="otherExpenses" placeholder="e.g. 0">
+                        </div>
+
+                        <h3>Mortgage Details</h3>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="loanAmount">Loan Amount ($)</label>
+                                <input type="number" id="loanAmount" placeholder="e.g. 600000">
+                            </div>
+                            <div class="form-group">
+                                <label for="interestRate">Interest Rate (% p.a.)</label>
+                                <input type="number" id="interestRate" value="6.5" step="0.01">
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="repaymentType">Repayment Type</label>
+                                <select id="repaymentType">
+                                    <option value="principal-interest">Principal & Interest</option>
+                                    <option value="interest-only">Interest Only</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="loanTerm">Loan Term (years)</label>
+                                <input type="number" id="loanTerm" value="30" min="1" max="40">
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="monthlyRepayment">Monthly Repayment ($)</label>
+                                <input type="number" id="monthlyRepayment" readonly>
+                            </div>
+                            <div class="form-group">
+                                <label for="weeklyRepayment">Weekly Repayment ($)</label>
+                                <input type="number" id="weeklyRepayment" readonly>
+                            </div>
+                        </div>
+
+                        <h3>Growth Assumptions</h3>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="propertyGrowth">Property Growth (% p.a.)</label>
+                                <input type="number" id="propertyGrowth" value="6" step="0.1">
+                            </div>
+                            <div class="form-group">
+                                <label for="rentalGrowth">Rental Growth (% p.a.)</label>
+                                <input type="number" id="rentalGrowth" value="3" step="0.1">
+                            </div>
+                        </div>
+
+                    </form>
+
+                    <!-- Investment Comparison - moved to left panel for better visibility -->
+                    <div id="leftComparisonContainer" style="display: none;">
+                        <h3>Investment Comparison</h3>
+                        <div class="left-comparison-grid">
+                            <div class="left-comparison-item property">
+                                <h4>🏠 Property Investment</h4>
+                                <p id="leftPropertyReturn">-</p>
+                                <small id="leftPropertyDetails">-</small>
+                            </div>
+                            <div class="left-comparison-item savings">
+                                <h4>💰 High Yield Savings</h4>
+                                <p id="leftSavingsReturn">-</p>
+                                <small>4.5% per annum</small>
+                            </div>
+                            <div class="left-comparison-item asx">
+                                <h4>📈 ASX200 Index</h4>
+                                <p id="leftAsxReturn">-</p>
+                                <small>8.0% per annum</small>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Right Panel - Results -->
+                <section class="results-panel">
+                    <h2>30-Year Investment Forecast</h2>
+                    
+                    <!-- Investment Insights Panel -->
+                    <div id="insightsContainer" style="display: none;">
+                        <div class="insights-panel">
+                            <h3>🔍 Investment Insights & Recommendations</h3>
+                            <div id="insightsContent">
+                                <!-- Insights will be populated by JavaScript -->
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div id="resultsContainer">
+                        <div class="welcome-message">
+                            <p>👈 Enter your property details to see live 30-year investment projections</p>
+                            <small>Results update automatically as you type</small>
+                            <br><br>
+                            <small><strong>Required:</strong> Purchase Price, Deposit, and Rental Income</small>
+                        </div>
+                    </div>
+
+                    <!-- Charts will be inserted here -->
+                    <div id="chartsContainer" style="display: none;">
+                        <canvas id="valueChart" width="400" height="200"></canvas>
+                        <canvas id="cashflowChart" width="400" height="200"></canvas>
+                    </div>
+
+                    <!-- Investment Comparison -->
+                    <div id="comparisonContainer" style="display: none;">
+                        <h3>Investment Comparison</h3>
+                        <div class="comparison-grid">
+                            <div class="comparison-item property">
+                                <h4>🏠 Property Investment</h4>
+                                <p id="propertyReturn">-</p>
+                                <small id="propertyDetails">-</small>
+                            </div>
+                            <div class="comparison-item savings">
+                                <h4>💰 High Yield Savings</h4>
+                                <p id="savingsReturn">-</p>
+                                <small>4.5% per annum</small>
+                            </div>
+                            <div class="comparison-item asx">
+                                <h4>📈 ASX200 Index</h4>
+                                <p id="asxReturn">-</p>
+                                <small>8.0% per annum</small>
+                            </div>
+                        </div>
+                    </div>
+
+                </section>
+            </div>
+        </div>
+    </main>
+        
+    <!-- Education Link Section -->
+    <section class="education-link-section">
+        <div class="container">
+            <div class="education-cta">
+                <h3>📚 Want to Learn Property Investment Fundamentals?</h3>
+                <p>Discover key metrics, risks, strategies, and everything you need to know about Australian property investing.</p>
+                <a href="education.html" class="cta-primary large">Visit Education Center</a>
+            </div>
+        </div>
+    </section>
+        
+        <!-- Version Footer -->
+        <footer class="version-footer">
+            <div class="container">
+                <div class="version-info">
+                    <span class="version-text">InvestQuest v1.2.0</span>
+                    <span class="version-date">Updated August 2025</span>
+                </div>
+            </div>
+        </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Configuration - API key removed for security
+        // Note: Add your new API key here temporarily after securing it
+        const CONFIG = {
+            GOOGLE_PLACES_API_KEY: 'AIzaSyC_fRFyNMui41ZJV9ZrDvlGA074M6RMajI',
+            PLACES_API: {
+                componentRestrictions: { country: 'au' },
+                types: ['address']
+            }
+        };
+        window.CONFIG = CONFIG;
+
+        // Load Google Places API dynamically with API key
+        function loadGooglePlacesAPI() {
+            if (window.CONFIG && window.CONFIG.GOOGLE_PLACES_API_KEY && window.CONFIG.GOOGLE_PLACES_API_KEY !== 'YOUR_API_KEY_HERE') {
+                console.log('Loading Google Places API...');
+                const script = document.createElement('script');
+                script.src = `https://maps.googleapis.com/maps/api/js?key=${window.CONFIG.GOOGLE_PLACES_API_KEY}&libraries=places&callback=initGooglePlaces`;
+                script.async = true;
+                script.defer = true;
+                script.onerror = function() {
+                    console.error('Failed to load Google Maps API. Check your API key and restrictions.');
+                };
+                document.head.appendChild(script);
+            } else {
+                console.warn('Google Places API key not configured properly');
+            }
+        }
+        
+        // Initialize Google Places when API loads
+        function initGooglePlaces() {
+            console.log('Google Places API loaded successfully');
+            if (window.propertyCalculator) {
+                window.propertyCalculator.initGooglePlaces();
+            } else {
+                console.warn('Property calculator not yet initialized');
+            }
+        }
+        
+        // Load API after DOM is ready
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(loadGooglePlacesAPI, 100); // Small delay to ensure calculator is ready
+        });
+
+        // Mobile navigation toggle
+        document.querySelector('.nav-toggle').addEventListener('click', function() {
+            document.querySelector('.nav-links').classList.toggle('active');
+        });
+    </script>
+    <script src="script.js"></script>
+</body>
+</html>
