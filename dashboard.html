@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="InvestQuest Dashboard - Manage your property calculations, track investment goals, and access personalized insights.">
+    <meta name="keywords" content="property investment dashboard, saved calculations, investment tracking, financial goals">
+    <meta property="og:title" content="InvestQuest Dashboard - Your Investment Hub">
+    <meta property="og:description" content="Access your saved calculations, track investment progress, and get personalized property investment insights.">
+    <meta property="og:type" content="website">
+    <title>Dashboard - InvestQuest</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎯</text></svg>">
+</head>
+<body>
+    <!-- Global Navigation -->
+    <nav class="global-nav">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <h1>🎯 InvestQuest</h1>
+            </div>
+            <div class="nav-links">
+                <a href="index.html" class="nav-link">Home</a>
+                <a href="calculator.html" class="nav-link">Calculator</a>
+                <a href="education.html" class="nav-link">Education</a>
+                <a href="dashboard.html" class="nav-link active">Dashboard</a>
+                <button class="nav-logout" id="logoutBtn">Sign Out</button>
+            </div>
+            <button class="nav-toggle" aria-label="Toggle navigation">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Dashboard Hero Section -->
+    <section class="dashboard-hero">
+        <div class="container">
+            <div class="hero-content">
+                <div class="welcome-section">
+                    <div class="user-avatar">
+                        <div class="avatar-circle">
+                            <span id="userInitials">U</span>
+                        </div>
+                    </div>
+                    <div class="welcome-text">
+                        <h1>Welcome back, <span id="userName">User</span>!</h1>
+                        <p id="userDescription">Your property investment command center</p>
+                        <div class="user-stats-inline">
+                            <div class="inline-stat">
+                                <span class="stat-number" id="totalPropertiesInline">0</span>
+                                <span class="stat-label">Properties</span>
+                            </div>
+                            <div class="inline-stat">
+                                <span class="stat-number" id="totalValueInline">$0</span>
+                                <span class="stat-label">Portfolio Value</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="hero-actions">
+                    <a href="calculator.html" class="cta-primary large">
+                        <span class="btn-icon">📊</span>
+                        New Property Analysis
+                    </a>
+                    <button class="cta-secondary large" id="importDataBtn">
+                        <span class="btn-icon">📤</span>
+                        Import Data
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Dashboard Main Content -->
+    <main class="dashboard-main">
+        <div class="container">
+            
+            <!-- Quick Stats Grid -->
+            <section class="stats-section">
+                <div class="section-header">
+                    <h2>📈 Portfolio Overview</h2>
+                    <div class="view-toggle">
+                        <button class="toggle-btn active" data-view="cards">Cards</button>
+                        <button class="toggle-btn" data-view="chart">Chart</button>
+                    </div>
+                </div>
+                
+                <div class="stats-container" id="statsView">
+                    <div class="stats-grid">
+                        <div class="modern-stat-card primary">
+                            <div class="stat-header">
+                                <div class="stat-icon-modern">🏠</div>
+                                <div class="stat-trend positive">+12%</div>
+                            </div>
+                            <div class="stat-main">
+                                <h3 id="totalProperties">0</h3>
+                                <p>Properties Analyzed</p>
+                            </div>
+                            <div class="stat-progress">
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 65%"></div>
+                                </div>
+                                <small>Goal: 10 properties</small>
+                            </div>
+                        </div>
+
+                        <div class="modern-stat-card success">
+                            <div class="stat-header">
+                                <div class="stat-icon-modern">💰</div>
+                                <div class="stat-trend positive">+8%</div>
+                            </div>
+                            <div class="stat-main">
+                                <h3 id="totalInvestment">$0</h3>
+                                <p>Total Investment Value</p>
+                            </div>
+                            <div class="stat-progress">
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 40%"></div>
+                                </div>
+                                <small>Goal: $2M portfolio</small>
+                            </div>
+                        </div>
+
+                        <div class="modern-stat-card warning">
+                            <div class="stat-header">
+                                <div class="stat-icon-modern">📈</div>
+                                <div class="stat-trend positive">+15%</div>
+                            </div>
+                            <div class="stat-main">
+                                <h3 id="averageReturn">0%</h3>
+                                <p>Average Projected Return</p>
+                            </div>
+                            <div class="stat-progress">
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 80%"></div>
+                                </div>
+                                <small>Benchmark: 10% p.a.</small>
+                            </div>
+                        </div>
+
+                        <div class="modern-stat-card info">
+                            <div class="stat-header">
+                                <div class="stat-icon-modern">⏰</div>
+                                <div class="stat-badge">Active</div>
+                            </div>
+                            <div class="stat-main">
+                                <h3 id="lastActivity">Never</h3>
+                                <p>Last Analysis</p>
+                            </div>
+                            <div class="stat-action">
+                                <a href="calculator.html" class="stat-link">Create Analysis</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Saved Calculations with Enhanced Design -->
+            <section class="calculations-section">
+                <div class="section-header">
+                    <div class="header-content">
+                        <h2>💾 Your Property Analyses</h2>
+                        <p>Manage and review your saved property investment calculations</p>
+                    </div>
+                    <div class="header-actions">
+                        <div class="search-box">
+                            <input type="text" placeholder="Search properties..." id="searchCalculations">
+                            <span class="search-icon">🔍</span>
+                        </div>
+                        <a href="calculator.html" class="cta-primary">New Analysis</a>
+                    </div>
+                </div>
+                
+                <div class="calculations-controls">
+                    <div class="filter-tabs">
+                        <button class="filter-tab active" data-filter="all">All Properties</button>
+                        <button class="filter-tab" data-filter="recent">Recent</button>
+                        <button class="filter-tab" data-filter="favorites">Favorites</button>
+                        <button class="filter-tab" data-filter="archived">Archived</button>
+                    </div>
+                    <div class="view-controls">
+                        <button class="view-btn active" data-view="grid" title="Grid View">⊞</button>
+                        <button class="view-btn" data-view="list" title="List View">☰</button>
+                    </div>
+                </div>
+                
+                <div id="calculationsContainer" class="calculations-container">
+                    <!-- Loading state -->
+                    <div class="calculations-loading">
+                        <div class="loading-animation">
+                            <div class="loading-spinner"></div>
+                            <p>Loading your property analyses...</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Professional Tools - Enhanced Design -->
+            <section class="professional-section" id="professionalTools" style="display: none;">
+                <div class="section-header">
+                    <div class="header-content">
+                        <h2>🏦 Professional Tools</h2>
+                        <p>Advanced features for mortgage brokers and property professionals</p>
+                    </div>
+                    <div class="pro-badge">PRO</div>
+                </div>
+                
+                <div class="pro-tools-grid">
+                    <div class="pro-tool-card coming-soon">
+                        <div class="tool-header">
+                            <div class="tool-icon-large">👥</div>
+                            <span class="coming-soon-badge">Coming Soon</span>
+                        </div>
+                        <h3>Client Management</h3>
+                        <p>Organize client portfolios, track interactions, and manage property analyses for multiple clients.</p>
+                        <div class="tool-features">
+                            <span class="feature">• Client Profiles</span>
+                            <span class="feature">• Shared Calculations</span>
+                            <span class="feature">• Communication Log</span>
+                        </div>
+                        <button class="tool-btn" disabled>Coming Soon</button>
+                    </div>
+
+                    <div class="pro-tool-card coming-soon">
+                        <div class="tool-header">
+                            <div class="tool-icon-large">📋</div>
+                            <span class="coming-soon-badge">Coming Soon</span>
+                        </div>
+                        <h3>Professional Reports</h3>
+                        <p>Generate branded PDF reports with your logo, custom analysis, and professional presentations.</p>
+                        <div class="tool-features">
+                            <span class="feature">• Branded Templates</span>
+                            <span class="feature">• PDF Generation</span>
+                            <span class="feature">• Email Delivery</span>
+                        </div>
+                        <button class="tool-btn" disabled>Coming Soon</button>
+                    </div>
+
+                    <div class="pro-tool-card coming-soon">
+                        <div class="tool-header">
+                            <div class="tool-icon-large">📊</div>
+                            <span class="coming-soon-badge">Coming Soon</span>
+                        </div>
+                        <h3>Market Insights</h3>
+                        <p>Access real-time market data, suburb analytics, and advanced property valuation tools.</p>
+                        <div class="tool-features">
+                            <span class="feature">• Live Market Data</span>
+                            <span class="feature">• Suburb Analytics</span>
+                            <span class="feature">• Trend Forecasting</span>
+                        </div>
+                        <button class="tool-btn" disabled>Coming Soon</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Quick Actions - Redesigned -->
+            <section class="actions-section">
+                <div class="section-header">
+                    <h2>⚡ Quick Actions</h2>
+                    <p>Frequently used tools and shortcuts</p>
+                </div>
+                
+                <div class="quick-actions-grid">
+                    <a href="calculator.html" class="action-card-modern primary">
+                        <div class="action-icon-modern">🎯</div>
+                        <div class="action-content">
+                            <h3>New Property Analysis</h3>
+                            <p>Analyze a new investment opportunity with our comprehensive calculator</p>
+                            <span class="action-meta">Takes 5 minutes</span>
+                        </div>
+                        <div class="action-arrow">→</div>
+                    </a>
+
+                    <a href="education.html" class="action-card-modern secondary">
+                        <div class="action-icon-modern">📚</div>
+                        <div class="action-content">
+                            <h3>Investment Education</h3>
+                            <p>Learn property investment fundamentals and advanced strategies</p>
+                            <span class="action-meta">6 learning modules</span>
+                        </div>
+                        <div class="action-arrow">→</div>
+                    </a>
+
+                    <button class="action-card-modern tertiary" id="shareBtn">
+                        <div class="action-icon-modern">📤</div>
+                        <div class="action-content">
+                            <h3>Share InvestQuest</h3>
+                            <p>Invite colleagues and friends to try our free analysis tool</p>
+                            <span class="action-meta">Referral rewards</span>
+                        </div>
+                        <div class="action-arrow">→</div>
+                    </button>
+
+                    <button class="action-card-modern quaternary" id="supportBtn">
+                        <div class="action-icon-modern">💬</div>
+                        <div class="action-content">
+                            <h3>Get Support</h3>
+                            <p>Contact our team for help with calculations or platform features</p>
+                            <span class="action-meta">24/7 available</span>
+                        </div>
+                        <div class="action-arrow">→</div>
+                    </button>
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="main-footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <h3>🎯 InvestQuest</h3>
+                    <p>Professional Australian property investment analysis</p>
+                </div>
+                
+                <div class="footer-links">
+                    <div class="footer-column">
+                        <h4>Tools</h4>
+                        <a href="calculator.html">Property Calculator</a>
+                        <a href="education.html">Education Center</a>
+                        <a href="dashboard.html">Dashboard</a>
+                    </div>
+                    
+                    <div class="footer-column">
+                        <h4>Support</h4>
+                        <a href="mailto:support@investquest.app">Contact</a>
+                        <a href="#disclaimer">Disclaimer</a>
+                    </div>
+                </div>
+                
+                <div class="footer-disclaimer" id="disclaimer">
+                    <h4>⚖️ Important Disclaimer</h4>
+                    <p>This calculator provides estimates based on assumptions and should not be considered financial advice. Property investment carries risks including potential losses. Past performance does not guarantee future results. Always consult qualified professionals including mortgage brokers, financial advisers, tax accountants, and solicitors before making investment decisions.</p>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <div class="version-info">
+                    <span class="version-text">InvestQuest v2.0.0</span>
+                    <span class="version-date">Updated August 2025</span>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Include authentication system -->
+    <script src="auth-production.js"></script>
+    <script src="dashboard-production.js"></script>
+    
+    <!-- Dashboard JavaScript -->
+    <script>
+        // Mobile navigation toggle
+        document.querySelector('.nav-toggle').addEventListener('click', function() {
+            document.querySelector('.nav-links').classList.toggle('active');
+        });
+
+        // Logout functionality
+        document.getElementById('logoutBtn').addEventListener('click', async function() {
+            if (confirm('Are you sure you want to sign out?')) {
+                await window.authManager.signOut();
+                window.location.href = 'index.html';
+            }
+        });
+
+        // Share functionality
+        document.getElementById('shareBtn').addEventListener('click', function() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'InvestQuest - Free Property Investment Analysis',
+                    text: 'Check out this amazing free property investment calculator!',
+                    url: window.location.origin
+                });
+            } else {
+                navigator.clipboard.writeText(window.location.origin).then(() => {
+                    alert('Link copied to clipboard!');
+                });
+            }
+        });
+
+        // Support functionality
+        document.getElementById('supportBtn').addEventListener('click', function() {
+            window.open('mailto:support@investquest.app?subject=Dashboard Support Request', '_blank');
+        });
+
+        // Import data functionality
+        document.getElementById('importDataBtn').addEventListener('click', function() {
+            alert('Import functionality coming soon! You\'ll be able to import data from spreadsheets and other calculators.');
+        });
+
+        // View toggle functionality
+        document.querySelectorAll('.toggle-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.toggle-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                
+                if (this.dataset.view === 'chart') {
+                    // TODO: Implement chart view
+                    console.log('Switching to chart view');
+                }
+            });
+        });
+
+        // Filter tabs functionality
+        document.querySelectorAll('.filter-tab').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.filter-tab').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                
+                // TODO: Implement filtering
+                console.log('Filtering by:', this.dataset.filter);
+            });
+        });
+
+        // View controls functionality
+        document.querySelectorAll('.view-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.view-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                
+                const container = document.getElementById('calculationsContainer');
+                if (this.dataset.view === 'list') {
+                    container.classList.add('list-view');
+                } else {
+                    container.classList.remove('list-view');
+                }
+            });
+        });
+
+        // Search functionality
+        document.getElementById('searchCalculations').addEventListener('input', function() {
+            const searchTerm = this.value.toLowerCase();
+            // TODO: Implement search functionality
+            console.log('Searching for:', searchTerm);
+        });
+
+        // Initialize user initials
+        document.addEventListener('DOMContentLoaded', function() {
+            // This will be populated by the dashboard manager
+            const userName = document.getElementById('userName').textContent;
+            const initials = userName.split(' ').map(n => n[0]).join('').toUpperCase();
+            document.getElementById('userInitials').textContent = initials;
+        });
+    </script>
+</body>
+</html>

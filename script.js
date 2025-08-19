@@ -1070,9 +1070,231 @@ class PropertyCalculator {
 
         return insights;
     }
+
+    // Save/Load Functionality for Authenticated Users
+    saveCalculation() {
+        if (!window.authManager || !window.authManager.isAuthenticated()) {
+            // Show sign-in prompt for unauthenticated users
+            this.showSavePrompt();
+            return;
+        }
+
+        const data = this.getCalculationData();
+        if (!data.address || !data.purchasePrice || !data.rentalIncome) {
+            alert('Please fill in the required fields (Address, Purchase Price, and Rental Income) before saving.');
+            return;
+        }
+
+        try {
+            if (window.dashboardManager) {
+                const calculationId = window.dashboardManager.saveCalculation(data);
+                this.showSaveSuccess();
+                return calculationId;
+            } else {
+                // Fallback: save to localStorage temporarily
+                const calculations = JSON.parse(localStorage.getItem('temp-calculations') || '[]');
+                const calculation = {
+                    id: 'temp_' + Date.now(),
+                    data: data,
+                    lastModified: new Date().toISOString()
+                };
+                calculations.push(calculation);
+                localStorage.setItem('temp-calculations', JSON.stringify(calculations));
+                this.showSaveSuccess();
+                return calculation.id;
+            }
+        } catch (error) {
+            console.error('Error saving calculation:', error);
+            alert('Failed to save calculation. Please try again.');
+        }
+    }
+
+    loadCalculation(data) {
+        if (!data) return;
+
+        try {
+            // Populate all form fields with saved data
+            Object.keys(data).forEach(key => {
+                const element = document.getElementById(key);
+                if (element) {
+                    if (element.type === 'checkbox') {
+                        element.checked = data[key];
+                    } else if (element.type === 'radio') {
+                        const radio = document.querySelector(`input[name="${element.name}"][value="${data[key]}"]`);
+                        if (radio) radio.checked = true;
+                    } else {
+                        element.value = data[key] || '';
+                    }
+                }
+            });
+
+            // Trigger calculation updates
+            this.updateLoanCalculations();
+            this.calculateStampDuty();
+            this.calculateLMI();
+            this.updateUpfrontCosts();
+            this.updateRepaymentCalculations();
+            this.toggleInputMode();
+            this.updateModeSelector();
+            this.performCalculations();
+
+            console.log('Calculation loaded successfully');
+        } catch (error) {
+            console.error('Error loading calculation:', error);
+            alert('Failed to load calculation. Please try again.');
+        }
+    }
+
+    getCalculationData() {
+        const data = {};
+        
+        // Get all form field values
+        const fields = [
+            'address', 'state', 'isFirstHomeBuyer', 'purchasePrice', 'deposit', 
+            'rentalIncome', 'purchaseYear', 'stampDuty', 'lmi', 'legalFees', 
+            'buildingInspection', 'loanFees', 'otherUpfrontCosts', 'totalUpfrontCosts',
+            'insurance', 'maintenance', 'councilRates', 'propertyManagement', 
+            'otherExpenses', 'loanAmount', 'interestRate', 'repaymentType', 
+            'loanTerm', 'monthlyRepayment', 'weeklyRepayment', 'propertyGrowth', 
+            'rentalGrowth'
+        ];
+
+        fields.forEach(fieldId => {
+            const element = document.getElementById(fieldId);
+            if (element) {
+                if (element.type === 'checkbox') {
+                    data[fieldId] = element.checked;
+                } else if (element.type === 'number') {
+                    data[fieldId] = parseFloat(element.value) || 0;
+                } else {
+                    data[fieldId] = element.value;
+                }
+            }
+        });
+
+        // Get radio button values
+        const inputType = document.querySelector('input[name="inputType"]:checked');
+        if (inputType) {
+            data.inputType = inputType.value;
+        }
+
+        // Get checkbox values
+        const applyLMI = document.getElementById('applyLMI');
+        if (applyLMI) {
+            data.applyLMI = applyLMI.checked;
+        }
+
+        const loan100PlusCosts = document.getElementById('loan100PlusCosts');
+        if (loan100PlusCosts) {
+            data.loan100PlusCosts = loan100PlusCosts.checked;
+        }
+
+        return data;
+    }
+
+    showSavePrompt() {
+        if (window.AuthUI) {
+            const customModal = document.createElement('div');
+            customModal.className = 'auth-modal';
+            customModal.innerHTML = `
+                <div class="auth-modal-backdrop"></div>
+                <div class="auth-modal-content">
+                    <div class="auth-modal-header">
+                        <h2>💾 Save Your Analysis</h2>
+                        <button class="auth-modal-close">&times;</button>
+                    </div>
+                    <div class="auth-modal-body">
+                        <p>Sign in to save your property calculations and access them from any device.</p>
+                        
+                        <button class="auth-google-btn" id="savePromptSignIn">
+                            <svg width="20" height="20" viewBox="0 0 24 24">
+                                <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                                <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                                <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+                                <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+                            </svg>
+                            Sign In to Save
+                        </button>
+                        
+                        <div class="auth-benefits">
+                            <h4>✨ Why sign in?</h4>
+                            <ul>
+                                <li>💾 Save unlimited property calculations</li>
+                                <li>📱 Access from any device</li>
+                                <li>📊 Track your investment portfolio</li>
+                                <li>🎯 Get personalized insights</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(customModal);
+            
+            // Event listeners
+            customModal.querySelector('.auth-modal-close').onclick = () => customModal.remove();
+            customModal.querySelector('.auth-modal-backdrop').onclick = () => customModal.remove();
+            
+            customModal.querySelector('#savePromptSignIn').onclick = async () => {
+                try {
+                    await window.authManager.signInWithGoogle();
+                    customModal.remove();
+                    // Auto-save after successful login
+                    setTimeout(() => this.saveCalculation(), 500);
+                } catch (error) {
+                    console.error('Sign in failed:', error);
+                    alert('Sign in failed. Please try again.');
+                }
+            };
+        }
+    }
+
+    showSaveSuccess() {
+        // Simple success notification
+        const notification = document.createElement('div');
+        notification.style.cssText = `
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #10b981;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            z-index: 1000;
+            font-weight: 500;
+        `;
+        notification.textContent = '✅ Calculation saved successfully!';
+        document.body.appendChild(notification);
+        
+        setTimeout(() => {
+            notification.remove();
+        }, 3000);
+    }
+
+    // Check for calculation to load on page load
+    checkForLoadCalculation() {
+        const loadData = sessionStorage.getItem('loadCalculation');
+        if (loadData) {
+            try {
+                const data = JSON.parse(loadData);
+                sessionStorage.removeItem('loadCalculation');
+                setTimeout(() => {
+                    this.loadCalculation(data);
+                }, 500); // Small delay to ensure form is ready
+            } catch (error) {
+                console.error('Error loading calculation from session:', error);
+            }
+        }
+    }
 }
 
 // Initialize the calculator when the page loads
 document.addEventListener('DOMContentLoaded', function() {
     window.propertyCalculator = new PropertyCalculator();
+    
+    // Check for calculation to load after initialization
+    setTimeout(() => {
+        window.propertyCalculator.checkForLoadCalculation();
+    }, 1000);
 });

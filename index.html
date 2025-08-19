@@ -23,7 +23,7 @@
                 <a href="index.html" class="nav-link active">Home</a>
                 <a href="calculator.html" class="nav-link">Calculator</a>
                 <a href="education.html" class="nav-link">Education</a>
-                <a href="calculator.html" class="nav-cta">Get Free Analysis</a>
+                <button class="nav-cta auth-signin-btn">Sign In</button>
             </div>
             <button class="nav-toggle" aria-label="Toggle navigation">
                 <span></span>
@@ -42,21 +42,7 @@
                     <p class="hero-subtitle">Discover if your property investment will reach your financial goals. Our free analysis tool provides actionable insights, 30-year projections, and personalized recommendations—no strings attached.</p>
                     <div class="hero-cta">
                         <a href="calculator.html" class="cta-primary large">Get Free Analysis Now</a>
-                        <a href="#features" class="cta-secondary">See What's Included</a>
-                    </div>
-                    <div class="hero-benefits">
-                        <div class="benefit">
-                            <span class="benefit-icon">🆓</span>
-                            <span class="benefit-label">No Cost</span>
-                        </div>
-                        <div class="benefit">
-                            <span class="benefit-icon">⚡</span>
-                            <span class="benefit-label">Results in 2 Minutes</span>
-                        </div>
-                        <div class="benefit">
-                            <span class="benefit-icon">🔒</span>
-                            <span class="benefit-label">No Email Required</span>
-                        </div>
+                        <button class="cta-primary auth-signin-btn">🔐 Sign In to Save Results</button>
                     </div>
                 </div>
                 <div class="hero-visual">
@@ -132,6 +118,20 @@
                     <div class="feature-icon">🎓</div>
                     <h3>Expert Insights & Education</h3>
                     <p>Learn what the numbers mean with plain-English explanations and property investment fundamentals.</p>
+                </div>
+                
+                <div class="feature-card premium">
+                    <div class="feature-icon">💾</div>
+                    <h3>Save & Track (Sign In)</h3>
+                    <p>Create an account to save unlimited calculations, track your investment portfolio, and access your data from any device.</p>
+                    <button class="feature-cta auth-signin-btn">Sign In Free</button>
+                </div>
+                
+                <div class="feature-card premium">
+                    <div class="feature-icon">📊</div>
+                    <h3>Investment Dashboard (Sign In)</h3>
+                    <p>Get personalized insights, goal tracking, and professional-grade portfolio management tools when you create a free account.</p>
+                    <button class="feature-cta auth-signin-btn">Sign In Free</button>
                 </div>
             </div>
         </div>
@@ -245,10 +245,13 @@
     <section class="cta-section section">
         <div class="container">
             <div class="cta-content">
-                <h2>Get Your Property Analysis Now</h2>
-                <p>Join thousands who've discovered their property's true potential. No email required, no hidden costs, no catch.</p>
-                <a href="calculator.html" class="cta-primary large">Start Free Analysis</a>
-                <p class="cta-note">✓ Takes 2 minutes • ✓ No email required • ✓ Instant results</p>
+                <h2>Ready to Build Your Property Portfolio?</h2>
+                <p>Start with a free analysis, then sign in to unlock portfolio tracking, saved calculations, and personalized insights.</p>
+                <div class="cta-buttons">
+                    <a href="calculator.html" class="cta-primary large">Start Free Analysis</a>
+                    <button class="cta-secondary large auth-signin-btn">Sign In to Save & Track</button>
+                </div>
+                <p class="cta-note">✓ Free forever • ✓ No credit card • ✓ Professional insights</p>
             </div>
         </div>
     </section>
@@ -267,6 +270,7 @@
                         <h4>Tools</h4>
                         <a href="calculator.html">Property Calculator</a>
                         <a href="education.html">Education Center</a>
+                        <a href="dashboard.html" id="dashboardLink" style="display: none;">Dashboard</a>
                     </div>
                     
                     <div class="footer-column">
@@ -291,6 +295,9 @@
         </div>
     </footer>
 
+    <!-- Include authentication system -->
+    <script src="auth-production.js"></script>
+    
     <!-- Navigation JavaScript -->
     <script>
         // Mobile navigation toggle

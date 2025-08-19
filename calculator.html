@@ -309,6 +309,14 @@
                         </div>
 
                     </form>
+                    
+                    <!-- Save Calculation Section -->
+                    <div class="save-calculation-section">
+                        <button type="button" id="saveCalculationBtn" class="save-btn">
+                            💾 Save This Analysis
+                        </button>
+                        <p class="save-description">Save your calculation to access it later from any device</p>
+                    </div>
 
                     <!-- Investment Comparison - moved to left panel for better visibility -->
                     <div id="leftComparisonContainer" style="display: none;">
@@ -411,6 +419,9 @@
         </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Include authentication and dashboard systems -->
+    <script src="auth-production.js"></script>
+    <script src="dashboard-production.js"></script>
     <script>
         // Configuration - API key removed for security
         // Note: Add your new API key here temporarily after securing it
@@ -458,6 +469,18 @@
         // Mobile navigation toggle
         document.querySelector('.nav-toggle').addEventListener('click', function() {
             document.querySelector('.nav-links').classList.toggle('active');
+        });
+
+        // Save calculation button
+        document.addEventListener('DOMContentLoaded', function() {
+            const saveBtn = document.getElementById('saveCalculationBtn');
+            if (saveBtn) {
+                saveBtn.addEventListener('click', function() {
+                    if (window.propertyCalculator) {
+                        window.propertyCalculator.saveCalculation();
+                    }
+                });
+            }
         });
     </script>
     <script src="script.js"></script>
