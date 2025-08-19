@@ -21,36 +21,82 @@ class ProductionDashboardManager {
             return;
         }
 
-        await window.authManager.init();
-        this.user = window.authManager.getCurrentUser();
+        try {
+            await window.authManager.init();
+            
+            // Wait for authentication state to be determined
+            await this.waitForAuthState();
+            
+            this.user = window.authManager.getCurrentUser();
 
-        if (!this.user) {
-            window.location.href = 'index.html';
-            return;
-        }
-
-        // Get Firestore instance if available
-        if (window.authManager.isFirebaseAvailable()) {
-            this.db = firebase.firestore();
-            console.log('🔥 Using Firebase Firestore for data persistence');
-        } else {
-            console.log('📦 Using localStorage fallback for data persistence');
-        }
-
-        window.authManager.onAuthStateChange((user) => {
-            if (!user) {
+            if (!this.user) {
+                console.log('🔐 No authenticated user found, redirecting to home');
                 window.location.href = 'index.html';
+                return;
+            }
+
+            console.log('👤 Authenticated user found:', this.user.displayName || this.user.email);
+
+            // Get Firestore instance if available
+            if (window.authManager.isFirebaseAvailable()) {
+                this.db = firebase.firestore();
+                console.log('🔥 Using Firebase Firestore for data persistence');
             } else {
-                this.user = user;
-                this.loadUserData();
+                console.log('📦 Using localStorage fallback for data persistence');
+            }
+
+            // Set up auth state change listener for future changes
+            window.authManager.onAuthStateChange((user) => {
+                if (!user) {
+                    console.log('🔐 User signed out, redirecting to home');
+                    window.location.href = 'index.html';
+                } else {
+                    this.user = user;
+                    this.loadUserData();
+                }
+            });
+
+            this.setupDashboard();
+            await this.loadUserData();
+            this.isInitialized = true;
+            
+            // Remove loading indicator
+            this.hideLoadingIndicator();
+            
+            console.log('✅ Dashboard fully initialized for user:', this.user.displayName || this.user.email);
+            
+        } catch (error) {
+            console.error('❌ Dashboard initialization failed:', error);
+            window.location.href = 'index.html';
+        }
+    }
+
+    // Wait for Firebase auth state to be determined
+    async waitForAuthState() {
+        return new Promise((resolve) => {
+            if (window.authManager.isFirebaseAvailable()) {
+                // For Firebase, wait for auth state to be determined
+                const unsubscribe = firebase.auth().onAuthStateChanged((user) => {
+                    unsubscribe();
+                    resolve();
+                });
+            } else {
+                // For demo mode, resolve immediately
+                resolve();
             }
         });
+    }
 
-        this.setupDashboard();
-        await this.loadUserData();
-        this.isInitialized = true;
-
-        console.log('🏠 Production dashboard ready');
+    // Hide loading indicator
+    hideLoadingIndicator() {
+        const loadingDiv = document.getElementById('auth-loading');
+        if (loadingDiv) {
+            loadingDiv.remove();
+        }
+        const container = document.querySelector('.container');
+        if (container) {
+            container.style.opacity = '1';
+        }
     }
 
     // Setup dashboard UI

@@ -353,6 +353,21 @@
     
     <!-- Dashboard JavaScript -->
     <script>
+        // Show loading indicator while checking authentication
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🚀 Dashboard page loaded, checking authentication...');
+            
+            // Show loading indicator
+            const container = document.querySelector('.container');
+            if (container) {
+                container.style.opacity = '0.5';
+                const loadingDiv = document.createElement('div');
+                loadingDiv.id = 'auth-loading';
+                loadingDiv.innerHTML = '<div style="text-align: center; padding: 40px;"><div class="loading-spinner"></div><p>Checking authentication...</p></div>';
+                container.prepend(loadingDiv);
+            }
+        });
+
         // Mobile navigation toggle
         document.querySelector('.nav-toggle').addEventListener('click', function() {
             document.querySelector('.nav-links').classList.toggle('active');
