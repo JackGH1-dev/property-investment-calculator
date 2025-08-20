@@ -1207,8 +1207,34 @@ class PropertyCalculator {
                 return calculation.id;
             }
         } catch (error) {
-            console.error('Error saving calculation:', error);
-            alert('Failed to save calculation. Please try again.');
+            console.error('🚨 Error saving calculation:', error);
+            console.error('🚨 Error details:', {
+                message: error.message,
+                code: error.code,
+                authManager: !!window.authManager,
+                isAuthenticated: window.authManager ? window.authManager.isAuthenticated() : false,
+                firebaseAvailable: !!firebase,
+                firestoreAvailable: !!(firebase && firebase.firestore)
+            });
+            
+            // Try localStorage fallback
+            try {
+                console.log('📦 Attempting localStorage fallback...');
+                const calculations = JSON.parse(localStorage.getItem('temp-calculations') || '[]');
+                const calculation = {
+                    id: 'temp_' + Date.now(),
+                    data: data,
+                    lastModified: new Date().toISOString()
+                };
+                calculations.push(calculation);
+                localStorage.setItem('temp-calculations', JSON.stringify(calculations));
+                console.log('📦 Saved to localStorage successfully');
+                alert('Saved to local storage! Your calculation will be available on this device. Sign in and save again to sync across devices.');
+                return calculation.id;
+            } catch (localError) {
+                console.error('📦 localStorage fallback also failed:', localError);
+                alert('Failed to save calculation. Please try again.');
+            }
         }
     }
 
