@@ -16,23 +16,50 @@ class ProductionDashboardManager {
     async init() {
         if (this.isInitialized) return;
 
+        console.log('🏠 Dashboard init starting...');
+
         if (!window.authManager) {
+            console.log('🏠 AuthManager not ready, waiting...');
             setTimeout(() => this.init(), 100);
             return;
         }
 
         try {
+            console.log('🏠 Initializing auth manager...');
             await window.authManager.init();
             
+            console.log('🏠 Waiting for auth state...');
             // Wait for authentication state to be determined
             await this.waitForAuthState();
             
+            console.log('🏠 Checking current user...');
             this.user = window.authManager.getCurrentUser();
+            console.log('🏠 Current user from authManager:', this.user);
 
             if (!this.user) {
-                console.log('🔐 No authenticated user found, redirecting to home');
-                window.location.href = 'index.html';
-                return;
+                console.log('🔐 No authenticated user found, waiting a bit more...');
+                // Wait a bit more in case auth is still processing
+                await new Promise(resolve => setTimeout(resolve, 2000)); // Increased to 2 seconds
+                this.user = window.authManager.getCurrentUser();
+                console.log('🏠 User after delay:', this.user);
+                
+                // Also check Firebase directly
+                if (window.authManager.isFirebaseAvailable() && firebase.auth().currentUser) {
+                    console.log('🔥 Firebase has current user:', firebase.auth().currentUser.email);
+                    this.user = {
+                        uid: firebase.auth().currentUser.uid,
+                        displayName: firebase.auth().currentUser.displayName,
+                        email: firebase.auth().currentUser.email,
+                        photoURL: firebase.auth().currentUser.photoURL,
+                        emailVerified: firebase.auth().currentUser.emailVerified
+                    };
+                }
+                
+                if (!this.user) {
+                    console.log('🔐 Still no authenticated user, redirecting to home');
+                    window.location.href = 'index.html';
+                    return;
+                }
             }
 
             console.log('👤 Authenticated user found:', this.user.displayName || this.user.email);
@@ -73,14 +100,42 @@ class ProductionDashboardManager {
 
     // Wait for Firebase auth state to be determined
     async waitForAuthState() {
+        console.log('🏠 Starting auth state wait...');
         return new Promise((resolve) => {
             if (window.authManager.isFirebaseAvailable()) {
-                // For Firebase, wait for auth state to be determined
+                console.log('🏠 Firebase available, checking auth state...');
+                
+                // Check if user is already available
+                const currentUser = firebase.auth().currentUser;
+                if (currentUser) {
+                    console.log('🏠 User already available:', currentUser.email);
+                    setTimeout(resolve, 100);
+                    return;
+                }
+                
+                // Wait for auth state change
+                let resolved = false;
                 const unsubscribe = firebase.auth().onAuthStateChanged((user) => {
-                    unsubscribe();
-                    resolve();
+                    console.log('🏠 Auth state changed in waitForAuthState:', user ? user.email : 'no user');
+                    if (!resolved) {
+                        resolved = true;
+                        unsubscribe();
+                        // Give extra time for user document creation to complete
+                        setTimeout(resolve, 1000); // Increased timeout
+                    }
                 });
+                
+                // Fallback timeout to prevent infinite waiting
+                setTimeout(() => {
+                    if (!resolved) {
+                        console.log('🏠 Auth state wait timed out');
+                        resolved = true;
+                        unsubscribe();
+                        resolve();
+                    }
+                }, 8000); // Increased timeout
             } else {
+                console.log('🏠 Firebase not available, using demo mode');
                 // For demo mode, resolve immediately
                 resolve();
             }

@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Auth Test - InvestQuest</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            padding: 20px;
+            font-family: Inter, sans-serif;
+            background: #f9fafb;
+        }
+        .test-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .status-box {
+            background: #f3f4f6;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border-left: 4px solid #3b82f6;
+        }
+        .success { border-left-color: #10b981; background: #ecfdf5; }
+        .error { border-left-color: #ef4444; background: #fef2f2; }
+        .warning { border-left-color: #f59e0b; background: #fffbeb; }
+        
+        .test-buttons {
+            display: flex;
+            gap: 12px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+        
+        .test-btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .test-btn.primary { background: #3b82f6; color: white; }
+        .test-btn.secondary { background: #6b7280; color: white; }
+        .test-btn.success { background: #10b981; color: white; }
+        .test-btn.danger { background: #ef4444; color: white; }
+        
+        .test-btn:hover { transform: translateY(-1px); box-shadow: 0 4px 8px rgba(0,0,0,0.2); }
+        
+        .console-log {
+            background: #1f2937;
+            color: #e5e7eb;
+            padding: 15px;
+            border-radius: 6px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            max-height: 300px;
+            overflow-y: auto;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>🧪 Authentication System Test</h1>
+        <p>This page tests the InvestQuest authentication system in isolation.</p>
+        
+        <div class="status-box" id="authStatus">
+            <h3>🔐 Auth Status</h3>
+            <p id="authStatusText">Loading...</p>
+        </div>
+        
+        <div class="test-buttons">
+            <button class="test-btn primary auth-signin-btn">Test Sign In Modal</button>
+            <button class="test-btn secondary" onclick="testUserTypeModal()">Test User Type Modal</button>
+            <button class="test-btn success" onclick="checkAuthState()">Check Auth State</button>
+            <button class="test-btn danger" onclick="testSignOut()">Test Sign Out</button>
+        </div>
+        
+        <div class="status-box">
+            <h3>📋 Test Results</h3>
+            <div id="testResults">
+                <p>Click buttons above to test functionality...</p>
+            </div>
+        </div>
+        
+        <div class="status-box">
+            <h3>🗂️ Console Output</h3>
+            <div class="console-log" id="consoleOutput">
+                Console messages will appear here...
+            </div>
+        </div>
+        
+        <div class="test-buttons">
+            <a href="index.html" class="test-btn primary">Test Landing Page</a>
+            <a href="calculator.html" class="test-btn secondary">Test Calculator</a>
+            <a href="dashboard.html" class="test-btn success">Test Dashboard</a>
+        </div>
+    </div>
+
+    <script src="auth.js"></script>
+    
+    <script>
+        // Console capture for debugging
+        const originalLog = console.log;
+        const originalError = console.error;
+        const originalWarn = console.warn;
+        
+        function addToConsole(message, type = 'log') {
+            const consoleOutput = document.getElementById('consoleOutput');
+            const timestamp = new Date().toLocaleTimeString();
+            const color = type === 'error' ? '#ef4444' : type === 'warn' ? '#f59e0b' : '#10b981';
+            consoleOutput.innerHTML += `<div style="color: ${color};">[${timestamp}] ${message}</div>`;
+            consoleOutput.scrollTop = consoleOutput.scrollHeight;
+        }
+        
+        console.log = function(...args) {
+            originalLog.apply(console, args);
+            addToConsole(args.join(' '), 'log');
+        };
+        
+        console.error = function(...args) {
+            originalError.apply(console, args);
+            addToConsole(args.join(' '), 'error');
+        };
+        
+        console.warn = function(...args) {
+            originalWarn.apply(console, args);
+            addToConsole(args.join(' '), 'warn');
+        };
+
+        // Test functions
+        function updateAuthStatus() {
+            const authStatusBox = document.getElementById('authStatus');
+            const authStatusText = document.getElementById('authStatusText');
+            
+            if (!window.authManager) {
+                authStatusBox.className = 'status-box error';
+                authStatusText.innerHTML = '❌ Auth Manager not loaded';
+                return;
+            }
+            
+            const user = window.authManager.getCurrentUser();
+            if (user) {
+                authStatusBox.className = 'status-box success';
+                authStatusText.innerHTML = `
+                    ✅ <strong>Authenticated</strong><br>
+                    Name: ${user.displayName}<br>
+                    Email: ${user.email}<br>
+                    Type: ${user.userType || 'Not set'}<br>
+                    UID: ${user.uid}
+                `;
+            } else {
+                authStatusBox.className = 'status-box warning';
+                authStatusText.innerHTML = '⚠️ Not authenticated';
+            }
+        }
+        
+        function addTestResult(message, success = true) {
+            const testResults = document.getElementById('testResults');
+            const timestamp = new Date().toLocaleTimeString();
+            const icon = success ? '✅' : '❌';
+            const color = success ? '#10b981' : '#ef4444';
+            
+            testResults.innerHTML += `
+                <div style="color: ${color}; margin: 8px 0;">
+                    ${icon} [${timestamp}] ${message}
+                </div>
+            `;
+        }
+        
+        function testUserTypeModal() {
+            console.log('Testing user type modal...');
+            try {
+                window.AuthUI.showUserTypeSelection();
+                addTestResult('User type modal displayed successfully');
+            } catch (error) {
+                console.error('User type modal test failed:', error);
+                addTestResult('User type modal test failed: ' + error.message, false);
+            }
+        }
+        
+        function checkAuthState() {
+            console.log('Checking auth state...');
+            try {
+                updateAuthStatus();
+                const user = window.authManager?.getCurrentUser();
+                addTestResult(`Auth state check: ${user ? 'Authenticated' : 'Not authenticated'}`);
+            } catch (error) {
+                console.error('Auth state check failed:', error);
+                addTestResult('Auth state check failed: ' + error.message, false);
+            }
+        }
+        
+        async function testSignOut() {
+            console.log('Testing sign out...');
+            try {
+                if (window.authManager && window.authManager.isAuthenticated()) {
+                    await window.authManager.signOut();
+                    addTestResult('Sign out successful');
+                    updateAuthStatus();
+                } else {
+                    addTestResult('No user to sign out', false);
+                }
+            } catch (error) {
+                console.error('Sign out test failed:', error);
+                addTestResult('Sign out test failed: ' + error.message, false);
+            }
+        }
+        
+        // Initialize when DOM is ready
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Test page DOM loaded');
+            addTestResult('Test page initialized');
+            
+            // Wait a bit for auth system to initialize
+            setTimeout(() => {
+                updateAuthStatus();
+                
+                // Set up auth state listener
+                if (window.authManager) {
+                    window.authManager.onAuthStateChange(() => {
+                        console.log('Auth state changed in test page');
+                        updateAuthStatus();
+                    });
+                    addTestResult('Auth state listener added');
+                } else {
+                    addTestResult('Auth manager not available', false);
+                }
+            }, 1000);
+        });
+    </script>
+</body>
+</html>

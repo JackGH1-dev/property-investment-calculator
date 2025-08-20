@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Authentication Test - InvestQuest</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body style="padding: 20px; font-family: Inter, sans-serif;">
+    <h1>🧪 InvestQuest Authentication Test</h1>
+    
+    <div style="background: #f9fafb; padding: 20px; border-radius: 8px; margin: 20px 0;">
+        <h2>Test Authentication Flow</h2>
+        <button id="testSignIn" class="cta-primary">Test Sign In Modal</button>
+        <button id="testUserType" class="cta-secondary">Test User Type Selection</button>
+        <button id="checkAuthState" class="save-btn">Check Auth State</button>
+        
+        <div style="margin-top: 20px;">
+            <h3>Auth Status:</h3>
+            <p id="authStatus">Loading...</p>
+        </div>
+        
+        <div style="margin-top: 20px;">
+            <h3>Dashboard Manager Status:</h3>
+            <p id="dashboardStatus">Loading...</p>
+        </div>
+    </div>
+    
+    <div style="background: #f3f4f6; padding: 20px; border-radius: 8px; margin: 20px 0;">
+        <h2>Test Calculator Integration</h2>
+        <button id="testSaveFlow" class="save-btn">Test Save Flow</button>
+        <button id="testLoadFlow" class="cta-secondary">Test Load Flow</button>
+        
+        <div style="margin-top: 20px;">
+            <h3>Calculator Status:</h3>
+            <p id="calculatorStatus">Loading...</p>
+        </div>
+    </div>
+    
+    <div style="background: #fef3c7; padding: 20px; border-radius: 8px; margin: 20px 0;">
+        <h2>Navigation Test</h2>
+        <a href="index.html" class="cta-primary">Test Landing Page</a>
+        <a href="calculator.html" class="cta-secondary">Test Calculator</a>
+        <a href="dashboard.html" class="save-btn">Test Dashboard</a>
+    </div>
+
+    <script src="auth.js"></script>
+    <script src="dashboard.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async function() {
+            // Initialize auth manager
+            await window.authManager.init();
+            
+            // Test buttons
+            document.getElementById('testSignIn').onclick = () => {
+                window.AuthUI.showAuthModal('signin');
+            };
+            
+            document.getElementById('testUserType').onclick = () => {
+                window.AuthUI.showUserTypeSelection();
+            };
+            
+            document.getElementById('checkAuthState').onclick = () => {
+                updateStatus();
+            };
+            
+            document.getElementById('testSaveFlow').onclick = () => {
+                const mockData = {
+                    address: "123 Test Street, Sydney NSW 2000",
+                    purchasePrice: 750000,
+                    rentalIncome: 650,
+                    deposit: 150000
+                };
+                
+                if (window.dashboardManager) {
+                    try {
+                        const id = window.dashboardManager.saveCalculation(mockData);
+                        alert(`Test calculation saved with ID: ${id}`);
+                    } catch (error) {
+                        alert(`Save failed: ${error.message}`);
+                    }
+                } else {
+                    alert('Dashboard manager not available');
+                }
+            };
+            
+            document.getElementById('testLoadFlow').onclick = () => {
+                if (window.dashboardManager) {
+                    const calculations = window.dashboardManager.calculations;
+                    if (calculations.length > 0) {
+                        alert(`Found ${calculations.length} saved calculations`);
+                    } else {
+                        alert('No saved calculations found');
+                    }
+                } else {
+                    alert('Dashboard manager not available');
+                }
+            };
+            
+            // Update status
+            function updateStatus() {
+                const authStatus = document.getElementById('authStatus');
+                const dashboardStatus = document.getElementById('dashboardStatus');
+                const calculatorStatus = document.getElementById('calculatorStatus');
+                
+                // Auth status
+                const user = window.authManager.getCurrentUser();
+                if (user) {
+                    authStatus.innerHTML = `✅ Authenticated: ${user.displayName} (${user.userType || 'no type'})`;
+                } else {
+                    authStatus.innerHTML = '❌ Not authenticated';
+                }
+                
+                // Dashboard status
+                if (window.dashboardManager) {
+                    dashboardStatus.innerHTML = '✅ Dashboard manager loaded';
+                } else {
+                    dashboardStatus.innerHTML = '❌ Dashboard manager not loaded';
+                }
+                
+                // Calculator status
+                if (window.propertyCalculator) {
+                    calculatorStatus.innerHTML = '✅ Property calculator loaded';
+                } else {
+                    calculatorStatus.innerHTML = '❌ Property calculator not loaded';
+                }
+            }
+            
+            // Initial status update
+            updateStatus();
+            
+            // Listen for auth changes
+            window.authManager.onAuthStateChange(() => {
+                setTimeout(updateStatus, 100);
+            });
+        });
+    </script>
+</body>
+</html>

@@ -69,6 +69,27 @@ class ProductionAuthManager {
         this.auth = firebase.auth();
         this.db = firebase.firestore();
 
+        // Check if there's already a persisted user
+        const persistedUser = this.auth.currentUser;
+        if (persistedUser) {
+            console.log('🔥 Found persisted user:', persistedUser.email);
+            this.currentUser = {
+                uid: persistedUser.uid,
+                displayName: persistedUser.displayName,
+                email: persistedUser.email,
+                photoURL: persistedUser.photoURL,
+                emailVerified: persistedUser.emailVerified
+            };
+        }
+
+        // Configure Firebase Auth persistence
+        try {
+            await this.auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL);
+            console.log('🔥 Firebase Auth persistence set to LOCAL');
+        } catch (error) {
+            console.warn('🔥 Auth persistence not available:', error.message);
+        }
+
         // Configure Firestore settings
         this.db.settings({
             cacheSizeBytes: firebase.firestore.CACHE_SIZE_UNLIMITED
@@ -82,9 +103,9 @@ class ProductionAuthManager {
             console.warn('🔥 Firestore persistence not available:', error.message);
         }
 
-        // Set up real auth state listener
+        // Set up real auth state listener with immediate check
         this.auth.onAuthStateChanged(async (user) => {
-            console.log('🔥 Auth state changed:', user ? 'signed in' : 'signed out');
+            console.log('🔥 Auth state changed:', user ? `signed in as ${user.email}` : 'signed out');
             
             if (user) {
                 // Create/update user document in Firestore
@@ -194,6 +215,10 @@ class ProductionAuthManager {
             }
         } catch (error) {
             console.error('🔥 Error creating/updating user document:', error);
+            console.error('🔥 Error details:', error.code, error.message);
+            
+            // Continue anyway - don't block authentication for database issues
+            console.log('🔥 Continuing with authentication despite database error');
         }
     }
 
@@ -215,6 +240,10 @@ class ProductionAuthManager {
             }
         } catch (error) {
             console.error('🔥 Error loading user profile:', error);
+            console.error('🔥 Error details:', error.code, error.message);
+            
+            // Continue anyway - don't block authentication for profile loading issues
+            console.log('🔥 Continuing with authentication despite profile loading error');
         }
     }
 
@@ -480,12 +509,25 @@ class ProductionAuthUI {
                 const user = await window.authManager.signInWithGoogle();
                 console.log('🎨 Sign in successful:', user);
                 
+                // Close modal and wait for any async operations
                 modal.remove();
+                await new Promise(resolve => setTimeout(resolve, 100));
                 
                 if (!user.userType) {
-                    setTimeout(() => ProductionAuthUI.showUserTypeSelection(), 300);
+                    setTimeout(() => ProductionAuthUI.showUserTypeSelection(), 500);
                 } else {
-                    setTimeout(() => window.location.href = 'dashboard.html', 500);
+                    // Allow more time for async operations to complete
+                    setTimeout(() => {
+                        try {
+                            console.log('🔀 Redirecting to dashboard...');
+                            // Use replace to avoid back button issues
+                            window.location.replace('dashboard.html');
+                        } catch (error) {
+                            console.warn('Redirect error:', error);
+                            // Fallback
+                            window.location.href = 'dashboard.html';
+                        }
+                    }, 1500);
                 }
             } catch (error) {
                 console.error('🎨 Sign in failed:', error);
@@ -546,7 +588,18 @@ class ProductionAuthUI {
                     await window.authManager.setUserType(userType);
                     modal.remove();
                     
-                    setTimeout(() => window.location.href = 'dashboard.html', 500);
+                    // Allow more time for async operations to complete
+                    setTimeout(() => {
+                        try {
+                            console.log('🔀 Redirecting to dashboard...');
+                            // Use replace to avoid back button issues
+                            window.location.replace('dashboard.html');
+                        } catch (error) {
+                            console.warn('Redirect error:', error);
+                            // Fallback
+                            window.location.href = 'dashboard.html';
+                        }
+                    }, 1500);
                 } catch (error) {
                     console.error('🎨 Failed to set user type:', error);
                     alert('Failed to set user type: ' + error.message);

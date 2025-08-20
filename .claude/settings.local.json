@@ -1,11 +1,23 @@
 {
   "permissions": {
     "allow": [
-      "Bash(git add:*)",
-      "Bash(git push:*)"
+      "mcp__ruv-swarm",
+      "mcp__claude-flow",
+      "Bash(.claude-flow.bat swarm \"Analyze the InvestQuest project dashboard design and suggest specific improvements for mobile responsiveness and performance optimization\" --strategy analysis --monitor --verbose)",
+      "Bash(powershell.exe:*)",
+      "WebFetch(domain:investquest.app)",
+      "Bash(node:*)",
+      "Bash(git commit:*)",
+      "Bash(git pull:*)",
+      "Bash(git checkout:*)",
+      "Bash(firebase --version)",
+      "Bash(firebase list:*)",
+      "Bash(firebase projects:list:*)",
+      "Bash(firebase login:*)",
+      "Bash(firebase use:*)",
+      "Bash(firebase deploy:*)",
+      "Bash(git add:*)"
     ],
-    "deny": [],
-    "ask": [],
-    "defaultMode": "acceptEdits"
+    "deny": []
   }
 }

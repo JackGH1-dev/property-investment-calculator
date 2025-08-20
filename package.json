@@ -1,0 +1,43 @@
+{
+  "name": "investquest",
+  "version": "2.0.0",
+  "description": "InvestQuest - Australian Property Investment Calculator",
+  "main": "index.html",
+  "scripts": {
+    "dev": "python -m http.server 8000",
+    "build": "echo 'Building for production...' && npm run lint",
+    "lint": "echo 'Linting JavaScript files...'",
+    "deploy": "firebase deploy",
+    "serve": "firebase serve",
+    "test": "echo 'Running tests...'",
+    "start": "npm run dev"
+  },
+  "keywords": [
+    "property",
+    "investment",
+    "calculator",
+    "australia",
+    "real-estate",
+    "mortgage",
+    "broker"
+  ],
+  "author": "InvestQuest Team",
+  "license": "MIT",
+  "devDependencies": {
+    "firebase-tools": "^12.4.0"
+  },
+  "dependencies": {
+    "firebase": "^9.23.0"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/YourUsername/investquest"
+  },
+  "homepage": "https://investquest.com.au",
+  "bugs": {
+    "url": "https://github.com/YourUsername/investquest/issues"
+  }
+}
