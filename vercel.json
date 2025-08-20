@@ -7,6 +7,14 @@
       "dest": "/test-page.html"
     },
     {
+      "src": "/dashboard-test.html",
+      "dest": "/dashboard-test.html"
+    },
+    {
+      "src": "/dashboard-debug.html",
+      "dest": "/dashboard-debug.html"
+    },
+    {
       "src": "/dashboard.html",
       "dest": "/dashboard.html"
     },

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Test - InvestQuest</title>
+    <link rel="stylesheet" href="styles.css">
+    
+    <script>
+        console.log('🔍 DASHBOARD TEST PAGE LOADED');
+        console.log('🔍 Current URL:', window.location.href);
+        
+        // Mock authentication for testing
+        window.mockUser = {
+            uid: 'test-user-123',
+            email: 'test@example.com',
+            displayName: 'Test User'
+        };
+        
+        // Mock auth manager
+        window.authManager = {
+            getCurrentUser: () => window.mockUser,
+            isFirebaseAvailable: () => false,
+            onAuthStateChange: (callback) => {
+                console.log('🔍 Mock auth state change listener set up');
+                // Don't call the callback to avoid redirects
+            }
+        };
+        
+        console.log('🔍 Mock authentication ready');
+    </script>
+</head>
+<body>
+    <h1>🔍 Dashboard Test Page</h1>
+    <p>This is a test version of the dashboard with mock authentication.</p>
+    <p>If this page loads and stays loaded, the issue is with authentication.</p>
+    <p>If this page also redirects, the issue is elsewhere.</p>
+    
+    <div id="loading">Loading dashboard...</div>
+    
+    <script>
+        console.log('🔍 About to load dashboard script...');
+    </script>
+    
+    <script src="dashboard-production.js"></script>
+    
+    <script>
+        console.log('🔍 Dashboard script loaded');
+        setTimeout(() => {
+            console.log('🔍 Still on test page after 5 seconds');
+        }, 5000);
+        
+        setTimeout(() => {
+            console.log('🔍 Still on test page after 15 seconds');
+        }, 15000);
+    </script>
+</body>
+</html>
