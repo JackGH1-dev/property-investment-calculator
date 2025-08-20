@@ -1,6 +1,0 @@
-# Netlify-style redirects (backup)
-/dashboard /dashboard.html 200
-/calculator /calculator.html 200
-
-# Fallback - don't redirect HTML files
-/*.html /:splat 200

@@ -18,7 +18,8 @@
       "Bash(firebase deploy:*)",
       "Bash(git add:*)",
       "Bash(dir:*)",
-      "Bash(rm:*)"
+      "Bash(rm:*)",
+      "Bash(mv:*)"
     ],
     "deny": []
   }
