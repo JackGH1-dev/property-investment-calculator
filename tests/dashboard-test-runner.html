@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>InvestQuest Dashboard Test Runner</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f8fafc;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .test-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            color: #1e293b;
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            color: #64748b;
+            font-size: 1.1rem;
+        }
+
+        .control-panel {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .test-buttons {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: #3b82f6;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #2563eb;
+        }
+
+        .btn-secondary {
+            background: #f1f5f9;
+            color: #475569;
+            border: 1px solid #e2e8f0;
+        }
+
+        .btn-secondary:hover {
+            background: #e2e8f0;
+        }
+
+        .btn-success {
+            background: #10b981;
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #059669;
+        }
+
+        .test-status {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-weight: 600;
+        }
+
+        .status-badge {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .status-idle {
+            background: #f1f5f9;
+            color: #64748b;
+        }
+
+        .status-running {
+            background: #fef3c7;
+            color: #d97706;
+        }
+
+        .status-complete {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .results-container {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .results-header {
+            background: #1e293b;
+            color: white;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .results-content {
+            padding: 0;
+        }
+
+        .console-output {
+            background: #0f172a;
+            color: #e2e8f0;
+            font-family: 'Consolas', 'Monaco', monospace;
+            padding: 20px;
+            height: 500px;
+            overflow-y: auto;
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            padding: 25px;
+            background: #f8fafc;
+        }
+
+        .summary-card {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            border: 2px solid transparent;
+        }
+
+        .summary-card.passed {
+            border-color: #10b981;
+            background: linear-gradient(135deg, #ecfdf5 0%, #f0fdf4 100%);
+        }
+
+        .summary-card.failed {
+            border-color: #ef4444;
+            background: linear-gradient(135deg, #fef2f2 0%, #fef2f2 100%);
+        }
+
+        .summary-card.warnings {
+            border-color: #f59e0b;
+            background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
+        }
+
+        .summary-card h3 {
+            font-size: 2rem;
+            margin-bottom: 5px;
+        }
+
+        .summary-card p {
+            color: #64748b;
+            font-weight: 600;
+        }
+
+        .detailed-results {
+            padding: 25px;
+        }
+
+        .test-category {
+            margin-bottom: 30px;
+        }
+
+        .test-category h3 {
+            color: #1e293b;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        .test-result {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 6px;
+            background: #f8fafc;
+        }
+
+        .test-result.pass {
+            background: #f0fdf4;
+            border-left: 4px solid #10b981;
+        }
+
+        .test-result.fail {
+            background: #fef2f2;
+            border-left: 4px solid #ef4444;
+        }
+
+        .test-result.warn {
+            background: #fffbeb;
+            border-left: 4px solid #f59e0b;
+        }
+
+        .test-icon {
+            font-size: 1.2rem;
+        }
+
+        .test-name {
+            font-weight: 600;
+            color: #1e293b;
+            min-width: 200px;
+        }
+
+        .test-description {
+            color: #64748b;
+            flex-grow: 1;
+        }
+
+        .recommendations {
+            background: #eff6ff;
+            border: 1px solid #bfdbfe;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 25px;
+        }
+
+        .recommendations h4 {
+            color: #1e40af;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .recommendations ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .recommendations li {
+            margin: 10px 0;
+            padding-left: 25px;
+            position: relative;
+        }
+
+        .recommendations li:before {
+            content: '💡';
+            position: absolute;
+            left: 0;
+        }
+
+        .loading {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+            color: #64748b;
+        }
+
+        .spinner {
+            width: 20px;
+            height: 20px;
+            border: 2px solid #e2e8f0;
+            border-top: 2px solid #3b82f6;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-right: 10px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @media (max-width: 768px) {
+            .control-panel {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .test-buttons {
+                justify-content: center;
+            }
+
+            .summary-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .test-result {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 8px;
+            }
+
+            .test-name {
+                min-width: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <div class="header">
+            <h1>🧪 InvestQuest Dashboard Test Runner</h1>
+            <p>Comprehensive testing suite for dashboard functionality, authentication, and user experience</p>
+        </div>
+
+        <div class="control-panel">
+            <div class="test-buttons">
+                <button id="runTestsBtn" class="btn btn-primary">
+                    🚀 Run All Tests
+                </button>
+                <button id="runSingleTestBtn" class="btn btn-secondary">
+                    🎯 Run Specific Category
+                </button>
+                <button id="clearResultsBtn" class="btn btn-secondary">
+                    🗑️ Clear Results
+                </button>
+                <a href="../dashboard.html" class="btn btn-success">
+                    📊 Open Dashboard
+                </a>
+            </div>
+            <div class="test-status">
+                <span id="testStatus" class="status-badge status-idle">Idle</span>
+                <span id="testTimer">00:00</span>
+            </div>
+        </div>
+
+        <div class="results-container">
+            <div class="results-header">
+                <h2>🔬 Test Results</h2>
+                <span id="testProgress">Ready to run tests</span>
+            </div>
+            
+            <div class="results-content">
+                <div id="summaryContainer" style="display: none;">
+                    <div class="summary-grid">
+                        <div class="summary-card passed" id="passedCard">
+                            <h3 id="passedCount">0</h3>
+                            <p>Tests Passed</p>
+                        </div>
+                        <div class="summary-card failed" id="failedCard">
+                            <h3 id="failedCount">0</h3>
+                            <p>Tests Failed</p>
+                        </div>
+                        <div class="summary-card warnings" id="warningsCard">
+                            <h3 id="warningsCount">0</h3>
+                            <p>Warnings</p>
+                        </div>
+                        <div class="summary-card" id="successCard">
+                            <h3 id="successRate">0%</h3>
+                            <p>Success Rate</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="consoleContainer">
+                    <div id="consoleOutput" class="console-output">
+                        <div style="color: #10b981; margin-bottom: 10px;">
+                            🚀 Dashboard Test Runner Console
+                            <br>Click "Run All Tests" to begin comprehensive testing...
+                        </div>
+                    </div>
+                </div>
+
+                <div id="detailedResults" class="detailed-results" style="display: none;">
+                    <!-- Detailed results will be populated here -->
+                </div>
+
+                <div id="recommendationsContainer" style="display: none;">
+                    <div class="recommendations">
+                        <h4>💡 Recommendations</h4>
+                        <ul id="recommendationsList">
+                            <!-- Recommendations will be populated here -->
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Load dashboard dependencies -->
+    <script>
+        // Capture console output for display
+        const originalConsole = {
+            log: console.log,
+            error: console.error,
+            warn: console.warn,
+            info: console.info
+        };
+
+        let testStartTime = 0;
+        let timerInterval = null;
+        let currentTestResults = null;
+
+        function captureConsoleOutput() {
+            const consoleOutput = document.getElementById('consoleOutput');
+            
+            ['log', 'error', 'warn', 'info'].forEach(method => {
+                console[method] = function(...args) {
+                    originalConsole[method].apply(console, args);
+                    
+                    const message = args.map(arg => 
+                        typeof arg === 'object' ? JSON.stringify(arg, null, 2) : String(arg)
+                    ).join(' ');
+                    
+                    const div = document.createElement('div');
+                    div.style.marginBottom = '5px';
+                    
+                    if (method === 'error') {
+                        div.style.color = '#ef4444';
+                    } else if (method === 'warn') {
+                        div.style.color = '#f59e0b';
+                    } else if (method === 'info') {
+                        div.style.color = '#3b82f6';
+                    } else {
+                        div.style.color = '#e2e8f0';
+                    }
+                    
+                    div.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
+                    consoleOutput.appendChild(div);
+                    consoleOutput.scrollTop = consoleOutput.scrollHeight;
+                };
+            });
+        }
+
+        function updateTestStatus(status, message) {
+            const statusBadge = document.getElementById('testStatus');
+            const progressSpan = document.getElementById('testProgress');
+            
+            statusBadge.className = `status-badge status-${status}`;
+            statusBadge.textContent = status.charAt(0).toUpperCase() + status.slice(1);
+            progressSpan.textContent = message;
+        }
+
+        function startTimer() {
+            testStartTime = Date.now();
+            timerInterval = setInterval(() => {
+                const elapsed = Date.now() - testStartTime;
+                const minutes = Math.floor(elapsed / 60000);
+                const seconds = Math.floor((elapsed % 60000) / 1000);
+                document.getElementById('testTimer').textContent = 
+                    `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            }, 1000);
+        }
+
+        function stopTimer() {
+            if (timerInterval) {
+                clearInterval(timerInterval);
+                timerInterval = null;
+            }
+        }
+
+        function displaySummary(results) {
+            document.getElementById('summaryContainer').style.display = 'block';
+            document.getElementById('passedCount').textContent = results.summary.passed;
+            document.getElementById('failedCount').textContent = results.summary.failed;
+            document.getElementById('warningsCount').textContent = results.summary.warnings;
+            document.getElementById('successRate').textContent = results.summary.successRate + '%';
+        }
+
+        function displayDetailedResults(results) {
+            const container = document.getElementById('detailedResults');
+            container.innerHTML = '';
+            container.style.display = 'block';
+
+            Object.entries(results.categories).forEach(([category, tests]) => {
+                const categoryDiv = document.createElement('div');
+                categoryDiv.className = 'test-category';
+                
+                const categoryHeader = document.createElement('h3');
+                categoryHeader.textContent = `📋 ${category}`;
+                categoryDiv.appendChild(categoryHeader);
+
+                tests.forEach(test => {
+                    const testDiv = document.createElement('div');
+                    testDiv.className = `test-result ${test.status.toLowerCase()}`;
+                    
+                    const icon = test.status === 'PASS' ? '✅' : 
+                                test.status === 'FAIL' ? '❌' : 
+                                test.status === 'WARN' ? '⚠️' : 'ℹ️';
+                    
+                    testDiv.innerHTML = `
+                        <span class="test-icon">${icon}</span>
+                        <span class="test-name">${test.testName}</span>
+                        <span class="test-description">${test.description}</span>
+                    `;
+                    
+                    categoryDiv.appendChild(testDiv);
+                });
+
+                container.appendChild(categoryDiv);
+            });
+        }
+
+        function displayRecommendations(recommendations) {
+            const container = document.getElementById('recommendationsContainer');
+            const list = document.getElementById('recommendationsList');
+            
+            list.innerHTML = '';
+            
+            // Generate recommendations based on test results
+            const recs = generateRecommendations(currentTestResults);
+            
+            recs.forEach(rec => {
+                const li = document.createElement('li');
+                li.textContent = rec;
+                list.appendChild(li);
+            });
+            
+            container.style.display = 'block';
+        }
+
+        function generateRecommendations(results) {
+            const recommendations = [];
+            
+            if (!results) return ['No test results available for analysis.'];
+            
+            if (results.summary.failed > 0) {
+                recommendations.push('Address failing tests immediately to ensure core functionality works properly.');
+            }
+            
+            if (results.summary.warnings > 0) {
+                recommendations.push('Review warnings to improve user experience and system reliability.');
+            }
+            
+            // Check for specific issues
+            const hasFirebaseWarning = results.results.some(r => 
+                r.testName.includes('Firebase') && r.status === 'WARN');
+            if (hasFirebaseWarning) {
+                recommendations.push('Consider configuring Firebase for production-ready data persistence and real-time features.');
+            }
+            
+            const hasAuthIssues = results.results.some(r => 
+                r.testName.includes('Auth') && r.status === 'FAIL');
+            if (hasAuthIssues) {
+                recommendations.push('Authentication issues detected - verify the auth flow implementation and Firebase configuration.');
+            }
+            
+            const hasPerformanceWarnings = results.results.some(r => 
+                r.testName.includes('Performance') && r.status === 'WARN');
+            if (hasPerformanceWarnings) {
+                recommendations.push('Performance optimizations recommended for better user experience and faster load times.');
+            }
+            
+            if (recommendations.length === 0) {
+                recommendations.push('Excellent! All tests are passing. Consider adding more edge case tests.');
+                recommendations.push('Ready for production deployment with current functionality.');
+            }
+            
+            return recommendations;
+        }
+
+        async function runTests() {
+            updateTestStatus('running', 'Initializing test suite...');
+            startTimer();
+            
+            // Clear previous results
+            document.getElementById('summaryContainer').style.display = 'none';
+            document.getElementById('detailedResults').style.display = 'none';
+            document.getElementById('recommendationsContainer').style.display = 'none';
+            document.getElementById('consoleOutput').innerHTML = 
+                '<div style="color: #10b981;">🚀 Starting comprehensive dashboard tests...</div>';
+
+            try {
+                // Load required scripts dynamically
+                await loadRequiredScripts();
+                
+                updateTestStatus('running', 'Running dashboard functionality tests...');
+                
+                // Wait for dashboard to be ready
+                await waitForDashboard();
+                
+                // Run the actual tests
+                const testSuite = new window.DashboardTestSuite();
+                const results = await testSuite.runAllTests();
+                
+                currentTestResults = results;
+                
+                updateTestStatus('complete', `Tests completed: ${results.summary.passed}/${results.summary.totalTests} passed`);
+                stopTimer();
+                
+                // Display results
+                displaySummary(results);
+                displayDetailedResults(results);
+                displayRecommendations(results);
+                
+            } catch (error) {
+                updateTestStatus('complete', 'Tests completed with errors');
+                stopTimer();
+                console.error('❌ Test execution failed:', error);
+            }
+        }
+
+        async function loadRequiredScripts() {
+            const scripts = [
+                '../auth-production.js',
+                '../global-auth-init.js',
+                '../dashboard-production.js',
+                'dashboard-functionality-tests.js'
+            ];
+            
+            for (const script of scripts) {
+                await new Promise((resolve, reject) => {
+                    const scriptElement = document.createElement('script');
+                    scriptElement.src = script;
+                    scriptElement.onload = resolve;
+                    scriptElement.onerror = () => {
+                        console.warn(`⚠️ Could not load ${script} - continuing with available functionality`);
+                        resolve(); // Continue even if script fails to load
+                    };
+                    document.head.appendChild(scriptElement);
+                });
+            }
+        }
+
+        async function waitForDashboard() {
+            return new Promise(resolve => {
+                const checkDashboard = () => {
+                    if (window.authManager && window.dashboardManager) {
+                        resolve();
+                    } else {
+                        setTimeout(checkDashboard, 100);
+                    }
+                };
+                
+                setTimeout(() => {
+                    console.log('⏰ Dashboard initialization timeout - proceeding with available functionality');
+                    resolve();
+                }, 5000);
+                
+                checkDashboard();
+            });
+        }
+
+        function clearResults() {
+            document.getElementById('summaryContainer').style.display = 'none';
+            document.getElementById('detailedResults').style.display = 'none';
+            document.getElementById('recommendationsContainer').style.display = 'none';
+            document.getElementById('consoleOutput').innerHTML = 
+                '<div style="color: #10b981; margin-bottom: 10px;">🚀 Dashboard Test Runner Console<br>Click "Run All Tests" to begin comprehensive testing...</div>';
+            updateTestStatus('idle', 'Ready to run tests');
+            document.getElementById('testTimer').textContent = '00:00';
+            currentTestResults = null;
+        }
+
+        // Initialize when page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            captureConsoleOutput();
+            
+            document.getElementById('runTestsBtn').addEventListener('click', runTests);
+            document.getElementById('clearResultsBtn').addEventListener('click', clearResults);
+            
+            document.getElementById('runSingleTestBtn').addEventListener('click', () => {
+                const category = prompt('Enter test category (Authentication, UI Components, Calculation Management, etc.):');
+                if (category) {
+                    console.log(`🎯 Running tests for category: ${category}`);
+                    // TODO: Implement single category testing
+                    alert('Single category testing not yet implemented. Use "Run All Tests" for now.');
+                }
+            });
+
+            console.log('🧪 Dashboard Test Runner initialized and ready');
+        });
+    </script>
+</body>
+</html>

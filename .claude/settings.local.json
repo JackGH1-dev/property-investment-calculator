@@ -24,7 +24,12 @@
       "Bash(npx:*)",
       "Bash(choco install:*)",
       "Bash(cmd /c:*)",
-      "Bash(echo $PATH)"
+      "Bash(echo $PATH)",
+      "Bash(find:*)",
+      "Bash(mkdir:*)",
+      "Bash(mkdir:*)",
+      "Bash(mkdir -p src/security config/security)",
+      "Bash(mkdir -p src/api src/components src/services src/utils tests/integration tests/api)"
     ],
     "deny": []
   }

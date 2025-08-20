@@ -419,14 +419,26 @@
             </div>
         </footer>
 
+    <!-- Include performance optimizer FIRST -->
+    <script src="performance-optimizer.js"></script>
+    
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Include security and configuration systems -->
+    <script src="src/security/config-manager.js"></script>
+    <script src="src/security/api-proxy.js"></script>
     <!-- Include authentication system -->
     <script src="auth-production.js"></script>
+    
+    <!-- Include property search system -->
+    <script src="property-search.js"></script>
+    
+    <!-- Include PDF report generator -->
+    <script src="pdf-report-generator.js"></script>
     <script>
-        // Configuration - API key removed for security
-        // Note: Add your new API key here temporarily after securing it
+        // SECURITY: API key removed - now using secure proxy service
+        // All external API calls are now handled through secure server-side proxy
         const CONFIG = {
-            GOOGLE_PLACES_API_KEY: 'AIzaSyC_fRFyNMui41ZJV9ZrDvlGA074M6RMajI',
+            USE_SECURE_PROXY: true,
             PLACES_API: {
                 componentRestrictions: { country: 'au' },
                 types: ['address']
@@ -434,36 +446,44 @@
         };
         window.CONFIG = CONFIG;
 
-        // Load Google Places API dynamically with API key
-        function loadGooglePlacesAPI() {
-            if (window.CONFIG && window.CONFIG.GOOGLE_PLACES_API_KEY && window.CONFIG.GOOGLE_PLACES_API_KEY !== 'YOUR_API_KEY_HERE') {
-                console.log('Loading Google Places API...');
-                const script = document.createElement('script');
-                script.src = `https://maps.googleapis.com/maps/api/js?key=${window.CONFIG.GOOGLE_PLACES_API_KEY}&libraries=places&callback=initGooglePlaces`;
-                script.async = true;
-                script.defer = true;
-                script.onerror = function() {
-                    console.error('Failed to load Google Maps API. Check your API key and restrictions.');
-                };
-                document.head.appendChild(script);
+        // SECURITY: No longer loading Google Places API directly
+        // Using secure API proxy service instead
+        function loadSecurePlacesService() {
+            if (window.CONFIG && window.CONFIG.USE_SECURE_PROXY) {
+                console.log('🔐 Using secure API proxy service for Places API');
+                // Initialize secure places service when available
+                if (window.apiProxy) {
+                    initSecurePlaces();
+                } else {
+                    // Wait for API proxy to load
+                    document.addEventListener('DOMContentLoaded', () => {
+                        setTimeout(() => {
+                            if (window.apiProxy) {
+                                initSecurePlaces();
+                            } else {
+                                console.warn('🔐 API Proxy service not available');
+                            }
+                        }, 1000);
+                    });
+                }
             } else {
-                console.warn('Google Places API key not configured properly');
+                console.warn('🔐 Secure proxy not configured');
             }
         }
         
-        // Initialize Google Places when API loads
-        function initGooglePlaces() {
-            console.log('Google Places API loaded successfully');
+        // Initialize secure Places service
+        function initSecurePlaces() {
+            console.log('🔐 Secure Places service initialized');
             if (window.propertyCalculator) {
-                window.propertyCalculator.initGooglePlaces();
+                window.propertyCalculator.initSecurePlaces();
             } else {
-                console.warn('Property calculator not yet initialized');
+                console.warn('🔐 Property calculator not yet initialized');
             }
         }
         
-        // Load API after DOM is ready
+        // Load secure API service after DOM is ready
         document.addEventListener('DOMContentLoaded', function() {
-            setTimeout(loadGooglePlacesAPI, 100); // Small delay to ensure calculator is ready
+            setTimeout(loadSecurePlacesService, 100); // Small delay to ensure calculator is ready
         });
 
         // Mobile navigation toggle
