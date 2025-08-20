@@ -12,8 +12,37 @@
     <link rel="stylesheet" href="styles.css">
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎯</text></svg>">
     
-    <!-- TEMPORARY: Redirect Debugger -->
-    <script src="redirect-debugger.js"></script>
+    <!-- TEMPORARY: Inline Redirect Debugger -->
+    <script>
+        console.log('🔍 INLINE CALCULATOR DEBUGGER ACTIVE');
+        
+        // Monitor location changes
+        const originalReplace = location.replace;
+        location.replace = function(...args) {
+            console.log('🔍 LOCATION.REPLACE:', args);
+            console.trace('Stack trace:');
+            return originalReplace.apply(this, args);
+        };
+        
+        // Monitor script errors
+        window.addEventListener('error', function(event) {
+            console.log('🔍 SCRIPT ERROR:', {
+                message: event.message,
+                filename: event.filename,
+                lineno: event.lineno,
+                error: event.error
+            });
+        });
+        
+        // Check every 500ms if we're still on the right page
+        setInterval(function() {
+            if (window.location.pathname !== '/calculator.html' && !window.location.pathname.includes('calculator')) {
+                console.log('🔍 CALCULATOR REDIRECT DETECTED! Now at:', window.location.href);
+            }
+        }, 500);
+        
+        console.log('🔍 Inline calculator debugger ready for:', window.location.href);
+    </script>
 </head>
 <body>
     <!-- Global Navigation -->

@@ -16,7 +16,8 @@
       "Bash(firebase login:*)",
       "Bash(firebase use:*)",
       "Bash(firebase deploy:*)",
-      "Bash(git add:*)"
+      "Bash(git add:*)",
+      "Bash(dir:*)"
     ],
     "deny": []
   }
