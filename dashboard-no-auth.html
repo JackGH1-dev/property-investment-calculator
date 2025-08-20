@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard (No Auth) - InvestQuest</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Global Navigation -->
+    <nav class="global-nav">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <h1>🎯 InvestQuest</h1>
+            </div>
+            <div class="nav-links">
+                <a href="index.html" class="nav-link">Home</a>
+                <a href="calculator.html" class="nav-link">Calculator</a>
+                <a href="education.html" class="nav-link">Education</a>
+                <span class="nav-cta">Dashboard (No Auth)</span>
+            </div>
+        </div>
+    </nav>
+
+    <div class="dashboard-container">
+        <h1>✅ Dashboard Loaded Successfully</h1>
+        <p>This version loads without authentication checks.</p>
+        <p>If this works, the issue is with authentication timing.</p>
+        <p>Current time: <span id="time"></span></p>
+        
+        <div class="test-results">
+            <h3>Test Results:</h3>
+            <ul>
+                <li>✅ HTML file loads</li>
+                <li>✅ CSS styles apply</li>
+                <li>✅ JavaScript runs</li>
+                <li>✅ No redirects occur</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        console.log('✅ Dashboard with no auth loaded successfully');
+        document.getElementById('time').textContent = new Date().toLocaleString();
+        
+        // Test that we stay on this page
+        setTimeout(() => {
+            console.log('✅ Still on dashboard-no-auth after 5 seconds');
+        }, 5000);
+        
+        setTimeout(() => {
+            console.log('✅ Still on dashboard-no-auth after 15 seconds');
+        }, 15000);
+    </script>
+</body>
+</html>
