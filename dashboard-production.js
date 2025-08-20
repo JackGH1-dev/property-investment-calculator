@@ -55,10 +55,37 @@ class ProductionDashboardManager {
                     };
                 }
                 
+                // Check if global auth manager found a user
+                if (!this.user && window.globalAuth && window.globalAuth.isInitialized) {
+                    console.log('🏠 Checking global auth state...');
+                    await new Promise(resolve => setTimeout(resolve, 500));
+                    this.user = window.authManager.getCurrentUser();
+                }
+                
                 if (!this.user) {
-                    console.log('🔐 Still no authenticated user, redirecting to home');
-                    window.location.href = 'index.html';
-                    return;
+                    console.log('🔐 Still no authenticated user, checking global auth loading state');
+                    
+                    // Check if global auth is still loading
+                    if (window.globalAuthLoading) {
+                        console.log('🔐 Global auth still loading, waiting...');
+                        await new Promise(resolve => setTimeout(resolve, 2000));
+                        this.user = window.authManager.getCurrentUser();
+                    }
+                    
+                    if (!this.user) {
+                        console.log('🔐 Waiting for potential late authentication...');
+                        // Wait longer for authentication to complete
+                        await new Promise(resolve => setTimeout(resolve, 3000));
+                        this.user = window.authManager.getCurrentUser();
+                    }
+                    
+                    if (!this.user) {
+                        console.log('🔐 Final check: no authenticated user, redirecting to home');
+                        window.location.href = 'index.html';
+                        return;
+                    } else {
+                        console.log('🔐 Late authentication found:', this.user.email);
+                    }
                 }
             }
 

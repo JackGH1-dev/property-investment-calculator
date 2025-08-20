@@ -6,6 +6,9 @@ class GlobalAuthManager {
         this.isInitialized = false;
         this.pageType = this.detectPageType();
         console.log(`🌐 GlobalAuthManager: Page type detected: ${this.pageType}`);
+        
+        // Set flag to prevent premature redirects
+        window.globalAuthLoading = true;
     }
 
     detectPageType() {
@@ -50,6 +53,7 @@ class GlobalAuthManager {
             });
 
             this.isInitialized = true;
+            window.globalAuthLoading = false;
             console.log('🌐 Global auth manager initialized');
 
         } catch (error) {
