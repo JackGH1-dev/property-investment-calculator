@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Simple Test Page</title>
+    <script>
+        console.log('🚨 TEST PAGE LOADED SUCCESSFULLY');
+        console.log('🚨 Current URL:', window.location.href);
+        console.log('🚨 Timestamp:', new Date().toISOString());
+        
+        // Check if we get redirected
+        setTimeout(() => {
+            console.log('🚨 Still on test page after 2 seconds');
+        }, 2000);
+        
+        setTimeout(() => {
+            console.log('🚨 Still on test page after 5 seconds');
+        }, 5000);
+    </script>
+</head>
+<body>
+    <h1>🚨 TEST PAGE LOADED</h1>
+    <p>If you can see this, the page loaded successfully.</p>
+    <p>Current URL: <span id="url"></span></p>
+    <p>Time: <span id="time"></span></p>
+    
+    <script>
+        document.getElementById('url').textContent = window.location.href;
+        document.getElementById('time').textContent = new Date().toLocaleString();
+    </script>
+</body>
+</html>
