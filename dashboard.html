@@ -12,51 +12,6 @@
     <link rel="stylesheet" href="styles.css">
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎯</text></svg>">
     
-    <!-- TEMPORARY: Inline Redirect Debugger -->
-    <script>
-        console.log('🔍 INLINE REDIRECT DEBUGGER ACTIVE');
-        
-        // Monitor location changes
-        const originalReplace = location.replace;
-        location.replace = function(...args) {
-            console.log('🔍 LOCATION.REPLACE:', args);
-            console.trace('Stack trace:');
-            return originalReplace.apply(this, args);
-        };
-        
-        // Monitor href changes
-        let originalHref = location.href;
-        const originalSetHref = Object.getOwnPropertyDescriptor(Location.prototype, 'href').set;
-        Object.defineProperty(location, 'href', {
-            get: function() {
-                return originalHref;
-            },
-            set: function(value) {
-                console.log('🔍 LOCATION.HREF SET:', value);
-                console.trace('Stack trace:');
-                return originalSetHref.call(this, value);
-            }
-        });
-        
-        // Monitor all script errors
-        window.addEventListener('error', function(event) {
-            console.log('🔍 SCRIPT ERROR:', {
-                message: event.message,
-                filename: event.filename,
-                lineno: event.lineno,
-                error: event.error
-            });
-        });
-        
-        // Check every 500ms if we're still on the right page
-        setInterval(function() {
-            if (window.location.pathname !== '/dashboard.html' && !window.location.pathname.includes('dashboard')) {
-                console.log('🔍 DASHBOARD REDIRECT DETECTED! Now at:', window.location.href);
-            }
-        }, 500);
-        
-        console.log('🔍 Inline debugger ready for:', window.location.href);
-    </script>
 </head>
 <body>
     <!-- Global Navigation -->

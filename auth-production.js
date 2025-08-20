@@ -95,10 +95,12 @@ class ProductionAuthManager {
             cacheSizeBytes: firebase.firestore.CACHE_SIZE_UNLIMITED
         });
 
-        // Enable offline persistence
+        // Enable offline persistence with multi-tab support
         try {
-            await this.db.enablePersistence();
-            console.log('🔥 Firestore offline persistence enabled');
+            await this.db.enablePersistence({
+                synchronizeTabs: true
+            });
+            console.log('🔥 Firestore offline persistence enabled with multi-tab support');
         } catch (error) {
             console.warn('🔥 Firestore persistence not available:', error.message);
         }
