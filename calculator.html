@@ -483,6 +483,44 @@
             }
         });
     </script>
+    
+    <!-- Include authentication system -->
+    <script src="auth-production.js"></script>
+    <script src="global-auth-init.js"></script>
     <script src="script.js"></script>
+    
+    <script>
+        // Initialize authentication on calculator page
+        document.addEventListener('DOMContentLoaded', async function() {
+            console.log('🎯 Calculator page loaded, checking authentication...');
+            
+            // Wait for auth manager to be available
+            if (window.authManager) {
+                try {
+                    await window.authManager.init();
+                    const user = window.authManager.getCurrentUser();
+                    
+                    if (user) {
+                        console.log('🎯 User authenticated on calculator:', user.displayName || user.email);
+                        // Update navigation to show dashboard link
+                        updateNavigationForUser();
+                    } else {
+                        console.log('🎯 No user authenticated on calculator page');
+                    }
+                } catch (error) {
+                    console.error('🎯 Calculator auth check failed:', error);
+                }
+            }
+        });
+        
+        function updateNavigationForUser() {
+            // Update navigation to show dashboard link for authenticated users
+            const backToHomeLink = document.querySelector('.nav-cta');
+            if (backToHomeLink) {
+                backToHomeLink.textContent = 'Dashboard';
+                backToHomeLink.href = 'dashboard.html';
+            }
+        }
+    </script>
 </body>
 </html>

@@ -272,3 +272,4 @@ NEVER proactively create documentation files (*.md) or README files. Only create
 Never save working files, text/mds and tests to the root folder.
 
 - Remeber that we actually use Github -> Vercel for our deployment and not firebase hosting.
+- our website is https://www.investquest.app/
