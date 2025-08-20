@@ -1160,7 +1160,7 @@ class PropertyCalculator {
     }
 
     // Save/Load Functionality for Authenticated Users
-    saveCalculation() {
+    async saveCalculation() {
         if (!window.authManager || !window.authManager.isAuthenticated()) {
             // Show sign-in prompt for unauthenticated users
             this.showSavePrompt();
@@ -1174,7 +1174,22 @@ class PropertyCalculator {
         }
 
         try {
-            if (window.dashboardManager) {
+            // Save directly to Firestore if authenticated and Firebase is available
+            if (window.authManager && window.authManager.isAuthenticated() && firebase.firestore) {
+                const user = window.authManager.getCurrentUser();
+                const calculation = {
+                    userId: user.uid,
+                    data: data,
+                    createdAt: new Date(),
+                    updatedAt: new Date()
+                };
+                
+                // Save to Firestore
+                const docRef = await firebase.firestore().collection('calculations').add(calculation);
+                console.log('🔥 Calculation saved to Firestore:', docRef.id);
+                this.showSaveSuccess();
+                return docRef.id;
+            } else if (window.dashboardManager) {
                 const calculationId = window.dashboardManager.saveCalculation(data);
                 this.showSaveSuccess();
                 return calculationId;

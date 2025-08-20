@@ -19,7 +19,12 @@
       "Bash(git add:*)",
       "Bash(dir:*)",
       "Bash(rm:*)",
-      "Bash(mv:*)"
+      "Bash(mv:*)",
+      "Bash(winget install:*)",
+      "Bash(npx:*)",
+      "Bash(choco install:*)",
+      "Bash(cmd /c:*)",
+      "Bash(echo $PATH)"
     ],
     "deny": []
   }
