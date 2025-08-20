@@ -80,9 +80,22 @@ class ProductionDashboardManager {
                     }
                     
                     if (!this.user) {
-                        console.log('🔐 Final check: no authenticated user, redirecting to home');
-                        window.location.href = 'index.html';
-                        return;
+                        console.log('🔐 Final check: no authenticated user found');
+                        console.log('🔐 AuthManager available:', !!window.authManager);
+                        console.log('🔐 GlobalAuthLoading:', window.globalAuthLoading);
+                        console.log('🔐 Page will redirect in 5 seconds unless authentication is found...');
+                        
+                        // Give one final chance - wait 5 more seconds
+                        await new Promise(resolve => setTimeout(resolve, 5000));
+                        this.user = window.authManager?.getCurrentUser();
+                        
+                        if (!this.user) {
+                            console.log('🔐 No authentication after 10+ seconds total, redirecting to home');
+                            window.location.href = 'index.html';
+                            return;
+                        } else {
+                            console.log('🔐 Very late authentication found:', this.user.email);
+                        }
                     } else {
                         console.log('🔐 Late authentication found:', this.user.email);
                     }
@@ -121,6 +134,8 @@ class ProductionDashboardManager {
             
         } catch (error) {
             console.error('❌ Dashboard initialization failed:', error);
+            console.log('🔐 Error occurred, waiting 3 seconds before redirect to allow debugging...');
+            await new Promise(resolve => setTimeout(resolve, 3000));
             window.location.href = 'index.html';
         }
     }
