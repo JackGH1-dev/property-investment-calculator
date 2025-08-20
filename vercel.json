@@ -1,6 +1,26 @@
 {
   "trailingSlash": false,
-  "rewrites": [],
-  "redirects": [],
-  "cleanUrls": false
+  "cleanUrls": false,
+  "routes": [
+    {
+      "src": "/test-page.html",
+      "dest": "/test-page.html"
+    },
+    {
+      "src": "/dashboard.html",
+      "dest": "/dashboard.html"
+    },
+    {
+      "src": "/calculator.html", 
+      "dest": "/calculator.html"
+    },
+    {
+      "src": "/education.html",
+      "dest": "/education.html"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/$1"
+    }
+  ]
 }
