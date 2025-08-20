@@ -5,6 +5,70 @@ All notable changes to InvestQuest - Australian Property Investment Calculator w
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.1.0] - 2025-08-20 - OAuth Authentication & Deployment Fixes
+
+### 🎉 Major Achievements
+- **✅ OAuth Authentication Fully Working** - Google OAuth sign-in now works correctly on production
+- **✅ Dashboard & Calculator Access Fixed** - Pages no longer redirect back to index after authentication
+- **✅ Production Deployment Optimized** - Vercel deployment issues resolved
+
+### 🔧 Technical Fixes
+
+#### Authentication System
+- Fixed Firebase OAuth authentication flow with proper persistence settings
+- Resolved "Missing or insufficient permissions" Firestore errors
+- Added comprehensive authentication state management across all pages
+- Implemented proper timing for authentication initialization (10+ second grace period)
+- Added multi-tab support for Firestore persistence
+
+#### Deployment & Routing
+- **Root Cause Fixed**: Removed `package.json` that was forcing Vercel to treat site as Node.js project
+- Eliminated server-level redirects that were preventing HTML files from loading
+- Removed complex Vercel routing configuration that caused 404 errors
+- Optimized for static HTML site deployment
+
+#### Code Quality & Performance
+- Removed duplicate `auth-production.js` script tags (was loading 3x, now loads 1x)
+- Cleaned up all debugging code from production files
+- Fixed console errors and warnings
+- Optimized Firebase initialization sequence
+
+### 🚀 Features Working
+- **Google OAuth Sign-in**: Users can authenticate with Google accounts
+- **Dashboard Access**: Authenticated users can access personalized dashboard
+- **Calculator Access**: Property investment calculator works without authentication issues
+- **Cross-page Authentication**: Auth state persists across all pages
+- **Offline Support**: Firestore works offline with multi-tab synchronization
+
+### 🐛 Issues Resolved
+1. **Dashboard/Calculator Redirect Loop** - Pages redirected to index after 0.5 seconds
+2. **Test Page 404 Errors** - All test pages returned NOT_FOUND on Vercel
+3. **Firebase Loading Multiple Times** - Script loaded 3x causing initialization conflicts
+4. **Firestore Permission Errors** - "Missing or insufficient permissions" fixed
+5. **Console Errors** - "Cannot read properties of undefined" debugger errors
+6. **Authentication Timing** - Race conditions between auth initialization and page loads
+
+### 📁 Files Modified
+- `dashboard.html` - Removed debug code, cleaned authentication flow
+- `calculator.html` - Removed debug code, fixed duplicate script loading
+- `index.html` - Fixed duplicate authentication script loading
+- `auth-production.js` - Added multi-tab Firestore persistence support
+- `dashboard-production.js` - Extended authentication wait times and error handling
+- `vercel.json` - Removed (was causing routing conflicts)
+- `package.json` - Disabled (was forcing Node.js build process)
+
+### 🔄 Migration Notes
+- Site now deploys as static HTML (no build process required)
+- Authentication works immediately on production deployment
+- All pages accessible without server-side redirect issues
+
+### 🎯 Next Steps
+- Monitor authentication performance in production
+- Consider adding loading states for better UX
+- Potential optimizations for Firebase bundle size
+
+---
+
 ## [1.1.0] - 2025-08-14
 
 ### 🎉 Major UX Enhancement and Professional Design Release
