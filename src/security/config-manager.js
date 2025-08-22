@@ -19,9 +19,10 @@ class SecureConfigManager {
         this.securityHeaders.set('Content-Security-Policy', 
             "default-src 'self'; " +
             "script-src 'self' 'unsafe-inline' https://www.gstatic.com https://maps.googleapis.com https://cdn.jsdelivr.net; " +
-            "style-src 'self' 'unsafe-inline'; " +
+            "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; " +
             "img-src 'self' data: https: blob:; " +
             "connect-src 'self' https://*.googleapis.com https://*.firebaseapp.com https://*.cloudfunctions.net; " +
+            "font-src 'self' data: https://fonts.gstatic.com; " +
             "frame-src 'none'; " +
             "object-src 'none'; " +
             "base-uri 'self';"
