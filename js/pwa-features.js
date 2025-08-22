@@ -23,7 +23,6 @@ class PWAFeatures {
                 '/calculator.html',
                 '/dashboard.html',
                 '/styles.css',
-                '/js/performance-monitor.js',
                 '/js/advanced-chart-system.js',
                 '/js/interactive-data-table.js',
                 '/js/enhanced-components.js',

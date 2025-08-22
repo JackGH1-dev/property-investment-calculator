@@ -14,7 +14,6 @@ const CACHE_ASSETS = [
   '/auth-production.js',
   '/global-auth-init.js',
   '/dashboard-production.js',
-  '/performance-optimizer.js',
   '/manifest.json'
 ];
 
