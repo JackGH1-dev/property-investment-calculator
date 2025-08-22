@@ -87,11 +87,8 @@ class PWAFeatures {
 
         try {
             // Create service worker content dynamically
-            const swContent = this.generateServiceWorkerContent();
-            const swBlob = new Blob([swContent], { type: 'application/javascript' });
-            const swUrl = URL.createObjectURL(swBlob);
-            
-            const registration = await navigator.serviceWorker.register(swUrl);
+            // Register the existing service worker file
+            const registration = await navigator.serviceWorker.register('/sw.js');
             this.serviceWorker = registration;
             
             console.log('✅ Service Worker registered successfully');

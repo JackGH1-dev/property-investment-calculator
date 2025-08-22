@@ -132,7 +132,7 @@ class PropertyCalculator {
         const depositField = document.getElementById('deposit');
         const depositLabel = document.getElementById('depositLabel');
         const calculatedField = document.getElementById('calculatedAmount');
-        const calculatedLabel = calculatedField.previousElementSibling;
+        const calculatedLabel = calculatedField ? calculatedField.previousElementSibling : null;
         const loan100PlusCostsDiv = document.querySelector('.loan-100-plus-costs');
 
         if (selectedMode === 'deposit') {
@@ -143,7 +143,7 @@ class PropertyCalculator {
             depositField.style.backgroundColor = '';
             depositField.style.color = '';
             
-            calculatedLabel.textContent = 'Loan Amount ($)';
+            if (calculatedLabel) calculatedLabel.textContent = 'Loan Amount ($)';
             calculatedField.readOnly = true;
             calculatedField.style.backgroundColor = '#f8f9fa';
             calculatedField.style.color = '#6c757d';
@@ -161,7 +161,7 @@ class PropertyCalculator {
             depositField.style.backgroundColor = '';
             depositField.style.color = '';
             
-            calculatedLabel.textContent = 'Deposit ($)';
+            if (calculatedLabel) calculatedLabel.textContent = 'Deposit ($)';
             calculatedField.readOnly = true;
             calculatedField.style.backgroundColor = '#f8f9fa';
             calculatedField.style.color = '#6c757d';
