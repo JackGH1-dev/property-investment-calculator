@@ -1,0 +1,28 @@
+#!/usr/bin/env node
+/**
+ * Claude CLI Proxy - Fixes Claude Flow spawn issues
+ * This file should be named 'claude' (no extension) and placed in PATH
+ */
+
+const { spawn } = require('child_process');
+const path = require('path');
+
+// Direct path to Claude CLI
+const claudeCliPath = process.platform === 'win32' 
+    ? 'C:\\Users\\encou\\AppData\\Roaming\\npm\\claude.cmd'
+    : '/c/Users/encou/AppData/Roaming/npm/claude';
+
+// Spawn the real Claude CLI
+const child = spawn(claudeCliPath, process.argv.slice(2), {
+    stdio: 'inherit',
+    shell: process.platform === 'win32'
+});
+
+child.on('exit', (code) => {
+    process.exit(code || 0);
+});
+
+child.on('error', (error) => {
+    console.error('Claude CLI error:', error.message);
+    process.exit(1);
+});

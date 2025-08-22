@@ -1,0 +1,184 @@
+/* ===================================
+   HEADING CONTRAST FIX
+   Ensures all headings have proper contrast
+   =================================== */
+
+/* Global Section Header Fixes */
+.section-header,
+.section-header * {
+    color: inherit !important;
+}
+
+.section-header h1,
+.section-header h2,
+.section-header h3,
+h1, h2, h3, h4, h5, h6 {
+    color: #111827 !important; /* gray-900, near-black */
+    font-weight: 800 !important;
+    line-height: 1.1 !important;
+}
+
+.section-header p {
+    color: #374151 !important; /* gray-700 for good readability */
+    font-weight: 600 !important;
+}
+
+/* Features Section - Light background, ensure dark text */
+.features.section .section-header h2,
+.features.section h1,
+.features.section h2,
+.features.section h3 {
+    color: #111827 !important; /* near-black */
+}
+
+.features.section .section-header p,
+.features.section p {
+    color: #374151 !important; /* dark gray */
+}
+
+/* Perfect For Section - Light background, ensure dark text */
+.perfect-for.section .section-header h2,
+.perfect-for.section h1,
+.perfect-for.section h2,
+.perfect-for.section h3 {
+    color: #111827 !important; /* near-black */
+}
+
+.perfect-for.section .section-header p,
+.perfect-for.section p {
+    color: #374151 !important; /* dark gray */
+}
+
+/* How It Works Section - White background, ensure dark text */
+.how-it-works.section .section-header h2,
+.how-it-works.section h1,
+.how-it-works.section h2,
+.how-it-works.section h3 {
+    color: #111827 !important; /* near-black */
+}
+
+.how-it-works.section .section-header p,
+.how-it-works.section p {
+    color: #374151 !important; /* dark gray */
+}
+
+/* Hero section headings */
+.hero-title,
+.hero h1 {
+    color: #111827 !important; /* near-black */
+    font-weight: 800 !important;
+}
+
+.hero-subtitle,
+.hero p {
+    color: #374151 !important; /* dark gray */
+    font-weight: 600 !important;
+}
+
+/* Feature cards */
+.feature-card h3 {
+    color: #111827 !important; /* near-black */
+    font-weight: 700 !important;
+}
+
+.feature-card p {
+    color: #374151 !important; /* dark gray */
+    font-weight: 500 !important;
+}
+
+/* Feature preview */
+.feature-preview h3 {
+    color: #111827 !important; /* near-black */
+    font-weight: 700 !important;
+}
+
+/* Step content */
+.step-content h3,
+.step h3 {
+    color: #111827 !important; /* near-black */
+    font-weight: 700 !important;
+}
+
+.step-content p,
+.step p {
+    color: #374151 !important; /* dark gray */
+    font-weight: 500 !important;
+}
+
+/* Perfect for cards */
+.perfect-for-card h3 {
+    color: #111827 !important; /* near-black */
+    font-weight: 700 !important;
+}
+
+.perfect-for-card p {
+    color: #374151 !important; /* dark gray */
+    font-weight: 500 !important;
+}
+
+/* Navigation brand */
+.nav-brand h1 {
+    color: #1867C0 !important; /* brand blue for navigation */
+    font-weight: 800 !important;
+}
+
+/* Exception: Premium cards and CTA sections with dark backgrounds keep white text */
+.feature-card.premium,
+.feature-card.premium * {
+    color: white !important;
+}
+
+.cta-section,
+.cta-section * {
+    color: white !important;
+}
+
+.footer,
+.footer * {
+    color: white !important;
+}
+
+/* Specific fix for footer brand description text */
+.footer-brand p,
+.main-footer .footer-brand p {
+    color: #111827 !important; /* same as other headers */
+    font-weight: 600 !important;
+}
+
+/* Make disclaimer heading match disclaimer body text color */
+.footer-disclaimer h4 {
+    color: var(--gray-300) !important; /* same as disclaimer body text */
+}
+
+/* Mobile responsiveness - ensure darker text on smaller screens if backgrounds get lighter */
+@media (max-width: 640px) {
+    .section-header h1,
+    .section-header h2,
+    .section-header h3,
+    h1, h2, h3, h4, h5, h6 {
+        color: #0f172a !important; /* even darker for mobile */
+    }
+}
+
+/* Accessibility - Ensure minimum contrast ratios */
+.section-header {
+    font-weight: 800 !important;
+    line-height: 1.1 !important;
+    letter-spacing: -0.01em !important;
+}
+
+/* Strengthen font weights for better readability */
+h1, .h1 {
+    font-weight: 800 !important;
+    font-size: clamp(28px, 5vw, 48px) !important;
+}
+
+h2, .h2 {
+    font-weight: 800 !important;
+    font-size: clamp(24px, 4vw, 36px) !important;
+}
+
+h3, .h3 {
+    font-weight: 700 !important;
+    font-size: clamp(20px, 3vw, 28px) !important;
+}

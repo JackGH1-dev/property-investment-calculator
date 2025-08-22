@@ -1,4 +1,9 @@
 {
+  "env": {
+    "CLAUDE_CLI_PATH": "/c/Users/encou/AppData/Roaming/npm/claude",
+    "CLAUDE_FLOW_MODE": "non-interactive",
+    "NODE_ENV": "development"
+  },
   "permissions": {
     "allow": [
       "mcp__ruv-swarm",
@@ -29,8 +34,37 @@
       "Bash(mkdir:*)",
       "Bash(mkdir:*)",
       "Bash(mkdir -p src/security config/security)",
-      "Bash(mkdir -p src/api src/components src/services src/utils tests/integration tests/api)"
+      "Bash(mkdir -p src/api src/components src/services src/utils tests/integration tests/api)",
+      "WebSearch",
+      "Bash(claude-flow --help)",
+      "Bash(claude-flow swarm:*)",
+      "Bash(grep:*)",
+      "Bash(claude --version)",
+      "Bash(claude-flow --version)",
+      "Bash(CLAUDE_CLI_PATH=\"/c/Users/encou/AppData/Roaming/npm/claude\" claude-flow swarm \"Test basic coordination\" --dry-run)",
+      "Bash(chmod:*)",
+      "Bash(scripts/claude-flow-wrapper.bat:*)",
+      "Bash(where:*)",
+      "Bash(claude-flow status)",
+      "Bash(claude-flow init:*)",
+      "Bash(claude-flow:*)",
+      "Bash(cat:*)",
+      "Bash(CLAUDE_CLI_PATH=\"C:\\Users\\encou\\AppData\\Roaming\\npm\\claude.cmd\" claude-flow swarm \"Test Windows path\" --dry-run)",
+      "Bash(CLAUDE_CLI_PATH=\"node /c/Users/encou/AppData/Roaming/npm/node_modules/@anthropic-ai/claude-code/cli.js\" claude-flow swarm \"Test direct node invocation\" --dry-run)",
+      "Bash(./claude --version)",
+      "Bash(echo:*)",
+      "Bash(cp:*)",
+      "Bash(export CLAUDE_CLI_PATH=\"/c/Users/encou/AppData/Roaming/npm/claude\")",
+      "WebFetch(domain:projectionlab.com)",
+      "WebFetch(domain:projectionlab.com)",
+      "WebFetch(domain:www.investquest.app)",
+      "WebFetch(domain:www.investquest.app)",
+      "WebFetch(domain:projectionlab.com)",
+      "Bash(npm test)"
     ],
-    "deny": []
+    "deny": [],
+    "additionalDirectories": [
+      "C:\\c\\Users\\encou\\AppData\\Roaming"
+    ]
   }
 }

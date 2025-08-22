@@ -1,0 +1,192 @@
+/* ===================================
+   TEXT CONTRAST AND READABILITY FIXES
+   =================================== */
+
+/* Override all instances of gray-600 text with better contrast */
+.hero-subtitle,
+.feature-description,
+.metric-label,
+.form-helper,
+.input-description,
+.card-description,
+.section-subtitle,
+.step-description,
+.benefit-description,
+.testimonial-attribution,
+.faq-answer,
+.footer-description,
+.nav-description,
+.preview-description,
+.insight-text,
+.calculation-note,
+.disclaimer-text {
+    color: var(--text-secondary) !important; /* #374151 instead of #6b7280 */
+    font-weight: 500 !important;
+}
+
+/* Very light text that should remain subtle */
+.timestamp,
+.version-info,
+.copyright,
+.metadata {
+    color: var(--text-muted) !important; /* Keep gray-500 for these */
+}
+
+/* Ensure proper contrast on dark backgrounds */
+.dark-bg .hero-subtitle,
+.dark-bg .feature-description,
+.dark-bg .card-description {
+    color: rgba(255, 255, 255, 0.9) !important;
+}
+
+/* Fix button text contrast */
+.btn-primary,
+.cta-primary,
+.nav-cta {
+    color: var(--text-on-brand) !important;
+    font-weight: 600 !important;
+}
+
+/* Fix link colors for better visibility */
+a:not(.btn):not(.cta-primary):not(.cta-secondary) {
+    color: var(--projectionlab-primary);
+    font-weight: 500;
+}
+
+a:not(.btn):not(.cta-primary):not(.cta-secondary):hover {
+    color: #1554A3;
+    text-decoration: underline;
+}
+
+/* Form input improvements */
+input, textarea, select {
+    color: var(--text-primary) !important;
+    font-weight: 500;
+}
+
+input::placeholder,
+textarea::placeholder {
+    color: var(--text-tertiary) !important;
+    font-weight: 400;
+}
+
+/* Navigation text improvements */
+.nav-link {
+    color: var(--text-primary) !important;
+    font-weight: 600;
+}
+
+.nav-link:hover,
+.nav-link.active {
+    color: var(--projectionlab-primary) !important;
+}
+
+/* Card and section improvements */
+.card {
+    background: var(--surface-primary);
+    border: 1px solid var(--gray-200);
+}
+
+.section {
+    background: var(--surface-primary);
+}
+
+/* Ensure metric values are highly visible */
+.metric-value,
+.calculation-result,
+.projection-value {
+    color: var(--text-primary) !important;
+    font-weight: 700 !important;
+}
+
+.metric-value.positive {
+    color: var(--success-600) !important;
+}
+
+.metric-value.negative {
+    color: var(--error-600) !important;
+}
+
+/* Error and success message improvements */
+.error-message {
+    color: var(--error-700) !important;
+    background: var(--error-50);
+    border: 1px solid var(--error-200);
+    padding: 12px 16px;
+    border-radius: 8px;
+    font-weight: 500;
+}
+
+.success-message {
+    color: var(--success-700) !important;
+    background: var(--success-50);
+    border: 1px solid var(--success-200);
+    padding: 12px 16px;
+    border-radius: 8px;
+    font-weight: 500;
+}
+
+.warning-message {
+    color: var(--warning-700) !important;
+    background: var(--warning-50);
+    border: 1px solid var(--warning-200);
+    padding: 12px 16px;
+    border-radius: 8px;
+    font-weight: 500;
+}
+
+/* Mobile text improvements */
+@media (max-width: 768px) {
+    .hero-subtitle,
+    .feature-description,
+    .card-description {
+        font-size: 1rem !important;
+        line-height: 1.6 !important;
+        color: var(--text-secondary) !important;
+    }
+    
+    .hero-title {
+        color: var(--text-primary) !important;
+        font-weight: 800 !important;
+    }
+    
+    /* Mobile navigation text */
+    .nav-links .nav-link {
+        color: var(--text-primary) !important;
+        font-weight: 600 !important;
+        font-size: 1.125rem !important;
+    }
+    
+    .nav-links .nav-link:hover,
+    .nav-links .nav-link.active {
+        color: var(--projectionlab-primary) !important;
+        background: rgba(24, 103, 192, 0.1) !important;
+    }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+    .hero-subtitle,
+    .feature-description,
+    .card-description {
+        color: var(--text-primary) !important;
+        font-weight: 600 !important;
+    }
+    
+    .metric-label,
+    .form-helper {
+        color: var(--text-secondary) !important;
+        font-weight: 600 !important;
+    }
+}
+
+/* Dark mode preparation (if implemented later) */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --text-primary: #ffffff;
+        --text-secondary: #e5e7eb;
+        --text-tertiary: #d1d5db;
+        --surface-primary: #1f2937;
+        --surface-secondary: #374151;
+    }
+}

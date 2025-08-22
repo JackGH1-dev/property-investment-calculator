@@ -1,4 +1,43 @@
-# InvestQuest Performance Optimization Implementation Plan
+# Performance Optimization Plan: ProjectionLab-Style Design Migration
+
+## Executive Summary
+
+This comprehensive plan outlines a systematic approach to implementing ProjectionLab-style design while maintaining optimal performance. Current baseline: 6.1MB project size, 4,129 CSS lines, 15,306 JS lines.
+
+**Performance Goals:**
+- Maintain <2.5s LCP (Largest Contentful Paint)
+- Keep FID <100ms (First Input Delay)
+- Achieve CLS <0.1 (Cumulative Layout Shift)
+- Target Lighthouse score 90+
+
+## 1. Current Performance Baseline Analysis
+
+### Current State Assessment
+- **Project Size:** 6.1MB total
+- **CSS:** 4,129 lines across multiple files
+- **JavaScript:** 15,306 lines (heavy on dashboard functionality)
+- **External Dependencies:** Google Fonts, Firebase Auth, CDN resources
+- **Critical Path:** Single CSS file blocks rendering
+
+### Identified Performance Bottlenecks
+1. **CSS Loading:** Single large styles.css file (likely 150KB+)
+2. **JavaScript Bundles:** Multiple auth and dashboard scripts
+3. **Font Loading:** Google Fonts import blocking render
+4. **Critical Path:** No CSS/JS optimization or splitting
+
+## 2. Design Impact Assessment
+
+### ProjectionLab Design Elements to Implement
+- **Modern Card-Based Layout:** +15KB CSS, minimal JS impact
+- **Advanced Animations:** +25KB CSS, +10KB JS for smooth interactions
+- **Enhanced Typography:** Optimized font loading strategy
+- **Professional Color Scheme:** CSS variable updates, no size impact
+- **Interactive Components:** +20KB JS for enhanced UX
+
+### Performance Impact Estimation
+- **CSS Size Increase:** +40KB (optimized through splitting)
+- **JS Size Increase:** +30KB (optimized through tree shaking)
+- **Total Addition:** ~70KB (mitigated through optimization)
 
 ## Immediate Actions (Priority 1 - This Week)
 
@@ -671,4 +710,313 @@ window.addEventListener('load', () => perf.mark('page_loaded'));
 - [ ] Document performance regression prevention
 - [ ] Create performance budget alerts
 
-This implementation plan provides concrete steps to achieve significant performance improvements while maintaining the current functionality and user experience of the InvestQuest platform.
+## 3. Optimization Strategy
+
+### 3.1 CSS Optimization & Splitting
+
+#### Critical CSS Implementation
+```css
+/* Critical path CSS - inline in <head> */
+/* Navigation, hero, above-the-fold content */
+.global-nav { /* Essential nav styles */ }
+.hero { /* Above-fold content */ }
+.container { /* Layout essentials */ }
+```
+
+#### CSS Chunking Strategy
+```bash
+# Split CSS into logical chunks
+styles/
+├── critical.css (inlined)      # 15KB - Above fold
+├── components.css              # 35KB - UI components  
+├── dashboard.css               # 40KB - Dashboard specific
+├── animations.css              # 25KB - Non-critical animations
+└── vendor.css                  # 20KB - Third-party styles
+```
+
+#### CSS Loading Optimization
+```html
+<!-- Critical CSS inlined -->
+<style>/* critical styles */</style>
+
+<!-- Non-critical CSS lazy loaded -->
+<link rel="preload" href="styles/components.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" href="styles/dashboard.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+```
+
+### 3.2 JavaScript Optimization
+
+#### Bundle Splitting Strategy
+```javascript
+// Core bundle (essential functionality)
+core.js: [
+  'auth-production.js',     // Authentication
+  'global-auth-init.js',    // Auth initialization
+  'navigation.js'           // Essential navigation
+]
+
+// Feature bundles (lazy loaded)
+dashboard.bundle.js: [
+  'dashboard-production.js',
+  'performance-monitor.js'
+]
+
+// Vendor bundle (external libraries)
+vendor.bundle.js: [
+  'firebase-auth',
+  'performance-libs'
+]
+```
+
+#### Code Splitting Implementation
+```javascript
+// Dynamic imports for non-critical features
+const loadDashboard = () => import('./dashboard.bundle.js');
+const loadPerformanceMonitor = () => import('./performance-monitor.js');
+
+// Feature detection and conditional loading
+if (document.querySelector('.dashboard-main')) {
+  loadDashboard();
+}
+```
+
+## 4. Asset Management Strategy
+
+### 4.1 Image Optimization
+```html
+<!-- Implement responsive images -->
+<picture>
+  <source media="(min-width: 768px)" srcset="hero-desktop.webp">
+  <source media="(min-width: 480px)" srcset="hero-tablet.webp">
+  <img src="hero-mobile.webp" alt="Hero image" loading="lazy">
+</picture>
+```
+
+### 4.2 Font Loading Optimization
+```html
+<!-- Optimized font loading -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" media="print" onload="this.media='all'">
+
+<!-- Fallback fonts -->
+<style>
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+.fonts-loaded body {
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+</style>
+```
+
+### 4.3 Icon System Implementation
+```javascript
+// SVG sprite system for icons
+const IconSprite = {
+  load: () => {
+    const sprite = document.createElement('div');
+    sprite.innerHTML = `
+      <svg style="display: none;">
+        <symbol id="icon-dashboard" viewBox="0 0 24 24">
+          <path d="..."/>
+        </symbol>
+        <!-- More icons -->
+      </svg>
+    `;
+    document.body.insertBefore(sprite, document.body.firstChild);
+  }
+};
+```
+
+## 5. Animation Performance Strategy
+
+### 5.1 CSS Animations Optimization
+```css
+/* Use transform and opacity for GPU acceleration */
+.card-hover {
+  transform: translateY(0);
+  opacity: 1;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+  will-change: transform, opacity;
+}
+
+.card-hover:hover {
+  transform: translateY(-4px);
+}
+
+/* Remove will-change after animation */
+.card-hover:not(:hover) {
+  will-change: auto;
+}
+```
+
+### 5.2 Intersection Observer for Scroll Animations
+```javascript
+// Efficient scroll-triggered animations
+const animateOnScroll = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('animate-in');
+      animateOnScroll.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.1 });
+
+// Observe elements
+document.querySelectorAll('.animate-on-scroll').forEach(el => {
+  animateOnScroll.observe(el);
+});
+```
+
+## 6. Performance Budgets
+
+### 6.1 Resource Budgets
+```json
+{
+  "budgets": {
+    "totalCSS": "150KB",
+    "totalJS": "300KB",
+    "totalImages": "500KB",
+    "totalFonts": "100KB",
+    "totalSize": "1MB"
+  },
+  "performance": {
+    "LCP": "2.5s",
+    "FID": "100ms",
+    "CLS": "0.1",
+    "FCP": "1.8s",
+    "TTI": "3.5s"
+  }
+}
+```
+
+### 6.2 Page-Specific Budgets
+```json
+{
+  "pages": {
+    "homepage": {
+      "totalSize": "800KB",
+      "LCP": "2.0s",
+      "priority": "critical"
+    },
+    "dashboard": {
+      "totalSize": "1.2MB",
+      "LCP": "2.5s",
+      "priority": "high"
+    },
+    "calculator": {
+      "totalSize": "900KB",
+      "LCP": "2.2s",
+      "priority": "high"
+    }
+  }
+}
+```
+
+## 7. Monitoring & Tracking Setup
+
+### 7.1 Real User Monitoring (RUM)
+```javascript
+// Enhanced performance monitoring
+class ProjectionLabPerformanceMonitor extends PerformanceMonitor {
+  constructor() {
+    super();
+    this.designMetrics = {
+      animationFrames: [],
+      interactionLatency: [],
+      renderBlocking: []
+    };
+  }
+
+  trackDesignPerformance() {
+    // Track animation performance
+    this.trackAnimationFrames();
+    
+    // Monitor interaction responsiveness
+    this.trackInteractionLatency();
+    
+    // Detect render-blocking resources
+    this.detectRenderBlocking();
+  }
+}
+```
+
+## 8. Implementation Roadmap
+
+### Phase 1: Foundation (Week 1-2)
+- [ ] Implement CSS chunking and critical path optimization
+- [ ] Set up build process for asset optimization
+- [ ] Implement font loading optimization
+- [ ] Establish performance monitoring baseline
+
+### Phase 2: Design Migration (Week 3-4)
+- [ ] Implement ProjectionLab card components
+- [ ] Add enhanced typography and color scheme
+- [ ] Implement smooth animations with performance optimization
+- [ ] Add micro-interactions with debouncing
+
+### Phase 3: Advanced Optimization (Week 5-6)
+- [ ] Implement JavaScript code splitting
+- [ ] Add service worker for caching strategy
+- [ ] Optimize images with responsive loading
+- [ ] Fine-tune animation performance
+
+### Phase 4: Monitoring & Iteration (Week 7-8)
+- [ ] Deploy comprehensive performance monitoring
+- [ ] Implement A/B testing for design elements
+- [ ] Performance optimization based on real user data
+- [ ] Documentation and team training
+
+## 9. Success Metrics
+
+### Performance KPIs
+- **Lighthouse Performance Score:** 90+ (current baseline TBD)
+- **LCP:** <2.5s (target: <2.0s)
+- **FID:** <100ms (target: <50ms)
+- **CLS:** <0.1 (target: <0.05)
+- **Bundle Size:** <1MB total (optimized)
+
+### User Experience KPIs
+- **Bounce Rate:** Maintain or improve current rate
+- **Time on Page:** Increase by 15%
+- **User Engagement:** Track interaction rates
+- **Conversion Metrics:** Monitor signup/calculation completion
+
+### Technical KPIs
+- **Build Time:** <30s for full build
+- **Hot Reload:** <3s during development
+- **Cache Hit Rate:** 90%+ for static assets
+- **Error Rate:** <0.1% performance-related errors
+
+## 10. Risk Mitigation
+
+### Performance Risks
+- **CSS Splitting Complexity:** Progressive implementation with fallbacks
+- **JavaScript Bundle Size:** Aggressive tree shaking and code splitting
+- **Animation Performance:** GPU acceleration and throttling for low-end devices
+- **Font Loading:** System font fallbacks and preloading
+
+### Implementation Risks
+- **Browser Compatibility:** Progressive enhancement approach
+- **Development Workflow:** Maintain development speed with optimized build process
+- **Third-party Dependencies:** Monitor and optimize external resource loading
+- **Team Adoption:** Clear documentation and training materials
+
+## Conclusion
+
+This performance optimization plan provides a systematic approach to implementing ProjectionLab-style design while maintaining excellent performance. The key is progressive enhancement, careful monitoring, and iterative optimization based on real user data.
+
+**Expected Outcomes:**
+- Modern, professional design matching ProjectionLab standards
+- Performance scores of 90+ across all pages
+- Improved user experience and engagement
+- Maintainable and scalable codebase
+
+**Next Steps:**
+1. Establish current performance baseline
+2. Begin Phase 1 implementation
+3. Set up monitoring infrastructure
+4. Start iterative optimization process
+
+This comprehensive implementation plan provides concrete steps to achieve significant performance improvements while implementing ProjectionLab-style design upgrades.

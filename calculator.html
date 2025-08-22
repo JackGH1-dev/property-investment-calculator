@@ -2,7 +2,13 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="InvestQuest Calculator">
+    <meta name="msapplication-TileColor" content="#1867C0">
+    <meta name="theme-color" content="#1867C0">
     <meta name="description" content="InvestQuest Property Calculator - Forecast 30-year investment performance, calculate stamp duty & LMI, compare investments. Professional Australian property analysis tool.">
     <meta name="keywords" content="property calculator, investment analysis, stamp duty calculator, LMI calculator, Australian property, mortgage broker tool">
     <meta property="og:title" content="Property Investment Calculator - InvestQuest">
@@ -10,8 +16,21 @@
     <meta property="og:type" content="website">
     <title>Property Calculator - InvestQuest</title>
     <link rel="stylesheet" href="styles.css">
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎯</text></svg>">
-    
+    <link rel="stylesheet" href="styles/mobile-enhancements.css">
+    <link rel="stylesheet" href="styles/market-insights-widget.css">
+    <link rel="stylesheet" href="styles/performance-dashboard.css">
+    <link rel="stylesheet" href="styles/text-contrast-fixes.css">
+    <link rel="stylesheet" href="styles/enhanced-contrast-system.css">
+    <link rel="stylesheet" href="styles/visual-variety-enhancements.css">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="icon" type="image/svg+xml" href="/images/professional-favicon.svg">
+    <link rel="icon" type="image/png" sizes="32x32" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%231867C0' rx='4'/><path d='M8 24V16l8-6 8 6v8z' fill='%23ffffff'/><path d='M20 14l3-3h-2V9h-2v2h-2z' fill='%2326A6A2'/><text x='16' y='21' text-anchor='middle' font-family='Inter' font-size='8' font-weight='600' fill='%23F59E0B'>$</text></svg>">
+    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'><rect width='180' height='180' fill='%231867C0' rx='20'/><path d='M40 120V80l50-30 50 30v40z' fill='%23ffffff'/><path d='M100 70l15-15h-10V45h-10v10h-10z' fill='%2326A6A2'/><text x='90' y='105' text-anchor='middle' font-family='Inter' font-size='24' font-weight='600' fill='%23F59E0B'>$</text></svg>">
+    <script src="js/performance-monitor.js"></script>
+    <script src="js/enhanced-components.js"></script>
+    <script src="js/advanced-chart-system.js"></script>
+    <script src="js/interactive-data-table.js"></script>
+    <script src="js/pwa-features.js"></script>
 </head>
 <body>
     <!-- Global Navigation -->
@@ -104,12 +123,20 @@
             <div class="calculator-grid">
                 <!-- Left Panel - Input Form -->
                 <section class="input-panel">
+                    <div class="form-progress mobile-only" style="display: none;">
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 0%"></div>
+                        </div>
+                        <div class="progress-text">0% Complete</div>
+                    </div>
                     <h2>Property Details</h2>
                     <form id="propertyForm">
                         <div class="form-group">
                             <label for="address" class="required">Property Address</label>
                             <input type="text" id="address" placeholder="Start typing an Australian address..." required>
                             <small id="addressHelp" style="color: #666; font-size: 0.85rem;">Address autocomplete will detect your state for stamp duty calculation</small>
+                            <!-- Property search integration -->
+                            <div class="property-search-container" id="propertySearchContainer" style="display: none;"></div>
                         </div>
 
                         <div class="form-row">
@@ -139,6 +166,8 @@
                         <div class="form-group">
                             <label for="purchasePrice" class="required">Purchase Price ($)</label>
                             <input type="number" id="purchasePrice" placeholder="e.g. 750000" required>
+                            <!-- Market insights widget -->
+                            <div class="market-insights-container" id="marketInsights"></div>
                         </div>
 
                         <div class="form-row">
@@ -419,7 +448,10 @@
             </div>
         </footer>
 
-    <!-- Include performance optimizer FIRST -->
+    <!-- Include mobile enhancements FIRST -->
+    <script src="js/mobile-enhancements.js"></script>
+    
+    <!-- Include performance optimizer -->
     <script src="performance-optimizer.js"></script>
     
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -504,7 +536,16 @@
         });
     </script>
     
-    <!-- Include authentication system -->
+    <!-- Include all enhanced features -->
+    <script src="performance-optimizer.js"></script>
+    <script src="performance-monitor.js"></script>
+    <script src="performance-dashboard.js"></script>
+    <script src="performance-events.js"></script>
+    <script src="market-data-service.js"></script>
+    <script src="property-search.js"></script>
+    <script src="pdf-report-generator.js"></script>
+    <script src="market-insights-widget.js"></script>
+    <script src="user-feedback-system.js"></script>
     <script src="global-auth-init.js"></script>
     <script src="script.js"></script>
     

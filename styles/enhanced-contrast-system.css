@@ -1,0 +1,444 @@
+/* ===================================
+   ENHANCED CONTRAST & COLOR SYSTEM
+   High-contrast design with varied backgrounds
+   =================================== */
+
+:root {
+    /* Enhanced Color Palette with Better Contrast */
+    --contrast-white: #ffffff;
+    --contrast-light-gray: #f8fafc;
+    --contrast-medium-gray: #f1f5f9;
+    --contrast-accent-light: #eff6ff;
+    --contrast-teal-light: #f0fdfa;
+    --contrast-amber-light: #fffbeb;
+    --contrast-green-light: #ecfdf5;
+    --contrast-red-light: #fef2f2;
+    
+    /* Dark Text Colors for Maximum Contrast */
+    --text-contrast-primary: #0f172a;      /* Almost black */
+    --text-contrast-secondary: #1e293b;    /* Dark slate */
+    --text-contrast-tertiary: #334155;     /* Medium slate */
+    --text-contrast-brand: #1867C0;        /* ProjectionLab blue */
+    --text-contrast-success: #047857;      /* Dark green */
+    --text-contrast-error: #b91c1c;        /* Dark red */
+    --text-contrast-warning: #b45309;      /* Dark amber */
+    
+    /* Background Colors with Clear Separation */
+    --bg-primary: var(--contrast-white);
+    --bg-secondary: var(--contrast-light-gray);
+    --bg-tertiary: var(--contrast-medium-gray);
+    --bg-accent: var(--contrast-accent-light);
+    --bg-teal: var(--contrast-teal-light);
+    --bg-amber: var(--contrast-amber-light);
+    --bg-success: var(--contrast-green-light);
+    --bg-error: var(--contrast-red-light);
+    
+    /* Enhanced Borders */
+    --border-light: #e2e8f0;
+    --border-medium: #cbd5e1;
+    --border-strong: #64748b;
+    --border-brand: #3b82f6;
+    
+    /* Enhanced Shadows for Depth */
+    --shadow-light: 0 1px 3px rgba(0, 0, 0, 0.1);
+    --shadow-medium: 0 4px 6px rgba(0, 0, 0, 0.1);
+    --shadow-strong: 0 10px 15px rgba(0, 0, 0, 0.1);
+    --shadow-brand: 0 4px 14px rgba(24, 103, 192, 0.25);
+}
+
+/* ===================================
+   SECTION BACKGROUNDS WITH VARIETY
+   =================================== */
+
+/* Hero Section - Clean white */
+.hero {
+    background: var(--bg-primary) !important;
+    color: var(--text-contrast-primary) !important;
+    border-bottom: 2px solid var(--border-light);
+}
+
+.hero-title {
+    color: var(--text-contrast-primary) !important;
+    font-weight: 800 !important;
+}
+
+.hero-subtitle {
+    color: var(--text-contrast-secondary) !important;
+    font-weight: 600 !important;
+}
+
+/* Features Section - Light gray background */
+.features.section {
+    background: var(--bg-secondary) !important;
+    padding: 80px 0 !important;
+}
+
+/* Perfect For Section - Accent blue background */
+.perfect-for.section {
+    background: var(--bg-accent) !important;
+    padding: 80px 0 !important;
+}
+
+/* How It Works Section - White background */
+.how-it-works.section {
+    background: var(--bg-primary) !important;
+    padding: 80px 0 !important;
+    border-top: 2px solid var(--border-light);
+    border-bottom: 2px solid var(--border-light);
+}
+
+/* Trust Section - Teal background */
+.trust.section {
+    background: var(--bg-teal) !important;
+    padding: 80px 0 !important;
+}
+
+/* FAQ Section - Medium gray background */
+.faq.section {
+    background: var(--bg-tertiary) !important;
+    padding: 80px 0 !important;
+}
+
+/* CTA Section - Amber background */
+.cta.section {
+    background: var(--bg-amber) !important;
+    padding: 80px 0 !important;
+}
+
+/* Footer - Dark background with light text */
+.footer {
+    background: var(--text-contrast-primary) !important;
+    color: var(--contrast-white) !important;
+    padding: 60px 0 40px !important;
+}
+
+/* ===================================
+   CARD ENHANCEMENTS WITH STRONG CONTRAST
+   =================================== */
+
+/* Feature Cards - White with strong borders */
+.feature-card {
+    background: var(--bg-primary) !important;
+    border: 2px solid var(--border-light) !important;
+    border-radius: 12px !important;
+    padding: 32px 24px !important;
+    box-shadow: var(--shadow-medium) !important;
+    transition: all 0.3s ease !important;
+}
+
+.feature-card:hover {
+    border-color: var(--border-brand) !important;
+    box-shadow: var(--shadow-brand) !important;
+    transform: translateY(-4px) !important;
+}
+
+.feature-card h3 {
+    color: var(--text-contrast-primary) !important;
+    font-weight: 700 !important;
+    margin-bottom: 12px !important;
+}
+
+.feature-card p {
+    color: var(--text-contrast-secondary) !important;
+    font-weight: 500 !important;
+    line-height: 1.6 !important;
+}
+
+/* Premium Feature Cards - Brand background */
+.feature-card.premium {
+    background: linear-gradient(135deg, #1867C0 0%, #26A6A2 100%) !important;
+    color: var(--contrast-white) !important;
+    border: 2px solid transparent !important;
+}
+
+.feature-card.premium h3 {
+    color: var(--contrast-white) !important;
+}
+
+.feature-card.premium p {
+    color: rgba(255, 255, 255, 0.9) !important;
+}
+
+/* Perfect For Cards - Varied backgrounds */
+.perfect-for-card {
+    background: var(--bg-primary) !important;
+    border: 2px solid var(--border-medium) !important;
+    border-radius: 16px !important;
+    padding: 40px 32px !important;
+    box-shadow: var(--shadow-strong) !important;
+    transition: all 0.3s ease !important;
+}
+
+.perfect-for-card.primary {
+    background: var(--bg-success) !important;
+    border-color: #10b981 !important;
+}
+
+.perfect-for-card:hover {
+    transform: translateY(-6px) !important;
+    box-shadow: 0 20px 25px rgba(0, 0, 0, 0.15) !important;
+}
+
+.perfect-for-card h3 {
+    color: var(--text-contrast-primary) !important;
+    font-weight: 700 !important;
+    font-size: 1.5rem !important;
+}
+
+.perfect-for-card p {
+    color: var(--text-contrast-secondary) !important;
+    font-weight: 500 !important;
+    font-size: 1.1rem !important;
+}
+
+.perfect-for-card li {
+    color: var(--text-contrast-tertiary) !important;
+    font-weight: 500 !important;
+}
+
+/* ===================================
+   NAVIGATION ENHANCEMENTS
+   =================================== */
+
+.global-nav {
+    background: var(--bg-primary) !important;
+    border-bottom: 2px solid var(--border-light) !important;
+    box-shadow: var(--shadow-light) !important;
+}
+
+.nav-brand h1 {
+    color: var(--text-contrast-brand) !important;
+    font-weight: 800 !important;
+}
+
+.nav-link {
+    color: var(--text-contrast-primary) !important;
+    font-weight: 600 !important;
+    padding: 12px 20px !important;
+    border-radius: 8px !important;
+    transition: all 0.2s ease !important;
+}
+
+.nav-link:hover,
+.nav-link.active {
+    background: var(--bg-accent) !important;
+    color: var(--text-contrast-brand) !important;
+}
+
+.nav-cta {
+    background: var(--text-contrast-brand) !important;
+    color: var(--contrast-white) !important;
+    padding: 12px 24px !important;
+    border-radius: 8px !important;
+    font-weight: 600 !important;
+    border: none !important;
+}
+
+.nav-cta:hover {
+    background: #1554A3 !important;
+    transform: translateY(-1px) !important;
+}
+
+/* ===================================
+   BUTTON ENHANCEMENTS
+   =================================== */
+
+.cta-primary {
+    background: var(--text-contrast-brand) !important;
+    color: var(--contrast-white) !important;
+    font-weight: 700 !important;
+    padding: 18px 36px !important;
+    border-radius: 12px !important;
+    border: none !important;
+    box-shadow: var(--shadow-brand) !important;
+    transition: all 0.3s ease !important;
+}
+
+.cta-primary:hover {
+    background: #1554A3 !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 8px 20px rgba(24, 103, 192, 0.4) !important;
+}
+
+.cta-secondary {
+    background: var(--bg-primary) !important;
+    color: var(--text-contrast-brand) !important;
+    border: 2px solid var(--text-contrast-brand) !important;
+    font-weight: 600 !important;
+    padding: 16px 32px !important;
+    border-radius: 12px !important;
+}
+
+.cta-secondary:hover {
+    background: var(--text-contrast-brand) !important;
+    color: var(--contrast-white) !important;
+}
+
+/* ===================================
+   FORM ENHANCEMENTS
+   =================================== */
+
+input, textarea, select {
+    background: var(--bg-primary) !important;
+    border: 2px solid var(--border-medium) !important;
+    color: var(--text-contrast-primary) !important;
+    font-weight: 500 !important;
+    padding: 16px 20px !important;
+    border-radius: 8px !important;
+    font-size: 16px !important;
+}
+
+input:focus, textarea:focus, select:focus {
+    border-color: var(--text-contrast-brand) !important;
+    box-shadow: 0 0 0 3px rgba(24, 103, 192, 0.1) !important;
+    outline: none !important;
+}
+
+input::placeholder, textarea::placeholder {
+    color: var(--text-contrast-tertiary) !important;
+    font-weight: 400 !important;
+}
+
+label {
+    color: var(--text-contrast-primary) !important;
+    font-weight: 600 !important;
+    font-size: 14px !important;
+    margin-bottom: 8px !important;
+    display: block !important;
+}
+
+/* ===================================
+   SECTION HEADERS
+   =================================== */
+
+.section-header h2 {
+    color: var(--text-contrast-primary) !important;
+    font-weight: 800 !important;
+    font-size: clamp(2rem, 4vw, 3rem) !important;
+    margin-bottom: 16px !important;
+}
+
+.section-header p {
+    color: var(--text-contrast-secondary) !important;
+    font-weight: 600 !important;
+    font-size: 1.25rem !important;
+    max-width: 600px !important;
+    margin: 0 auto !important;
+}
+
+/* ===================================
+   METRICS AND VALUES
+   =================================== */
+
+.metric-value,
+.preview-metric .metric-value {
+    color: var(--text-contrast-primary) !important;
+    font-weight: 800 !important;
+    font-size: 1.5rem !important;
+}
+
+.metric-value.positive {
+    color: var(--text-contrast-success) !important;
+}
+
+.metric-value.negative {
+    color: var(--text-contrast-error) !important;
+}
+
+.metric-label,
+.preview-metric .metric-label {
+    color: var(--text-contrast-tertiary) !important;
+    font-weight: 600 !important;
+    font-size: 0.9rem !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+}
+
+/* ===================================
+   PREVIEW CARDS
+   =================================== */
+
+.preview-card {
+    background: var(--bg-primary) !important;
+    border: 2px solid var(--border-light) !important;
+    border-radius: 16px !important;
+    padding: 32px !important;
+    box-shadow: var(--shadow-strong) !important;
+}
+
+.feature-preview h3 {
+    color: var(--text-contrast-primary) !important;
+    font-weight: 700 !important;
+    margin-bottom: 24px !important;
+}
+
+.preview-insight {
+    background: var(--bg-success) !important;
+    color: var(--text-contrast-success) !important;
+    padding: 16px 20px !important;
+    border-radius: 12px !important;
+    border: 2px solid #10b981 !important;
+    margin-top: 20px !important;
+    font-weight: 600 !important;
+}
+
+/* ===================================
+   MOBILE RESPONSIVE ADJUSTMENTS
+   =================================== */
+
+@media (max-width: 768px) {
+    .feature-card,
+    .perfect-for-card {
+        margin-bottom: 24px !important;
+    }
+    
+    .section {
+        padding: 60px 0 !important;
+    }
+    
+    .hero {
+        padding: 60px 20px !important;
+    }
+    
+    /* Mobile Navigation */
+    .nav-links {
+        background: var(--bg-primary) !important;
+        backdrop-filter: blur(20px) !important;
+        border: 2px solid var(--border-light) !important;
+    }
+    
+    .nav-links .nav-link {
+        background: var(--bg-secondary) !important;
+        margin-bottom: 12px !important;
+        text-align: center !important;
+        font-size: 1.2rem !important;
+    }
+    
+    .nav-links .nav-cta {
+        background: var(--text-contrast-brand) !important;
+        margin-top: 20px !important;
+    }
+}
+
+/* ===================================
+   ACCESSIBILITY ENHANCEMENTS
+   =================================== */
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+    :root {
+        --text-contrast-primary: #000000;
+        --text-contrast-secondary: #1a1a1a;
+        --border-light: #666666;
+        --border-medium: #333333;
+    }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}

@@ -1,10 +1,347 @@
 /* Import Professional Typography - Must be at top */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 
+/* ===================================
+   ENHANCED COLOR SYSTEM - PROJECTIONLAB INSPIRED
+   =================================== */
+
+:root {
+    /* ProjectionLab-Inspired Primary Colors */
+    --projectionlab-primary: #1867C0;    /* Deep professional blue */
+    --projectionlab-secondary: #26A6A2;  /* Sophisticated teal */
+    --projectionlab-accent: #F59E0B;     /* Warm amber accent */
+    
+    /* Enhanced Primary Blue Scale */
+    --primary-50: #eff6ff;
+    --primary-100: #dbeafe;
+    --primary-200: #bfdbfe;
+    --primary-300: #93c5fd;
+    --primary-400: #60a5fa;
+    --primary-500: #3b82f6;  /* Keep existing for compatibility */
+    --primary-600: var(--projectionlab-primary);  /* Enhanced with ProjectionLab */
+    --primary-700: #1d4ed8;
+    --primary-800: #1e40af;
+    --primary-900: #1e3a8a;
+    
+    /* Enhanced Teal/Cyan Scale */
+    --accent-50: #f0fdfa;
+    --accent-100: #ccfbf1;
+    --accent-200: #99f6e4;
+    --accent-300: #5eead4;
+    --accent-400: var(--projectionlab-secondary);  /* ProjectionLab teal */
+    --accent-500: #06b6d4;  /* Keep existing */
+    --accent-600: #0891b2;
+    --accent-700: #0e7490;
+    --accent-800: #155e75;
+    --accent-900: #164e63;
+    
+    /* Enhanced Semantic Colors */
+    --success-50: #ecfdf5;
+    --success-100: #d1fae5;
+    --success-200: #a7f3d0;
+    --success-300: #6ee7b7;
+    --success-400: #34d399;
+    --success-500: #10b981;
+    --success-600: #059669;
+    --success-700: #047857;
+    --success-800: #065f46;
+    --success-900: #064e3b;
+    
+    --warning-50: #fffbeb;
+    --warning-100: #fef3c7;
+    --warning-200: #fde68a;
+    --warning-300: #fcd34d;
+    --warning-400: #fbbf24;
+    --warning-500: var(--projectionlab-accent);  /* Use ProjectionLab amber */
+    --warning-600: #d97706;
+    --warning-700: #b45309;
+    --warning-800: #92400e;
+    --warning-900: #78350f;
+    
+    --error-50: #fef2f2;
+    --error-100: #fee2e2;
+    --error-200: #fecaca;
+    --error-300: #fca5a5;
+    --error-400: #f87171;
+    --error-500: #ef4444;
+    --error-600: #dc2626;
+    --error-700: #b91c1c;
+    --error-800: #991b1b;
+    --error-900: #7f1d1d;
+    
+    /* Professional Grays */
+    --gray-50: #f9fafb;
+    --gray-100: #f3f4f6;
+    --gray-200: #e5e7eb;
+    --gray-300: #d1d5db;
+    --gray-400: #9ca3af;
+    --gray-500: #6b7280;
+    --gray-600: #4b5563;
+    --gray-700: #374151;
+    --gray-800: #1f2937;
+    --gray-900: #111827;
+    
+    /* ProjectionLab-Inspired Gradients */
+    --gradient-primary: linear-gradient(135deg, var(--projectionlab-primary), var(--projectionlab-secondary));
+    --gradient-primary-soft: linear-gradient(135deg, var(--primary-50), var(--accent-50));
+    --gradient-hero: linear-gradient(135deg, var(--projectionlab-primary) 0%, var(--primary-600) 50%, var(--projectionlab-secondary) 100%);
+    --gradient-card: linear-gradient(135deg, rgba(24, 103, 192, 0.05) 0%, rgba(38, 166, 162, 0.05) 100%);
+    
+    /* Surface Colors */
+    --surface-primary: #ffffff;
+    --surface-secondary: var(--gray-50);
+    --surface-accent: var(--gradient-primary-soft);
+    --surface-elevated: rgba(255, 255, 255, 0.95);
+    
+    /* Text Colors - Enhanced for Readability */
+    --text-primary: var(--gray-900);      /* #111827 - High contrast */
+    --text-secondary: var(--gray-700);    /* #374151 - Better contrast than gray-600 */
+    --text-tertiary: var(--gray-600);     /* #4b5563 - For less important text */
+    --text-muted: var(--gray-500);        /* #6b7280 - Very light text */
+    --text-inverse: #ffffff;
+    --text-on-brand: #ffffff;              /* White text on brand colors */
+    --text-brand: var(--projectionlab-primary);
+    --text-brand: var(--projectionlab-primary);
+    --text-accent: var(--projectionlab-secondary);
+    
+    /* Border Colors */
+    --border-light: var(--gray-200);
+    --border-medium: var(--gray-300);
+    --border-strong: var(--gray-400);
+    --border-brand: var(--projectionlab-primary);
+    --border-accent: var(--projectionlab-secondary);
+    
+    /* Shadow System (Enhanced) */
+    --shadow-xs: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+    --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+    --shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    --shadow-brand: 0 10px 15px -3px rgba(24, 103, 192, 0.2), 0 4px 6px -4px rgba(24, 103, 192, 0.1);
+    --shadow-accent: 0 10px 15px -3px rgba(38, 166, 162, 0.2), 0 4px 6px -4px rgba(38, 166, 162, 0.1);
+    
+    /* Interactive States */
+    --hover-overlay: rgba(24, 103, 192, 0.05);
+    --focus-ring: var(--projectionlab-primary);
+    --selection-bg: rgba(24, 103, 192, 0.1);
+    --selection-text: var(--projectionlab-primary);
+    
+    /* Enhanced Typography System - ProjectionLab Style */
+    --font-family-primary: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+    --font-family-mono: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
+    
+    /* Font Weight Scale */
+    --font-weight-light: 300;
+    --font-weight-normal: 400;
+    --font-weight-medium: 500;
+    --font-weight-semibold: 600;
+    --font-weight-bold: 700;
+    --font-weight-extrabold: 800;
+    --font-weight-black: 900;
+    
+    /* Font Size Scale */
+    --font-size-xs: 0.75rem;     /* 12px */
+    --font-size-sm: 0.875rem;    /* 14px */
+    --font-size-base: 1rem;      /* 16px */
+    --font-size-lg: 1.125rem;    /* 18px */
+    --font-size-xl: 1.25rem;     /* 20px */
+    --font-size-2xl: 1.5rem;     /* 24px */
+    --font-size-3xl: 1.875rem;   /* 30px */
+    --font-size-4xl: 2.25rem;    /* 36px */
+    --font-size-5xl: 3rem;       /* 48px */
+    --font-size-6xl: 3.75rem;    /* 60px */
+    --font-size-7xl: 4.5rem;     /* 72px */
+    
+    /* Line Height Scale */
+    --leading-tight: 1.1;
+    --leading-snug: 1.2;
+    --leading-normal: 1.4;
+    --leading-relaxed: 1.6;
+    --leading-loose: 1.8;
+    
+    /* Letter Spacing */
+    --tracking-tighter: -0.05em;
+    --tracking-tight: -0.025em;
+    --tracking-normal: 0em;
+    --tracking-wide: 0.025em;
+    --tracking-wider: 0.05em;
+    
+    /* Typography Utilities */
+    --text-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.1);
+    --text-shadow-md: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+}
+
+/* Enhanced Typography Base - ProjectionLab Inspired */
+body {
+    font-family: var(--font-family-primary);
+    font-size: var(--font-size-base);
+    line-height: var(--leading-normal);
+    color: var(--text-primary);
+    font-weight: var(--font-weight-normal);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+}
+
+/* Typography Scale System */
+.text-xs { font-size: var(--font-size-xs); }
+.text-sm { font-size: var(--font-size-sm); }
+.text-base { font-size: var(--font-size-base); }
+.text-lg { font-size: var(--font-size-lg); }
+.text-xl { font-size: var(--font-size-xl); }
+.text-2xl { font-size: var(--font-size-2xl); }
+.text-3xl { font-size: var(--font-size-3xl); }
+.text-4xl { font-size: var(--font-size-4xl); }
+.text-5xl { font-size: var(--font-size-5xl); }
+.text-6xl { font-size: var(--font-size-6xl); }
+
+/* Font Weight Utilities */
+.font-light { font-weight: var(--font-weight-light); }
+.font-normal { font-weight: var(--font-weight-normal); }
+.font-medium { font-weight: var(--font-weight-medium); }
+.font-semibold { font-weight: var(--font-weight-semibold); }
+.font-bold { font-weight: var(--font-weight-bold); }
+.font-extrabold { font-weight: var(--font-weight-extrabold); }
+.font-black { font-weight: var(--font-weight-black); }
+
+/* Line Height Utilities */
+.leading-tight { line-height: var(--leading-tight); }
+.leading-snug { line-height: var(--leading-snug); }
+.leading-normal { line-height: var(--leading-normal); }
+.leading-relaxed { line-height: var(--leading-relaxed); }
+.leading-loose { line-height: var(--leading-loose); }
+
+/* Letter Spacing Utilities */
+.tracking-tighter { letter-spacing: var(--tracking-tighter); }
+.tracking-tight { letter-spacing: var(--tracking-tight); }
+.tracking-normal { letter-spacing: var(--tracking-normal); }
+.tracking-wide { letter-spacing: var(--tracking-wide); }
+.tracking-wider { letter-spacing: var(--tracking-wider); }
+
+/* Enhanced Heading Styles - ProjectionLab Inspired */
+h1, .h1 {
+    font-size: clamp(var(--font-size-3xl), 5vw, var(--font-size-6xl));
+    font-weight: var(--font-weight-extrabold);
+    line-height: var(--leading-tight);
+    letter-spacing: var(--tracking-tight);
+    color: var(--text-primary);
+    margin-bottom: 1rem;
+}
+
+h2, .h2 {
+    font-size: clamp(var(--font-size-2xl), 4vw, var(--font-size-4xl));
+    font-weight: var(--font-weight-bold);
+    line-height: var(--leading-snug);
+    letter-spacing: var(--tracking-tight);
+    color: var(--text-primary);
+    margin-bottom: 0.875rem;
+}
+
+h3, .h3 {
+    font-size: clamp(var(--font-size-xl), 3vw, var(--font-size-2xl));
+    font-weight: var(--font-weight-semibold);
+    line-height: var(--leading-snug);
+    color: var(--text-primary);
+    margin-bottom: 0.75rem;
+}
+
+h4, .h4 {
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-semibold);
+    line-height: var(--leading-normal);
+    color: var(--text-primary);
+    margin-bottom: 0.625rem;
+}
+
+h5, .h5 {
+    font-size: var(--font-size-base);
+    font-weight: var(--font-weight-medium);
+    line-height: var(--leading-normal);
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+}
+
+h6, .h6 {
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-medium);
+    line-height: var(--leading-normal);
+    color: var(--text-secondary);
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-wide);
+}
+
+/* Enhanced Paragraph Styles */
+p, .text-body {
+    font-size: var(--font-size-base);
+    line-height: var(--leading-relaxed);
+    color: var(--text-secondary);
+    margin-bottom: 1rem;
+}
+
+.text-large {
+    font-size: var(--font-size-lg);
+    line-height: var(--leading-relaxed);
+    color: var(--text-primary);
+}
+
+.text-small {
+    font-size: var(--font-size-sm);
+    line-height: var(--leading-normal);
+    color: var(--text-tertiary);
+}
+
+/* Specialized Text Styles */
+.text-brand {
+    color: var(--text-brand);
+    font-weight: var(--font-weight-semibold);
+}
+
+.text-accent {
+    color: var(--text-accent);
+    font-weight: var(--font-weight-semibold);
+}
+
+.text-muted {
+    color: var(--text-tertiary);
+}
+
+.text-gradient {
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-weight: var(--font-weight-bold);
+}
+
+/* Display Text for Heroes */
+.display-xl {
+    font-size: clamp(var(--font-size-4xl), 8vw, var(--font-size-7xl));
+    font-weight: var(--font-weight-black);
+    line-height: var(--leading-tight);
+    letter-spacing: var(--tracking-tighter);
+    text-shadow: var(--text-shadow-sm);
+}
+
+.display-lg {
+    font-size: clamp(var(--font-size-3xl), 6vw, var(--font-size-6xl));
+    font-weight: var(--font-weight-extrabold);
+    line-height: var(--leading-tight);
+    letter-spacing: var(--tracking-tight);
+}
+
+.display-md {
+    font-size: clamp(var(--font-size-2xl), 5vw, var(--font-size-5xl));
+    font-weight: var(--font-weight-bold);
+    line-height: var(--leading-snug);
+    letter-spacing: var(--tracking-tight);
 }
 
 /* ===================================
@@ -1620,45 +1957,149 @@
     transform: translateY(-1px);
 }
 
+/* Enhanced Mobile Navigation Toggle - ProjectionLab Style */
 .nav-toggle {
     display: none;
     background: none;
     border: none;
     cursor: pointer;
     flex-direction: column;
-    padding: 8px;
+    gap: 4px;
+    padding: 12px;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+    position: relative;
+    z-index: 1001;
+    min-width: 48px;
+    min-height: 48px;
+    justify-content: center;
+    align-items: center;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.nav-toggle:hover {
+    background: var(--hover-overlay);
+}
+
+.nav-toggle:focus-visible {
+    outline: 2px solid var(--focus-ring);
+    outline-offset: 2px;
 }
 
 .nav-toggle span {
-    width: 25px;
-    height: 3px;
-    background: var(--gray-700);
-    margin: 3px 0;
-    transition: 0.3s;
+    width: 22px;
+    height: 2px;
+    background: var(--text-primary);
     border-radius: 2px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transform-origin: center;
 }
 
-/* Mobile Navigation */
+/* Animated hamburger to X transformation */
+.nav-toggle.active span:nth-child(1) {
+    transform: rotate(45deg) translate(5px, 5px);
+    background: var(--text-brand);
+}
+
+.nav-toggle.active span:nth-child(2) {
+    opacity: 0;
+    transform: scaleX(0);
+}
+
+.nav-toggle.active span:nth-child(3) {
+    transform: rotate(-45deg) translate(7px, -6px);
+    background: var(--text-brand);
+}
+
+/* Enhanced Mobile Navigation */
 @media (max-width: 768px) {
     .nav-links {
-        display: none;
-        position: absolute;
-        top: 100%;
+        position: fixed;
+        top: 0;
         left: 0;
-        right: 0;
-        background: white;
+        width: 100%;
+        height: 100vh;
+        background: var(--surface-elevated);
+        backdrop-filter: blur(20px);
         flex-direction: column;
-        padding: 20px;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-        border-radius: 0 0 12px 12px;
+        justify-content: center;
+        align-items: center;
+        gap: 32px;
+        padding: 80px 32px 32px;
+        z-index: 1000;
+        transform: translateX(-100%);
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: none;
+        border: none;
     }
     
     .nav-links.active {
+        transform: translateX(0);
+        opacity: 1;
+        visibility: visible;
         display: flex;
+    }
+    
+    .nav-links .nav-link {
+        font-size: 1.25rem;
+        font-weight: 600;
+        color: var(--text-primary);
+        text-decoration: none;
+        padding: 16px 24px;
+        border-radius: 12px;
+        transition: all 0.2s ease;
+        text-align: center;
+        min-width: 200px;
+        border: 2px solid transparent;
+        position: relative;
+    }
+    
+    .nav-links .nav-link:hover,
+    .nav-links .nav-link.active {
+        background: var(--gradient-card);
+        border-color: var(--border-brand);
+        color: var(--text-brand);
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-brand);
+    }
+    
+    .nav-links .nav-cta {
+        background: var(--gradient-primary);
+        color: var(--text-inverse);
+        border: none;
+        padding: 16px 32px;
+        border-radius: 12px;
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        box-shadow: var(--shadow-brand);
+        min-width: 200px;
+        text-align: center;
+    }
+    
+    .nav-links .nav-cta:hover {
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-xl);
     }
     
     .nav-toggle {
         display: flex;
+    }
+    
+    /* Mobile navigation backdrop */
+    .nav-links.active::before {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: -1;
     }
     
     .nav-container {
@@ -1670,11 +2111,11 @@
    LANDING PAGE LAYOUT STYLES
    =================================== */
 
-/* Hero Section */
+/* Hero Section - Enhanced Contrast */
 .hero {
     min-height: 85vh;
-    background: linear-gradient(135deg, #f8fafc 0%, #ffffff 100%);
-    color: var(--gray-900);
+    background: linear-gradient(135deg, #ffffff 0%, var(--gray-50) 100%);
+    color: var(--text-primary);
     display: flex;
     align-items: center;
     padding: 80px 20px;
@@ -1703,9 +2144,10 @@
 
 .hero-subtitle {
     font-size: clamp(1.125rem, 2.5vw, 1.5rem);
-    color: var(--gray-600);
+    color: var(--text-secondary);
     margin-bottom: 40px;
     line-height: 1.4;
+    font-weight: 500;
 }
 
 .hero-cta {
@@ -1716,8 +2158,8 @@
 }
 
 .cta-primary {
-    background: var(--accent-500);
-    color: white;
+    background: var(--projectionlab-primary);
+    color: var(--text-on-brand);
     padding: 16px 32px;
     border-radius: 12px;
     font-weight: 700;
@@ -1728,12 +2170,14 @@
     align-items: center;
     justify-content: center;
     min-width: 180px;
+    border: none;
+    cursor: pointer;
 }
 
 .cta-primary:hover {
-    background: var(--accent-700);
+    background: #1554A3;
     transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(6, 182, 212, 0.3);
+    box-shadow: 0 8px 25px rgba(24, 103, 192, 0.4);
 }
 
 .cta-primary.large {
@@ -1743,10 +2187,10 @@
 
 .cta-secondary {
     background: transparent;
-    color: white;
+    color: var(--text-primary);
     padding: 16px 32px;
     border-radius: 12px;
-    border: 2px solid rgba(255, 255, 255, 0.3);
+    border: 2px solid var(--projectionlab-primary);
     font-weight: 600;
     font-size: 1.125rem;
     text-decoration: none;
@@ -1758,7 +2202,8 @@
 }
 
 .cta-secondary:hover {
-    background: rgba(255, 255, 255, 0.1);
+    background: var(--projectionlab-primary);
+    color: var(--text-on-brand);
     border-color: rgba(255, 255, 255, 0.5);
 }
 
@@ -3329,4 +3774,189 @@ header p {
 @keyframes spin {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
+}
+
+/* ===================================
+   ENHANCED HEADING CONTRAST & ACCESSIBILITY
+   Session improvements for optimal readability
+   =================================== */
+
+/* Global Section Header Fixes */
+.section-header,
+.section-header * {
+    color: inherit !important;
+}
+
+.section-header h1,
+.section-header h2,
+.section-header h3,
+h1, h2, h3, h4, h5, h6 {
+    color: #111827 !important; /* gray-900, near-black */
+    font-weight: 800 !important;
+    line-height: 1.1 !important;
+}
+
+.section-header p {
+    color: #374151 !important; /* gray-700 for good readability */
+    font-weight: 600 !important;
+}
+
+/* Features Section - Light background, ensure dark text */
+.features.section .section-header h2,
+.features.section h1,
+.features.section h2,
+.features.section h3 {
+    color: #111827 !important; /* near-black */
+}
+
+.features.section .section-header p,
+.features.section p {
+    color: #374151 !important; /* dark gray */
+}
+
+/* Perfect For Section - Light background, ensure dark text */
+.perfect-for.section .section-header h2,
+.perfect-for.section h1,
+.perfect-for.section h2,
+.perfect-for.section h3 {
+    color: #111827 !important; /* near-black */
+}
+
+.perfect-for.section .section-header p,
+.perfect-for.section p {
+    color: #374151 !important; /* dark gray */
+}
+
+/* How It Works Section - White background, ensure dark text */
+.how-it-works.section .section-header h2,
+.how-it-works.section h1,
+.how-it-works.section h2,
+.how-it-works.section h3 {
+    color: #111827 !important; /* near-black */
+}
+
+.how-it-works.section .section-header p,
+.how-it-works.section p {
+    color: #374151 !important; /* dark gray */
+}
+
+/* Hero section headings */
+.hero-title,
+.hero h1 {
+    color: #111827 !important; /* near-black */
+    font-weight: 800 !important;
+}
+
+.hero-subtitle,
+.hero p {
+    color: #374151 !important; /* dark gray */
+    font-weight: 600 !important;
+}
+
+/* Feature cards */
+.feature-card h3 {
+    color: #111827 !important; /* near-black */
+    font-weight: 700 !important;
+}
+
+.feature-card p {
+    color: #374151 !important; /* dark gray */
+    font-weight: 500 !important;
+}
+
+/* Feature preview */
+.feature-preview h3 {
+    color: #111827 !important; /* near-black */
+    font-weight: 700 !important;
+}
+
+/* Step content */
+.step-content h3,
+.step h3 {
+    color: #111827 !important; /* near-black */
+    font-weight: 700 !important;
+}
+
+.step-content p,
+.step p {
+    color: #374151 !important; /* dark gray */
+    font-weight: 500 !important;
+}
+
+/* Perfect for cards */
+.perfect-for-card h3 {
+    color: #111827 !important; /* near-black */
+    font-weight: 700 !important;
+}
+
+.perfect-for-card p {
+    color: #374151 !important; /* dark gray */
+    font-weight: 500 !important;
+}
+
+/* Navigation brand */
+.nav-brand h1 {
+    color: #1867C0 !important; /* brand blue for navigation */
+    font-weight: 800 !important;
+}
+
+/* Exception: Premium cards and CTA sections with dark backgrounds keep white text */
+.feature-card.premium,
+.feature-card.premium * {
+    color: white !important;
+}
+
+.cta-section,
+.cta-section * {
+    color: white !important;
+}
+
+.footer,
+.footer * {
+    color: white !important;
+}
+
+/* Specific fix for footer brand description text */
+.footer-brand p,
+.main-footer .footer-brand p {
+    color: #111827 !important; /* same as other headers */
+    font-weight: 600 !important;
+}
+
+/* Make disclaimer heading match disclaimer body text color */
+.footer-disclaimer h4 {
+    color: var(--gray-300) !important; /* same as disclaimer body text */
+}
+
+/* Accessibility - Ensure minimum contrast ratios */
+.section-header {
+    font-weight: 800 !important;
+    line-height: 1.1 !important;
+    letter-spacing: -0.01em !important;
+}
+
+/* Strengthen font weights for better readability */
+h1, .h1 {
+    font-weight: 800 !important;
+    font-size: clamp(28px, 5vw, 48px) !important;
+}
+
+h2, .h2 {
+    font-weight: 800 !important;
+    font-size: clamp(24px, 4vw, 36px) !important;
+}
+
+h3, .h3 {
+    font-weight: 700 !important;
+    font-size: clamp(20px, 3vw, 28px) !important;
+}
+
+/* Mobile responsiveness - ensure darker text on smaller screens if backgrounds get lighter */
+@media (max-width: 640px) {
+    .section-header h1,
+    .section-header h2,
+    .section-header h3,
+    h1, h2, h3, h4, h5, h6 {
+        color: #0f172a !important; /* even darker for mobile */
+    }
 }

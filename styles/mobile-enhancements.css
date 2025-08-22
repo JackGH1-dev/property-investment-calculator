@@ -1,0 +1,695 @@
+/* 📱 InvestQuest Mobile Enhancements CSS */
+/* Critical mobile-first improvements based on ProjectionLab analysis */
+
+/* =================================
+   CRITICAL MOBILE FIXES
+   ================================= */
+
+/* Fix iOS input zoom issue */
+input, select, textarea {
+  font-size: 16px !important; /* Prevents zoom on iOS */
+}
+
+/* Enhanced touch targets - WCAG 2.1 AA compliant */
+.touch-target {
+  min-width: 44px;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+
+/* Improved button targets for mobile */
+button, .btn, .nav-toggle, .auth-signin-btn {
+  min-height: 44px;
+  min-width: 44px;
+  cursor: pointer;
+  touch-action: manipulation; /* Eliminates 300ms delay */
+}
+
+/* Enhanced navigation toggle */
+.nav-toggle {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  background: none;
+  border: none;
+  padding: 8px;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: background-color 0.2s ease;
+}
+
+.nav-toggle:hover,
+.nav-toggle:focus {
+  background-color: var(--gray-100);
+  outline: 2px solid var(--primary-500);
+}
+
+.nav-toggle span {
+  width: 24px;
+  height: 3px;
+  background-color: var(--gray-700);
+  margin: 2px 0;
+  transition: all 0.3s ease;
+  border-radius: 2px;
+}
+
+/* Animated hamburger states */
+.nav-toggle.active span:nth-child(1) {
+  transform: rotate(45deg) translate(6px, 6px);
+}
+
+.nav-toggle.active span:nth-child(2) {
+  opacity: 0;
+}
+
+.nav-toggle.active span:nth-child(3) {
+  transform: rotate(-45deg) translate(6px, -6px);
+}
+
+/* =================================
+   MOBILE NAVIGATION SYSTEM
+   ================================= */
+
+/* Mobile menu overlay */
+@media (max-width: 768px) {
+  .nav-links {
+    position: fixed;
+    top: 72px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: white;
+    flex-direction: column;
+    padding: 20px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+    z-index: 999;
+    max-width: 300px;
+    overflow-y: auto;
+  }
+  
+  .nav-links.active {
+    transform: translateX(0);
+  }
+  
+  .nav-link {
+    display: block;
+    padding: 16px 0;
+    font-size: 18px;
+    font-weight: 500;
+    color: var(--gray-700);
+    text-decoration: none;
+    border-bottom: 1px solid var(--gray-200);
+    transition: color 0.2s ease;
+  }
+  
+  .nav-link:hover,
+  .nav-link.active {
+    color: var(--primary-600);
+  }
+  
+  .nav-cta {
+    margin-top: 20px;
+    padding: 12px 24px;
+    background: var(--primary-500);
+    color: white !important;
+    text-align: center;
+    border-radius: 8px;
+    border-bottom: none;
+  }
+  
+  .nav-cta:hover {
+    background: var(--primary-600);
+  }
+  
+  /* Navigation backdrop */
+  .nav-links.active::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: -1;
+  }
+}
+
+/* =================================
+   MOBILE FORM ENHANCEMENTS
+   ================================= */
+
+@media (max-width: 768px) {
+  /* Single column layout */
+  .calculator-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  
+  .form-row {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  
+  /* Remove sticky positioning on mobile */
+  .input-panel {
+    position: static;
+    margin-bottom: 20px;
+  }
+  
+  /* Enhanced form inputs */
+  .form-group input,
+  .form-group select {
+    padding: 14px 16px;
+    font-size: 16px;
+    border-radius: 12px;
+    border: 2px solid var(--gray-300);
+    transition: border-color 0.2s ease;
+  }
+  
+  .form-group input:focus,
+  .form-group select:focus {
+    border-color: var(--primary-500);
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    outline: none;
+  }
+  
+  /* Input mode selector improvements */
+  .input-mode-selector {
+    margin-top: 12px;
+    background: var(--gray-100);
+    border-radius: 12px;
+    padding: 4px;
+    display: flex;
+    gap: 4px;
+  }
+  
+  .mode-option {
+    flex: 1;
+    padding: 12px 16px;
+    background: transparent;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--gray-600);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: center;
+  }
+  
+  .mode-option.active {
+    background: var(--primary-500);
+    color: white;
+    box-shadow: 0 2px 8px rgba(59, 130, 246, 0.2);
+  }
+  
+  /* Calculate button enhancement */
+  .calculate-btn {
+    width: 100%;
+    padding: 16px;
+    font-size: 18px;
+    font-weight: 600;
+    border-radius: 12px;
+    background: var(--primary-500);
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    margin-top: 20px;
+  }
+  
+  .calculate-btn:hover {
+    background: var(--primary-600);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(59, 130, 246, 0.3);
+  }
+  
+  .calculate-btn:active {
+    transform: translateY(0);
+  }
+}
+
+/* =================================
+   MOBILE DASHBOARD ENHANCEMENTS
+   ================================= */
+
+@media (max-width: 768px) {
+  /* Dashboard hero section */
+  .dashboard-hero {
+    padding: 30px 0;
+  }
+  
+  .hero-content {
+    flex-direction: column;
+    text-align: left;
+    gap: 24px;
+  }
+  
+  .welcome-section {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+  
+  .user-avatar .avatar-circle {
+    width: 60px;
+    height: 60px;
+    font-size: 20px;
+  }
+  
+  .hero-actions {
+    width: 100%;
+    flex-direction: column;
+    gap: 12px;
+  }
+  
+  .cta-primary.large,
+  .cta-secondary.large {
+    width: 100%;
+    justify-content: center;
+    padding: 16px;
+    font-size: 16px;
+  }
+  
+  /* Stats grid mobile layout */
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+  
+  .modern-stat-card {
+    padding: 20px 16px;
+  }
+  
+  .modern-stat-card h3 {
+    font-size: 1.5rem;
+  }
+  
+  /* Calculations section mobile */
+  .section-header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 16px;
+    text-align: left;
+  }
+  
+  .header-actions {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+  
+  .search-box {
+    order: 1;
+  }
+  
+  .search-box input {
+    width: 100%;
+  }
+  
+  .calculations-controls {
+    flex-direction: column;
+    gap: 16px;
+    padding: 16px;
+  }
+  
+  .filter-tabs {
+    justify-content: flex-start;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  .filter-tab {
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  
+  /* Calculation cards mobile */
+  .calculations-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  
+  .calculation-card {
+    padding: 16px;
+  }
+  
+  .calculation-header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+  
+  .calculation-actions {
+    justify-content: flex-end;
+  }
+}
+
+/* =================================
+   MOBILE LANDING PAGE
+   ================================= */
+
+@media (max-width: 768px) {
+  /* Hero section mobile */
+  .hero {
+    min-height: 80vh;
+    padding: 60px 20px;
+  }
+  
+  .hero-content {
+    grid-template-columns: 1fr;
+    gap: 40px;
+    text-align: center;
+  }
+  
+  .hero-title {
+    font-size: clamp(2rem, 8vw, 3rem);
+  }
+  
+  .hero-subtitle {
+    font-size: clamp(1rem, 4vw, 1.25rem);
+  }
+  
+  .hero-cta {
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+  }
+  
+  .cta-primary,
+  .cta-secondary {
+    width: 100%;
+    max-width: 300px;
+    justify-content: center;
+  }
+  
+  /* Features section mobile */
+  .features-grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+  
+  .feature-card {
+    padding: 24px 20px;
+  }
+  
+  /* Perfect for section mobile */
+  .perfect-for-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  
+  /* Steps container mobile */
+  .steps-container {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+}
+
+/* =================================
+   MOBILE CALCULATOR PAGE
+   ================================= */
+
+@media (max-width: 768px) {
+  .calculator-header {
+    padding: 30px 20px;
+  }
+  
+  .calculator-header h1 {
+    font-size: clamp(1.75rem, 6vw, 2.5rem);
+  }
+  
+  .calculator-header p {
+    font-size: clamp(1rem, 3vw, 1.125rem);
+  }
+  
+  /* Tool explanation mobile */
+  .tool-explanation {
+    margin-top: 20px;
+  }
+  
+  .explanation-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  
+  .explanation-card {
+    padding: 16px;
+  }
+  
+  .perfect-for-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  
+  /* Results panel mobile */
+  .results-panel {
+    padding: 20px;
+    margin-top: 20px;
+  }
+  
+  .summary-cards {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+  
+  .summary-card {
+    padding: 16px;
+  }
+  
+  .summary-card .value {
+    font-size: 1.5rem;
+  }
+  
+  /* Charts container mobile */
+  .charts-container {
+    margin: 20px 0;
+  }
+  
+  .chart-wrapper {
+    padding: 16px;
+    margin-bottom: 20px;
+  }
+  
+  /* Investment comparison mobile */
+  #leftComparisonContainer {
+    margin-top: 20px;
+    padding: 16px;
+  }
+  
+  .left-comparison-item {
+    padding: 16px;
+  }
+  
+  .comparison-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+}
+
+/* =================================
+   MOBILE PERFORMANCE OPTIMIZATIONS
+   ================================= */
+
+/* Hardware acceleration for smooth animations */
+.nav-toggle,
+.nav-links,
+.modern-stat-card,
+.calculation-card {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+/* Optimize scrolling performance */
+.nav-links,
+.calculations-container {
+  -webkit-overflow-scrolling: touch;
+  overflow-scrolling: touch;
+}
+
+/* Reduce motion for users who prefer it */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* =================================
+   MOBILE ACCESSIBILITY ENHANCEMENTS
+   ================================= */
+
+/* Focus states for mobile */
+button:focus,
+input:focus,
+select:focus,
+textarea:focus,
+a:focus {
+  outline: 2px solid var(--primary-500);
+  outline-offset: 2px;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .nav-toggle span {
+    background-color: #000;
+  }
+  
+  .nav-link {
+    color: #000;
+  }
+  
+  button,
+  .btn {
+    border: 2px solid #000;
+  }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --gray-50: #1f2937;
+    --gray-100: #374151;
+    --gray-200: #4b5563;
+    --gray-900: #f9fafb;
+  }
+}
+
+/* =================================
+   MOBILE UTILITY CLASSES
+   ================================= */
+
+.mobile-only {
+  display: block;
+}
+
+.desktop-only {
+  display: none;
+}
+
+@media (min-width: 769px) {
+  .mobile-only {
+    display: none;
+  }
+  
+  .desktop-only {
+    display: block;
+  }
+}
+
+/* Mobile spacing utilities */
+.mobile-p-4 { padding: 1rem; }
+.mobile-p-6 { padding: 1.5rem; }
+.mobile-m-4 { margin: 1rem; }
+.mobile-m-6 { margin: 1.5rem; }
+
+@media (max-width: 768px) {
+  .mobile-p-4 { padding: 1rem !important; }
+  .mobile-p-6 { padding: 1.5rem !important; }
+  .mobile-m-4 { margin: 1rem !important; }
+  .mobile-m-6 { margin: 1.5rem !important; }
+}
+
+/* Mobile text utilities */
+.mobile-text-center {
+  text-align: center;
+}
+
+.mobile-text-left {
+  text-align: left;
+}
+
+@media (max-width: 768px) {
+  .mobile-text-center { text-align: center !important; }
+  .mobile-text-left { text-align: left !important; }
+}
+
+/* =================================
+   MOBILE SPECIFIC ANIMATIONS
+   ================================= */
+
+/* Loading spinner for mobile */
+.mobile-loading {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--gray-200);
+  border-top: 2px solid var(--primary-500);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Bounce animation for buttons */
+@keyframes bounce {
+  0%, 20%, 53%, 80%, 100% {
+    transform: translate3d(0,0,0);
+  }
+  40%, 43% {
+    transform: translate3d(0,-8px,0);
+  }
+  70% {
+    transform: translate3d(0,-4px,0);
+  }
+  90% {
+    transform: translate3d(0,-2px,0);
+  }
+}
+
+.btn-bounce:active {
+  animation: bounce 0.6s ease;
+}
+
+/* Slide in animation for mobile menu */
+@keyframes slideInLeft {
+  from {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.nav-links.active {
+  animation: slideInLeft 0.3s ease;
+}
+
+/* =================================
+   MOBILE PRINT STYLES
+   ================================= */
+
+@media print {
+  .nav-toggle,
+  .mobile-only,
+  .hero-actions,
+  .cta-primary,
+  .cta-secondary {
+    display: none !important;
+  }
+  
+  .calculator-grid {
+    grid-template-columns: 1fr !important;
+  }
+  
+  .form-group input,
+  .form-group select {
+    border: 1px solid #000 !important;
+    background: white !important;
+  }
+}

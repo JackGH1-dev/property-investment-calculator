@@ -141,7 +141,26 @@ class PropertySearchManager {
     }
 
     async searchAustralianProperties(query) {
-        // Mock implementation - replace with real API calls
+        // Use Market Data Service if available
+        if (window.marketDataService && window.marketDataService.isInitialized) {
+            console.log('🏠 Using Market Data Service for Australian property search');
+            
+            try {
+                const searchQuery = this.parseSearchQuery(query);
+                const results = await window.marketDataService.searchProperties(searchQuery);
+                
+                // Convert to expected format if needed
+                return results.map(property => ({
+                    ...property,
+                    estimatedValue: property.marketData?.estimatedValue || property.estimatedValue || 0,
+                    recentSales: property.marketData?.recentSales || []
+                }));
+            } catch (error) {
+                console.warn('🏠 Market Data Service failed, using fallback:', error);
+            }
+        }
+        
+        // Fallback to enhanced mock implementation
         return new Promise((resolve) => {
             setTimeout(() => {
                 const mockResults = [
@@ -174,6 +193,21 @@ class PropertySearchManager {
                             { address: '454 Brunswick Street', price: 1180000, date: '2024-09-20' },
                             { address: '458 Brunswick Street', price: 1320000, date: '2024-11-10' }
                         ]
+                    },
+                    {
+                        id: '3',
+                        address: '789 Chapel Street, South Yarra VIC 3141',
+                        suburb: 'South Yarra',
+                        state: 'VIC',
+                        postcode: '3141',
+                        propertyType: 'apartment',
+                        bedrooms: 1,
+                        bathrooms: 1,
+                        estimatedValue: 650000,
+                        recentSales: [
+                            { address: '785 Chapel Street', price: 620000, date: '2024-12-01' },
+                            { address: '791 Chapel Street', price: 680000, date: '2024-12-15' }
+                        ]
                     }
                 ].filter(property => 
                     property.address.toLowerCase().includes(query.toLowerCase()) ||
@@ -196,18 +230,34 @@ class PropertySearchManager {
             return;
         }
 
-        const resultsHTML = results.map(property => `
-            <div class="search-result" data-property-id="${property.id}" onclick="window.propertySearch.selectProperty('${property.id}')">
-                <div class="property-info">
-                    <div class="property-address">${property.address}</div>
-                    <div class="property-details">
-                        ${property.bedrooms} bed, ${property.bathrooms} bath ${property.propertyType}
-                    </div>
-                    <div class="property-value">Est. Value: $${property.estimatedValue.toLocaleString()}</div>
+        const resultsHTML = results.map(property => {
+            // Enhanced display with market data if available
+            const marketData = property.marketData;
+            const marketDataHTML = marketData ? `
+                <div class="market-data-preview">
+                    <span class="estimated-value">Est: $${(marketData.estimatedValue || property.estimatedValue || 0).toLocaleString()}</span>
+                    <span class="rental-yield">Yield: ${marketData.rentalYield?.toFixed(1) || 'N/A'}%</span>
+                    <span class="price-growth">Growth: ${marketData.priceGrowth?.yearly?.toFixed(1) || 'N/A'}%</span>
                 </div>
-                <div class="property-arrow">→</div>
-            </div>
-        `).join('');
+            ` : property.estimatedValue ? `
+                <div class="market-data-preview">
+                    <span class="estimated-value">Est: $${property.estimatedValue.toLocaleString()}</span>
+                </div>
+            ` : '';
+            
+            return `
+                <div class="search-result" data-property-id="${property.id}" onclick="window.propertySearch.selectProperty('${property.id}')">
+                    <div class="property-info">
+                        <div class="property-address">${property.address}</div>
+                        <div class="property-details">
+                            ${property.bedrooms} bed, ${property.bathrooms} bath ${property.propertyType}
+                        </div>
+                        ${marketDataHTML}
+                    </div>
+                    <div class="property-arrow">→</div>
+                </div>
+            `;
+        }).join('');
 
         resultsContainer.innerHTML = resultsHTML;
         resultsContainer.style.display = 'block';

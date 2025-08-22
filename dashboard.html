@@ -2,7 +2,13 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="InvestQuest Dashboard">
+    <meta name="msapplication-TileColor" content="#3b82f6">
+    <meta name="theme-color" content="#3b82f6">
     <meta name="description" content="InvestQuest Dashboard - Manage your property calculations, track investment goals, and access personalized insights.">
     <meta name="keywords" content="property investment dashboard, saved calculations, investment tracking, financial goals">
     <meta property="og:title" content="InvestQuest Dashboard - Your Investment Hub">
@@ -10,7 +16,10 @@
     <meta property="og:type" content="website">
     <title>Dashboard - InvestQuest</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="styles/mobile-enhancements.css">
+    <link rel="manifest" href="/manifest.json">
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎯</text></svg>">
+    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'><rect width='180' height='180' fill='%23ffffff' rx='20'/><text x='90' y='125' text-anchor='middle' font-size='100' fill='%233b82f6'>🎯</text></svg>">
     
 </head>
 <body>
@@ -348,6 +357,9 @@
         </div>
     </footer>
 
+    <!-- Include mobile enhancements -->
+    <script src="js/mobile-enhancements.js"></script>
+    
     <!-- Include authentication system -->
     <script src="auth-production.js"></script>
     <script src="global-auth-init.js"></script>

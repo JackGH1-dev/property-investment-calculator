@@ -235,46 +235,114 @@ class PerformanceOptimizer {
     performOptimizedCalculation(data) {
         const cacheKey = this.generateCacheKey(data);
         
-        // Check cache first
+        // Check cache first with timestamp validation
         if (window.calculationCache.has(cacheKey)) {
             const cached = window.calculationCache.get(cacheKey);
-            console.log('⚡ Using cached calculation result');
-            this.displayCachedResult(cached);
-            return;
+            const cacheAge = Date.now() - cached.timestamp;
+            
+            // Use cache if less than 5 minutes old
+            if (cacheAge < 300000) {
+                console.log('⚡ Using cached calculation result (age:', Math.round(cacheAge/1000), 's)');
+                this.displayCachedResult(cached.result);
+                
+                // Track cache hit
+                window.dispatchEvent(new CustomEvent('calculationComplete', {
+                    detail: { duration: 0.1, cached: true, cacheAge }
+                }));
+                return;
+            } else {
+                // Remove stale cache entry
+                window.calculationCache.delete(cacheKey);
+            }
         }
 
         const startTime = performance.now();
         
-        // Perform calculation
+        // Perform calculation with progress tracking
         try {
             const result = this.executeCalculation(data);
             
-            // Cache the result
-            window.calculationCache.set(cacheKey, result);
+            // Cache the result with timestamp and metadata
+            window.calculationCache.set(cacheKey, {
+                result: result,
+                timestamp: Date.now(),
+                inputCount: Object.keys(data).length,
+                complexity: this.calculateComplexity(data)
+            });
             
-            // Clean cache if it gets too large
-            if (window.calculationCache.size > 100) {
-                const firstKey = window.calculationCache.keys().next().value;
-                window.calculationCache.delete(firstKey);
-            }
+            // Intelligent cache cleanup based on usage patterns
+            this.optimizeCache();
             
             const duration = performance.now() - startTime;
             
-            // Dispatch performance event
+            // Enhanced performance tracking
             window.dispatchEvent(new CustomEvent('calculationComplete', {
-                detail: { duration, cached: false }
+                detail: { 
+                    duration, 
+                    cached: false,
+                    complexity: this.calculateComplexity(data),
+                    cacheSize: window.calculationCache.size
+                }
             }));
             
-            console.log('⚡ Calculation completed in', duration.toFixed(2), 'ms');
+            console.log('⚡ Calculation completed in', duration.toFixed(2), 'ms (complexity:', this.calculateComplexity(data), ')');
             
         } catch (error) {
             console.error('⚡ Calculation error:', error);
             this.performanceMetrics.errors.push({
                 type: 'calculation',
                 error: error.message,
-                timestamp: Date.now()
+                timestamp: Date.now(),
+                inputData: this.sanitizeInputForLogging(data)
             });
         }
+    }
+
+    calculateComplexity(data) {
+        // Calculate complexity score based on input parameters
+        let complexity = 0;
+        
+        if (data.purchasePrice > 1000000) complexity += 2; // High value property
+        if (data.loanTerm > 25) complexity += 1; // Long loan term
+        if (data.rentalGrowth > 5) complexity += 1; // High growth scenarios
+        if (data.propertyGrowth > 8) complexity += 1; // High appreciation
+        
+        return Math.min(complexity, 5); // Cap at 5
+    }
+
+    optimizeCache() {
+        // Smart cache management based on usage patterns
+        if (window.calculationCache.size > 100) {
+            const now = Date.now();
+            const entries = Array.from(window.calculationCache.entries());
+            
+            // Sort by age and complexity (keep recent, complex calculations)
+            entries.sort((a, b) => {
+                const ageA = now - a[1].timestamp;
+                const ageB = now - b[1].timestamp;
+                const scoreA = ageA - (a[1].complexity * 60000); // Complexity bonus in ms
+                const scoreB = ageB - (b[1].complexity * 60000);
+                return scoreB - scoreA; // Oldest, least complex first
+            });
+            
+            // Remove oldest 25% of entries
+            const toRemove = Math.floor(entries.length * 0.25);
+            for (let i = 0; i < toRemove; i++) {
+                window.calculationCache.delete(entries[i][0]);
+            }
+            
+            console.log('⚡ Cache optimized: removed', toRemove, 'entries, size now:', window.calculationCache.size);
+        }
+    }
+
+    sanitizeInputForLogging(data) {
+        // Remove sensitive data but keep structure for debugging
+        return {
+            hasPrice: !!data.purchasePrice,
+            hasDeposit: !!data.deposit,
+            paramCount: Object.keys(data).length,
+            timestamp: Date.now()
+        };
     }
 
     generateCacheKey(data) {

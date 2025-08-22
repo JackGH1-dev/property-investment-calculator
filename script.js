@@ -1159,16 +1159,43 @@ class PropertyCalculator {
         return insights;
     }
 
-    // Save/Load Functionality for Authenticated Users
+    // Save/Load Functionality for Authenticated Users with Performance Tracking
     async saveCalculation() {
+        const startTime = performance.now();
+        
+        // Track save attempt
+        if (window.performanceMonitor) {
+            window.performanceMonitor.trackFeature('calculation_save_attempt', {
+                authenticated: !!(window.authManager && window.authManager.isAuthenticated()),
+                timestamp: Date.now()
+            });
+        }
+        
         if (!window.authManager || !window.authManager.isAuthenticated()) {
             // Show sign-in prompt for unauthenticated users
             this.showSavePrompt();
+            
+            if (window.performanceMonitor) {
+                window.performanceMonitor.trackEvent('save_requires_auth', {
+                    reason: 'not_authenticated'
+                });
+            }
+            
             return;
         }
 
         const data = this.getCalculationData();
         if (!data.address || !data.purchasePrice || !data.rentalIncome) {
+            if (window.performanceMonitor) {
+                window.performanceMonitor.trackEvent('save_validation_failed', {
+                    missingFields: [
+                        !data.address && 'address',
+                        !data.purchasePrice && 'purchasePrice', 
+                        !data.rentalIncome && 'rentalIncome'
+                    ].filter(Boolean)
+                });
+            }
+            
             alert('Please fill in the required fields (Address, Purchase Price, and Rental Income) before saving.');
             return;
         }
@@ -1186,11 +1213,44 @@ class PropertyCalculator {
                 
                 // Save to Firestore
                 const docRef = await firebase.firestore().collection('calculations').add(calculation);
+                const saveTime = performance.now() - startTime;
+                
                 console.log('🔥 Calculation saved to Firestore:', docRef.id);
+                
+                // Track successful Firestore save
+                if (window.performanceMonitor) {
+                    window.performanceMonitor.trackFeature('calculation_save_success', {
+                        saveMethod: 'firestore',
+                        saveTime: Math.round(saveTime),
+                        purchasePrice: data.purchasePrice,
+                        state: data.state,
+                        documentId: docRef.id
+                    });
+                    
+                    // Trigger calculation complete event for other tracking
+                    document.dispatchEvent(new CustomEvent('calculationComplete', {
+                        detail: {
+                            purchasePrice: data.purchasePrice,
+                            state: data.state,
+                            processingTime: saveTime
+                        }
+                    }));
+                }
+                
                 this.showSaveSuccess();
                 return docRef.id;
             } else if (window.dashboardManager) {
                 const calculationId = window.dashboardManager.saveCalculation(data);
+                const saveTime = performance.now() - startTime;
+                
+                if (window.performanceMonitor) {
+                    window.performanceMonitor.trackFeature('calculation_save_success', {
+                        saveMethod: 'dashboard_manager',
+                        saveTime: Math.round(saveTime),
+                        calculationId
+                    });
+                }
+                
                 this.showSaveSuccess();
                 return calculationId;
             } else {
@@ -1203,10 +1263,23 @@ class PropertyCalculator {
                 };
                 calculations.push(calculation);
                 localStorage.setItem('temp-calculations', JSON.stringify(calculations));
+                
+                const saveTime = performance.now() - startTime;
+                
+                if (window.performanceMonitor) {
+                    window.performanceMonitor.trackFeature('calculation_save_success', {
+                        saveMethod: 'localStorage_temp',
+                        saveTime: Math.round(saveTime),
+                        calculationId: calculation.id
+                    });
+                }
+                
                 this.showSaveSuccess();
                 return calculation.id;
             }
         } catch (error) {
+            const saveTime = performance.now() - startTime;
+            
             console.error('🚨 Error saving calculation:', error);
             console.error('🚨 Error details:', {
                 message: error.message,
@@ -1216,6 +1289,16 @@ class PropertyCalculator {
                 firebaseAvailable: !!firebase,
                 firestoreAvailable: !!(firebase && firebase.firestore)
             });
+            
+            // Track save error
+            if (window.performanceMonitor) {
+                window.performanceMonitor.trackEvent('calculation_save_failed', {
+                    error: error.message,
+                    errorCode: error.code,
+                    saveTime: Math.round(saveTime),
+                    attemptedMethod: 'firestore'
+                });
+            }
             
             // Try localStorage fallback
             try {
@@ -1229,10 +1312,28 @@ class PropertyCalculator {
                 calculations.push(calculation);
                 localStorage.setItem('temp-calculations', JSON.stringify(calculations));
                 console.log('📦 Saved to localStorage successfully');
+                
+                if (window.performanceMonitor) {
+                    window.performanceMonitor.trackFeature('calculation_save_fallback', {
+                        originalError: error.message,
+                        fallbackMethod: 'localStorage',
+                        calculationId: calculation.id
+                    });
+                }
+                
                 alert('Saved to local storage! Your calculation will be available on this device. Sign in and save again to sync across devices.');
                 return calculation.id;
             } catch (localError) {
                 console.error('📦 localStorage fallback also failed:', localError);
+                
+                if (window.performanceMonitor) {
+                    window.performanceMonitor.trackEvent('calculation_save_complete_failure', {
+                        originalError: error.message,
+                        fallbackError: localError.message,
+                        totalTime: Math.round(performance.now() - startTime)
+                    });
+                }
+                
                 alert('Failed to save calculation. Please try again.');
             }
         }

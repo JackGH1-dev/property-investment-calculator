@@ -1,10 +1,10 @@
 [
   {
-    "id": "cmd-init-1755609275901",
-    "type": "init",
+    "id": "cmd-status-1755761800442",
+    "type": "status",
     "success": true,
-    "duration": 68170.99070000001,
-    "timestamp": 1755609344072,
+    "duration": 6.307000000000016,
+    "timestamp": 1755761800449,
     "metadata": {}
   }
 ]

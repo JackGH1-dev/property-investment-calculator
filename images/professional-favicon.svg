@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32">
+  <!-- Professional property/investment icon -->
+  <rect width="32" height="32" fill="#1867C0" rx="4"/>
+  
+  <!-- House/building silhouette -->
+  <path d="M8 24V16l8-6 8 6v8z" fill="#ffffff" stroke="none"/>
+  
+  <!-- Growth arrow -->
+  <path d="M20 14l3-3h-2V9h-2v2h-2z" fill="#26A6A2" stroke="none"/>
+  
+  <!-- Dollar sign overlay -->
+  <text x="16" y="21" text-anchor="middle" font-family="Inter, sans-serif" font-size="8" font-weight="600" fill="#F59E0B">$</text>
+</svg>

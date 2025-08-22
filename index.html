@@ -2,7 +2,13 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="InvestQuest">
+    <meta name="msapplication-TileColor" content="#1867C0">
+    <meta name="theme-color" content="#1867C0">
     <meta name="description" content="Get your FREE Australian property analysis in minutes. Discover actionable insights, 30-year projections, and goal achievement roadmaps. No email required, completely free forever.">
     <meta name="keywords" content="free property analysis, Australian property investment, investment calculator, property insights, wealth projection, goal planning">
     <meta property="og:title" content="Free Property Analysis Tool - InvestQuest">
@@ -10,7 +16,19 @@
     <meta property="og:type" content="website">
     <title>Free Property Analysis - Get Actionable Insights in Minutes | InvestQuest</title>
     <link rel="stylesheet" href="styles.css">
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎯</text></svg>">
+    <link rel="stylesheet" href="styles/mobile-enhancements.css">
+    <link rel="stylesheet" href="styles/text-contrast-fixes.css">
+    <link rel="stylesheet" href="styles/enhanced-contrast-system.css">
+    <link rel="stylesheet" href="styles/visual-variety-enhancements.css">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="icon" type="image/svg+xml" href="/images/professional-favicon.svg">
+    <link rel="icon" type="image/png" sizes="32x32" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%231867C0' rx='4'/><path d='M8 24V16l8-6 8 6v8z' fill='%23ffffff'/><path d='M20 14l3-3h-2V9h-2v2h-2z' fill='%2326A6A2'/><text x='16' y='21' text-anchor='middle' font-family='Inter' font-size='8' font-weight='600' fill='%23F59E0B'>$</text></svg>">
+    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'><rect width='180' height='180' fill='%231867C0' rx='20'/><path d='M40 120V80l50-30 50 30v40z' fill='%23ffffff'/><path d='M100 70l15-15h-10V45h-10v10h-10z' fill='%2326A6A2'/><text x='90' y='105' text-anchor='middle' font-family='Inter' font-size='24' font-weight='600' fill='%23F59E0B'>$</text></svg>">
+    <script src="js/performance-monitor.js"></script>
+    <script src="js/enhanced-components.js"></script>
+    <script src="js/advanced-chart-system.js"></script>
+    <script src="js/interactive-data-table.js"></script>
+    <script src="js/pwa-features.js"></script>
 </head>
 <body>
     <!-- Global Navigation -->
@@ -38,8 +56,8 @@
         <div class="container">
             <div class="hero-content">
                 <div class="hero-text">
-                    <h1 class="hero-title">Get Your Property Analysis in Minutes</h1>
-                    <p class="hero-subtitle">Discover if your property investment will reach your financial goals. Our free analysis tool provides actionable insights, 30-year projections, and personalized recommendations—no strings attached.</p>
+                    <h1 class="hero-title">See Your Property's 30‑Year Outlook—Free</h1>
+                    <p class="hero-subtitle">Actionable insights, projections, and step‑by‑step recommendations. Know when you'll hit your wealth goal and what to do to get there faster.</p>
                     <div class="hero-cta">
                         <a href="calculator.html" class="cta-primary large">Get Free Analysis Now</a>
                         <button class="cta-primary auth-signin-btn">🔐 Sign In to Save Results</button>
@@ -76,54 +94,54 @@
     </section>
 
     <!-- Features Section -->
-    <section id="features" class="features section">
+    <section id="features" class="features section accent-blue">
         <div class="container">
             <div class="section-header">
                 <h2>What's Included in Your Free Analysis</h2>
-                <p>Get comprehensive insights and actionable recommendations with no hidden costs</p>
+                <p>Actionable insights—free. No hidden costs.</p>
             </div>
             
             <div class="features-grid">
-                <div class="feature-card">
+                <div class="feature-card primary">
                     <div class="feature-icon">🎯</div>
                     <h3>Goal Achievement Roadmap</h3>
-                    <p>Discover exactly when you'll reach your wealth targets and what steps to take to get there faster.</p>
+                    <p>See when you'll hit your wealth goal—and what to do to get there faster.</p>
                 </div>
                 
-                <div class="feature-card">
+                <div class="feature-card secondary">
                     <div class="feature-icon">💡</div>
                     <h3>Actionable Recommendations</h3>
-                    <p>Get specific advice like "increase rent by $50/week" or "refinance to save $15k annually" based on your property.</p>
+                    <p>Get specific actions: raise rent $50/wk, refinance to save $15k/yr, optimal timing strategies.</p>
                 </div>
                 
-                <div class="feature-card">
+                <div class="feature-card accent">
                     <div class="feature-icon">📈</div>
                     <h3>30-Year Wealth Projection</h3>
-                    <p>See your complete financial journey—from today's investment to your future wealth, including cash flow milestones.</p>
+                    <p>Track cash flow and net worth over 30 years.</p>
                 </div>
                 
-                <div class="feature-card">
+                <div class="feature-card success">
                     <div class="feature-icon">⚖️</div>
                     <h3>Investment Performance Comparison</h3>
-                    <p>Compare your property against stocks and savings to see which path builds more wealth over time.</p>
+                    <p>Compare property vs. stocks and savings over time.</p>
                 </div>
                 
-                <div class="feature-card">
+                <div class="feature-card primary">
                     <div class="feature-icon">🚨</div>
                     <h3>Risk & Opportunity Alerts</h3>
-                    <p>Identify potential issues early and discover hidden opportunities to maximize your investment returns.</p>
+                    <p>Spot risks early and find ways to boost returns.</p>
                 </div>
                 
-                <div class="feature-card">
+                <div class="feature-card secondary">
                     <div class="feature-icon">🎓</div>
                     <h3>Expert Insights & Education</h3>
-                    <p>Learn what the numbers mean with plain-English explanations and property investment fundamentals.</p>
+                    <p>Plain‑English explanations of every metric and key property investing fundamentals.</p>
                 </div>
                 
                 <div class="feature-card premium">
                     <div class="feature-icon">💾</div>
                     <h3>Save & Track (Sign In)</h3>
-                    <p>Create an account to save unlimited calculations, track your investment portfolio, and access your data from any device.</p>
+                    <p>Save scenarios, track your portfolio, and sync across devices.</p>
                     <button class="feature-cta auth-signin-btn">Sign In Free</button>
                 </div>
                 
@@ -138,18 +156,18 @@
     </section>
 
     <!-- Perfect For Section -->
-    <section class="perfect-for section">
+    <section class="perfect-for section accent-success">
         <div class="container">
             <div class="section-header">
-                <h2>Perfect For Property Professionals & Investors</h2>
-                <p>Whether you're advising clients or building your own portfolio, InvestQuest delivers the insights you need</p>
+                <h2>Built for Investors and Advisors</h2>
+                <p>Professional insights for property investors, mortgage brokers, and financial planners.</p>
             </div>
             
             <div class="perfect-for-grid">
                 <div class="perfect-for-card primary">
                     <div class="card-icon">🏠</div>
                     <h3>Property Investors</h3>
-                    <p>Detailed analysis to make informed investment decisions with confidence in your numbers</p>
+                    <p>Detailed, decision‑ready analysis with confidence in your numbers.</p>
                     <ul>
                         <li>Complete 30-year projections</li>
                         <li>Cash flow analysis</li>
@@ -161,7 +179,7 @@
                 <div class="perfect-for-card">
                     <div class="card-icon">📚</div>
                     <h3>First-Time Investors</h3>
-                    <p>Educational tool to understand property investment fundamentals while you learn</p>
+                    <p>Understand key property investing fundamentals with built‑in education.</p>
                     <ul>
                         <li>Built-in education center</li>
                         <li>Step-by-step guidance</li>
@@ -173,7 +191,7 @@
                 <div class="perfect-for-card">
                     <div class="card-icon">🏦</div>
                     <h3>Mortgage Brokers</h3>
-                    <p>Professional tool for client presentations and investment advice that builds trust</p>
+                    <p>Client‑ready reports for presentations and investment advice.</p>
                     <ul>
                         <li>Client presentation ready</li>
                         <li>Professional insights</li>
@@ -185,7 +203,7 @@
                 <div class="perfect-for-card">
                     <div class="card-icon">💼</div>
                     <h3>Financial Planners</h3>
-                    <p>Compare property investment against other asset classes with detailed analysis</p>
+                    <p>Compare property against other asset classes with comprehensive analysis.</p>
                     <ul>
                         <li>Asset class comparisons</li>
                         <li>Portfolio integration</li>
@@ -210,7 +228,7 @@
                     <div class="step-number">1</div>
                     <div class="step-content">
                         <h3>Enter Property Details</h3>
-                        <p>Start with address, purchase price, and rental income. Our system auto-detects your state for accurate stamp duty calculations.</p>
+                        <p>Add address, price, and rent. Auto‑calculates stamp duty and LMI by state.</p>
                     </div>
                 </div>
                 
@@ -218,7 +236,7 @@
                     <div class="step-number">2</div>
                     <div class="step-content">
                         <h3>Choose Your Financing</h3>
-                        <p>Enter either your deposit amount or desired loan amount. Use our 100%+ financing option for sophisticated investment strategies.</p>
+                        <p>Enter deposit or loan amount. Includes 100%+ financing option for leveraged strategies.</p>
                     </div>
                 </div>
                 
@@ -226,7 +244,7 @@
                     <div class="step-number">3</div>
                     <div class="step-content">
                         <h3>Review Auto-Calculations</h3>
-                        <p>Stamp duty and LMI are calculated automatically. Adjust growth rates, expenses, and mortgage terms to match your situation.</p>
+                        <p>Automatic calculations for all costs. Adjust growth rates and terms to match your scenario.</p>
                     </div>
                 </div>
                 
@@ -234,7 +252,7 @@
                     <div class="step-number">4</div>
                     <div class="step-content">
                         <h3>Analyze Results</h3>
-                        <p>Review 30-year projections, cash flow charts, investment comparisons, and personalized insights for your scenario.</p>
+                        <p>Review projections, cash flow, comparisons, and tailored actions.</p>
                     </div>
                 </div>
             </div>
@@ -245,8 +263,9 @@
     <section class="cta-section section">
         <div class="container">
             <div class="cta-content">
-                <h2>Ready to Build Your Property Portfolio?</h2>
-                <p>Start with a free analysis, then sign in to unlock portfolio tracking, saved calculations, and personalized insights.</p>
+                <h2>Ready to Start Your Analysis?</h2>
+                <p><strong>Free:</strong> Single‑property analysis, 30‑year projections, key actions.<br>
+                <strong>With account:</strong> Save scenarios, track portfolio, access from any device.</p>
                 <div class="cta-buttons">
                     <a href="calculator.html" class="cta-primary large">Start Free Analysis</a>
                     <button class="cta-secondary large auth-signin-btn">Sign In to Save & Track</button>
@@ -295,14 +314,79 @@
         </div>
     </footer>
 
+    <!-- Phase 1 Performance Monitoring -->
+    <script src="js/performance-monitor.js"></script>
+    
+    <!-- Include mobile enhancements -->
+    <script src="js/mobile-enhancements.js"></script>
+    
     <!-- Include authentication system -->
     <script src="auth-production.js"></script>
     
-    <!-- Navigation JavaScript -->
+    <!-- Enhanced Navigation JavaScript - ProjectionLab Style -->
     <script>
-        // Mobile navigation toggle
-        document.querySelector('.nav-toggle').addEventListener('click', function() {
-            document.querySelector('.nav-links').classList.toggle('active');
+        // Enhanced mobile navigation toggle with animations
+        document.addEventListener('DOMContentLoaded', function() {
+            const navToggle = document.querySelector('.nav-toggle');
+            const navLinks = document.querySelector('.nav-links');
+            const navLinksItems = document.querySelectorAll('.nav-links .nav-link, .nav-links .nav-cta');
+            
+            if (navToggle && navLinks) {
+                navToggle.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const isActive = navLinks.classList.contains('active');
+                    
+                    if (isActive) {
+                        // Close navigation
+                        navToggle.classList.remove('active');
+                        navLinks.classList.remove('active');
+                        document.body.style.overflow = '';
+                    } else {
+                        // Open navigation
+                        navToggle.classList.add('active');
+                        navLinks.classList.add('active');
+                        document.body.style.overflow = 'hidden'; // Prevent scroll
+                        
+                        // Animate menu items with stagger
+                        navLinksItems.forEach((item, index) => {
+                            item.style.opacity = '0';
+                            item.style.transform = 'translateY(20px)';
+                            setTimeout(() => {
+                                item.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+                                item.style.opacity = '1';
+                                item.style.transform = 'translateY(0)';
+                            }, 100 + (index * 50));
+                        });
+                    }
+                });
+                
+                // Close menu when clicking on links
+                navLinksItems.forEach(item => {
+                    item.addEventListener('click', () => {
+                        navToggle.classList.remove('active');
+                        navLinks.classList.remove('active');
+                        document.body.style.overflow = '';
+                    });
+                });
+                
+                // Close menu on escape key
+                document.addEventListener('keydown', function(e) {
+                    if (e.key === 'Escape' && navLinks.classList.contains('active')) {
+                        navToggle.classList.remove('active');
+                        navLinks.classList.remove('active');
+                        document.body.style.overflow = '';
+                    }
+                });
+                
+                // Close menu when clicking backdrop (outside menu)
+                navLinks.addEventListener('click', function(e) {
+                    if (e.target === navLinks) {
+                        navToggle.classList.remove('active');
+                        navLinks.classList.remove('active');
+                        document.body.style.overflow = '';
+                    }
+                });
+            }
         });
 
         // Smooth scrolling for anchor links
@@ -318,6 +402,22 @@
                 }
             });
         });
+    </script>
+    
+    <!-- PWA Service Worker Registration -->
+    <script>
+        // Register service worker for PWA functionality
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js')
+                    .then(registration => {
+                        console.log('📱 SW registered:', registration.scope);
+                    })
+                    .catch(error => {
+                        console.log('📱 SW registration failed:', error);
+                    });
+            });
+        }
     </script>
     
     <!-- Include authentication system -->
