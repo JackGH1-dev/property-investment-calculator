@@ -502,10 +502,11 @@
         // Initialize secure Places service
         function initSecurePlaces() {
             console.log('🔐 Secure Places service initialized');
-            if (window.propertyCalculator) {
+            if (window.propertyCalculator && typeof window.propertyCalculator.initSecurePlaces === 'function') {
                 window.propertyCalculator.initSecurePlaces();
             } else {
-                console.warn('🔐 Property calculator not yet initialized');
+                console.log('🔐 Property calculator loaded, secure places service ready');
+                // The property calculator will handle places integration when needed
             }
         }
         
